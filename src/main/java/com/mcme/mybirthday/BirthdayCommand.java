@@ -31,7 +31,7 @@ public class BirthdayCommand implements CommandExecutor {
    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args){
    Player player = (Player) sender;
    UUID uuid = player.getUniqueId();
-   String message = main.getConfig().getString("privacymessage:");
+   String message = main.getConfig().getString("privacymessage");
    boolean mactive = main.getConfig().getBoolean("messageactive");
    long cooldown = main.getConfig().getLong("wait-time");
    String coold = main.getConfig().getString("wait-time");
