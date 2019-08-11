@@ -28,7 +28,24 @@ import org.bukkit.scheduler.BukkitRunnable;
  * @author Fraspace5
  */
 public class birthday extends JavaPlugin implements Listener {
-    
+ 
+@Override
+public void onEnable(){
+this.saveDefaultConfig();
+this.getConfig().options().copyDefaults();
+System.out.println("Plugin MyBirthday Enabled");
+getCommand("birthday").setExecutor(new BirthdayCommand());
+SetListRunnable();
+ShowListRunnable();
+}
+
+@Override
+public void onDisable(){
+
+System.out.println("Plugin MyBirthday Disabled");
+
+
+}
  HashMap<UUID, Calendar > date = new HashMap<>(); 
  
  List<UUID> player = new ArrayList<>();
@@ -53,23 +70,7 @@ public class birthday extends JavaPlugin implements Listener {
  
  boolean particles = this.getConfig().getBoolean("particles");
  
-public void OnEnable(){
 
-this.getConfig().options().copyDefaults();
-saveDefaultConfig();
-System.out.println("Plugin MyBirthday Enabled");
-getCommand("birthday").setExecutor(new BirthdayCommand());
-SetListRunnable();
-ShowListRunnable();
-}
-
-
-public void OnDisable(){
-
-System.out.println("Plugin MyBirthday Disabled");
-
-
-}
 public void SetListRunnable(){
 
 new BukkitRunnable() {

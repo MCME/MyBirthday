@@ -1,0 +1,9 @@
+name: ${project.artifactId}
+main: ${project.groupId}.mybirthday.birthday
+version: ${project.version}
+website: ${project.url}
+description: Birthday for MCME!
+commands:
+  birthday:
+    aliases: [bd,birthd,bday]
+    description: To set your birthday in game
