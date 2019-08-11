@@ -1,0 +1,16 @@
+privacymessage: > 
+  Mcme store your data only for the services
+messageactive: > 
+  true
+# wait-time in hour
+wait-time: > 
+  24
+listonjoin: >
+  true
+broadcastlist: >
+  true
+# broadcastlistevery in hour
+broadcastlistevery: >
+  3
+particles: >
+  true
