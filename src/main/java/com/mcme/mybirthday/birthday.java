@@ -16,7 +16,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -36,7 +38,7 @@ public void onEnable(){
 this.saveDefaultConfig();
 this.getConfig().options().copyDefaults();
 System.out.println("Plugin MyBirthday Enabled");
-getCommand("birthday").setExecutor(this);
+getCommand("birthday").setExecutor(new Commands());
 Bukkit.getPluginManager().registerEvents(this, this);
 SetListRunnable();
 ShowListRunnable();
@@ -108,7 +110,13 @@ new BukkitRunnable() {
 public void run(){
 if (liston == true){
 for (Player pl : Bukkit.getOnlinePlayers()){
-ShowList(pl);
+    String si = todaybirthday.toString();
+    if (todaybirthday.isEmpty()== false){
+pl.sendMessage(ChatColor.YELLOW+"[MyBirthday] :"+"Today is the Birthday of "+ChatColor.YELLOW+si);
+}
+  
+
+
 }
 }
 
@@ -145,9 +153,13 @@ for (Map.Entry<UUID, Calendar> entry : date.entrySet())
 
 }
 
-public void ShowList(Player pl){
+public void ShowList(Player pl, PlayerJoinEvent e){
 String si = todaybirthday.toString();
-pl.sendMessage(ChatColor.YELLOW+"[MyBirthday] :"+"Today is the Birthday of "+ChatColor.YELLOW+si);
+
+if (todaybirthday.isEmpty()== false){
+e.setJoinMessage(ChatColor.YELLOW+"[MyBirthday] :"+"Today is the Birthday of "+ChatColor.YELLOW+si);
+}
+
 
 }
 
@@ -162,7 +174,7 @@ public void onJoin(final PlayerJoinEvent e){
     int year = now - your;
     
     if (listonjoin == true){
-    ShowList(pl);
+    ShowList(pl,e);
     }
     if (!player.contains(uuid)){
     
@@ -172,7 +184,7 @@ public void onJoin(final PlayerJoinEvent e){
     }
     if (todaybirthday.contains(nameplayer)){
     
-     pl.sendMessage(ChatColor.YELLOW+"[MyBirthday] :"+ChatColor.YELLOW.BOLD+"Happy Birthday "+ChatColor.YELLOW.BOLD+ nameplayer + ChatColor.YELLOW+" from all the Minecraft Middle Earth Community"
+     e.setJoinMessage(ChatColor.YELLOW+"[MyBirthday] :"+ChatColor.YELLOW.BOLD+"Happy Birthday "+ChatColor.YELLOW.BOLD+ nameplayer + ChatColor.YELLOW+" from all the Minecraft Middle Earth Community"
      +ChatColor.YELLOW+year+ChatColor.YELLOW+" years is a great achievement");
     }
     if (particles == true  && todaybirthday.contains(nameplayer)){
@@ -203,9 +215,10 @@ pl.getWorld().spawnParticle(Particle.REDSTONE,location,10,1.0,1.0,0.0,null);
 
 
 }
-
+ class Commands implements CommandExecutor {
+ 
  @Override
-   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args){
+ public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args){
    
    
    
@@ -213,14 +226,11 @@ pl.getWorld().spawnParticle(Particle.REDSTONE,location,10,1.0,1.0,0.0,null);
        
    Player pl = (Player) sender;
    UUID uuid = pl.getUniqueId();
-   
-   
-   
    Calendar call = Calendar.getInstance();
-   
+   if (args.length > 1){
    if (args[0].equalsIgnoreCase("set") ){
    
-       if (args.length == 3){
+       if (args.length == 4){
        
        if (cooldown.containsKey(uuid) && cooldown.get(uuid)> System.currentTimeMillis()){
        
@@ -323,7 +333,9 @@ pl.getWorld().spawnParticle(Particle.REDSTONE,location,10,1.0,1.0,0.0,null);
    
    }
    
-   
+   } else {
+     pl.sendMessage(ChatColor.YELLOW+"[MyBirthday] :"+ChatColor.YELLOW+" Not enough argouments! Type /birthday help");
+   }
    
    
    
@@ -343,4 +355,5 @@ pl.getWorld().spawnParticle(Particle.REDSTONE,location,10,1.0,1.0,0.0,null);
    
     
     
+}
 }
