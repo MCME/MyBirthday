@@ -170,8 +170,7 @@ public void onJoin(final PlayerJoinEvent e){
     String nameplayer = Bukkit.getOfflinePlayer(uuid).getName();
     boolean listonjoin = this.getConfig().getBoolean("listonjoin");
     int now = Calendar.getInstance().get(Calendar.YEAR);
-    int your = this.date.get(uuid).get(Calendar.YEAR);
-    int year = now - your;
+    
     
     if (listonjoin == true){
     ShowList(pl,e);
@@ -183,7 +182,8 @@ public void onJoin(final PlayerJoinEvent e){
     
     }
     if (todaybirthday.contains(nameplayer)){
-    
+    int your = date.get(uuid).get(Calendar.YEAR);
+    int year = now - your; 
      e.setJoinMessage(ChatColor.YELLOW+"[MyBirthday] :"+ChatColor.YELLOW.BOLD+"Happy Birthday "+ChatColor.YELLOW.BOLD+ nameplayer + ChatColor.YELLOW+" from all the Minecraft Middle Earth Community"
      +ChatColor.YELLOW+year+ChatColor.YELLOW+" years is a great achievement");
     }
@@ -266,17 +266,9 @@ pl.getWorld().spawnParticle(Particle.REDSTONE,location,10,1.0,1.0,0.0,null);
        cooldown.put(uuid,System.currentTimeMillis()+ (cooldown1*3600)*1000);
        
        }
-           
-           
-          
-       
-       
-       
        
        }
-           
-           
-           
+   
        }else {
        
        pl.sendMessage(ChatColor.YELLOW+"[MyBirthday] :"+ChatColor.YELLOW+" Not enough argouments! Type /birthday help");}
@@ -286,30 +278,38 @@ pl.getWorld().spawnParticle(Particle.REDSTONE,location,10,1.0,1.0,0.0,null);
    
    
    
+   }}else {
+     pl.sendMessage(ChatColor.YELLOW+"[MyBirthday] :"+ChatColor.YELLOW+" Not enough argouments! Type /birthday help");
    }
-   else if (args[0].equalsIgnoreCase("help")== true){
+    if (args[0].equalsIgnoreCase("help")== true){
    
    pl.sendMessage(ChatColor.YELLOW+"[MyBirthday] :"+ChatColor.YELLOW+" To set your birthday write /birthday set dd mm yyyy yourage");
    
    
    
-   }else if (args[0].equalsIgnoreCase("particles") == true){
+   }
+    
+     if (args.length>1){
+     if (args[0].equalsIgnoreCase("particles") == true){
      if (args[1].equalsIgnoreCase("on")){
-     
+     pl.sendMessage(ChatColor.YELLOW+"[MyBirthday] :"+ChatColor.YELLOW+" Particles on");
      particlesbool.remove(uuid);
      particlesbool.put(uuid, true);
      
      }
      else if (args[1].equalsIgnoreCase("off")== true){
-     
+     pl.sendMessage(ChatColor.YELLOW+"[MyBirthday] :"+ChatColor.YELLOW+" Particles off");
      particlesbool.remove(uuid);
      particlesbool.put(uuid, false);
      
      
-     }
+     }}
    
    
-   }else if (args[0].equalsIgnoreCase("removedatab")== true){
+   }
+     
+     if (args.length>1){
+     if (args[0].equalsIgnoreCase("removedatab")== true){
    
    if (coolsure.containsKey(uuid) && coolsure.get(uuid)> System.currentTimeMillis()){
    pl.sendMessage((ChatColor.YELLOW+"[MyBirthday] :"+ChatColor.YELLOW+"All your data has been removed from our databases"));
@@ -332,28 +332,16 @@ pl.getWorld().spawnParticle(Particle.REDSTONE,location,10,1.0,1.0,0.0,null);
    pl.sendMessage(ChatColor.YELLOW+"[MyBirthday] :"+ChatColor.YELLOW+" Invalid usage! Type /birthday help");
    
    }
-   
-   } else {
-     pl.sendMessage(ChatColor.YELLOW+"[MyBirthday] :"+ChatColor.YELLOW+" Not enough argouments! Type /birthday help");
-   }
-   
-   
-   
-   
+ 
    }else {
    
    System.out.println("You can't use this command in console");}
-   
-       
-       
-       
-       
-       
-   
+
    return false;
    }
    
-    
-    
+   return false; 
+}
+ 
 }
 }
