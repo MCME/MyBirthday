@@ -278,8 +278,10 @@ pl.getWorld().spawnParticle(Particle.REDSTONE,location,10,1.0,1.0,0.0,null);
    
    
    
-   }}else {
-     pl.sendMessage(ChatColor.YELLOW+"[MyBirthday] :"+ChatColor.YELLOW+" Not enough argouments! Type /birthday help");
+   }
+   }
+   else {
+     
    }
     if (args[0].equalsIgnoreCase("help")== true){
    
@@ -308,7 +310,7 @@ pl.getWorld().spawnParticle(Particle.REDSTONE,location,10,1.0,1.0,0.0,null);
    
    }
      
-     if (args.length>1){
+     
      if (args[0].equalsIgnoreCase("removedatab")== true){
    
    if (coolsure.containsKey(uuid) && coolsure.get(uuid)> System.currentTimeMillis()){
@@ -327,11 +329,7 @@ pl.getWorld().spawnParticle(Particle.REDSTONE,location,10,1.0,1.0,0.0,null);
    }
    
    
-   else {
    
-   pl.sendMessage(ChatColor.YELLOW+"[MyBirthday] :"+ChatColor.YELLOW+" Invalid usage! Type /birthday help");
-   
-   }
  
    }else {
    
@@ -340,8 +338,7 @@ pl.getWorld().spawnParticle(Particle.REDSTONE,location,10,1.0,1.0,0.0,null);
    return false;
    }
    
-   return false; 
+   
 }
  
-}
 }
