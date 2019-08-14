@@ -177,11 +177,7 @@ public void onJoin(final PlayerJoinEvent e){
     int now = Calendar.getInstance().get(Calendar.YEAR);
     
     
-    if (listonjoin == true){
     
-        ShowList(pl,e);
-        System.out.println("Dovrei mostrare");
-    }
     if (!player.contains(uuid)){
     
    pl.sendMessage(ChatColor.GOLD.BOLD +"[MyBirthday] :"+" You haven't set your birthday yet! Use /birthday set");
@@ -191,19 +187,23 @@ public void onJoin(final PlayerJoinEvent e){
     if (todaybirthday.contains(nameplayer)){
     int your = date.get(uuid).get(Calendar.YEAR);
     int year = now - your; 
-     e.setJoinMessage(ChatColor.GOLD.BOLD +"[MyBirthday] :"+ChatColor.YELLOW.BOLD+" Happy Birthday "+ChatColor.YELLOW.BOLD+ nameplayer + ChatColor.YELLOW+" from all the Minecraft Middle Earth Community"
+     e.setJoinMessage(ChatColor.GOLD.BOLD +"[MyBirthday] :"+ChatColor.YELLOW.BOLD+" Happy Birthday "+ChatColor.YELLOW.BOLD+ nameplayer + ChatColor.YELLOW+" from all the Minecraft Middle Earth Community "
      +ChatColor.YELLOW+year+ChatColor.YELLOW+" years is a great achievement");
-    }
+    }else if (listonjoin == true){
+        ShowList(pl,e);
+        System.out.println("Dovrei mostrare");}
     if (particles == true  && todaybirthday.contains(nameplayer)){
     
  new BukkitRunnable(){ 
 @Override 
 public void run(){
 
-if (particlesbool.get(uuid).equals(true)){
+if (particlesbool.get(uuid) == true){
 Location location = pl.getLocation().add(0, 2, 0);
 
 pl.getWorld().spawnParticle(Particle.REDSTONE,location,10,1.0,1.0,0.0,null);
+
+}else if (particlesbool.get(uuid) == false){
 
 }
     
