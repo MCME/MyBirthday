@@ -15,6 +15,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Particle;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -34,7 +36,8 @@ public void onEnable(){
 this.saveDefaultConfig();
 this.getConfig().options().copyDefaults();
 System.out.println("Plugin MyBirthday Enabled");
-getCommand("birthday").setExecutor(new BirthdayCommand());
+getCommand("birthday").setExecutor(this);
+Bukkit.getPluginManager().registerEvents(this, this);
 SetListRunnable();
 ShowListRunnable();
 }
@@ -70,7 +73,14 @@ System.out.println("Plugin MyBirthday Disabled");
  
  boolean particles = this.getConfig().getBoolean("particles");
  
+ String message = this.getConfig().getString("privacymessage");
 
+boolean mactive = this.getConfig().getBoolean("messageactive");
+
+String coold = this.getConfig().getString("wait-time");
+
+long cooldown1 = this.getConfig().getLong("wait-time");
+ 
 public void SetListRunnable(){
 
 new BukkitRunnable() {
@@ -194,6 +204,143 @@ pl.getWorld().spawnParticle(Particle.REDSTONE,location,10,1.0,1.0,0.0,null);
 
 }
 
+ @Override
+   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args){
+   
+   
+   
+   if (sender instanceof Player){
+       
+   Player pl = (Player) sender;
+   UUID uuid = pl.getUniqueId();
+   
+   
+   
+   Calendar call = Calendar.getInstance();
+   
+   if (args[0].equalsIgnoreCase("set") ){
+   
+       if (args.length == 3){
+       
+       if (cooldown.containsKey(uuid) && cooldown.get(uuid)> System.currentTimeMillis()){
+       
+       long timerem = cooldown.get(uuid) - System.currentTimeMillis();
+       int remaining = (int) (timerem/1000);
+       pl.sendMessage(ChatColor.YELLOW+"[MyBirthday] :"+ChatColor.YELLOW+" Sorry you can't set your birthday. You must wait "+ChatColor.YELLOW+remaining+ChatColor.YELLOW+" seconds");
+       }
+       else {
+       String dd = args[1];
+       String mm = args[2];
+       String yyyy = args[3];
+       
+       int d = Integer.parseInt(dd);
+       int m = Integer.parseInt(mm);
+       int y = Integer.parseInt(yyyy);
+       Calendar cal = Calendar.getInstance();
+       cal.set(y, m, d);
+       if (date.containsKey(uuid) && player.contains(uuid) && playerage.containsKey(uuid)){
+       date.replace(uuid, cal);
+       if (mactive == true){
+       pl.sendMessage((ChatColor.YELLOW+"[MyBirthday] :"+ChatColor.YELLOW+ message));
+       }
+       pl.sendMessage((ChatColor.YELLOW+"[MyBirthday] :"+ChatColor.YELLOW+" Birthday set correctly, now you must  wait "+ChatColor.YELLOW+coold+ChatColor.YELLOW+" hours to update it"));
+       cooldown.put(uuid,System.currentTimeMillis()+ (cooldown1*3600)*1000);
+       particlesbool.put(uuid, true);
+       }else {
+       date.put(uuid, cal);
+       player.add(uuid);
+        if (mactive == true){
+       pl.sendMessage((ChatColor.YELLOW+"[MyBirthday] :"+ChatColor.YELLOW+ message));
+       }
+       pl.sendMessage((ChatColor.YELLOW+"[MyBirthday] :"+ChatColor.YELLOW+" Birthday set correctly, now you must  wait "+ChatColor.YELLOW+coold+ChatColor.YELLOW+" hours to update it"));
+       cooldown.put(uuid,System.currentTimeMillis()+ (cooldown1*3600)*1000);
+       
+       }
+           
+           
+          
+       
+       
+       
+       
+       }
+           
+           
+           
+       }else {
+       
+       pl.sendMessage(ChatColor.YELLOW+"[MyBirthday] :"+ChatColor.YELLOW+" Not enough argouments! Type /birthday help");}
+   
+   
+   
+   
+   
+   
+   }
+   else if (args[0].equalsIgnoreCase("help")== true){
+   
+   pl.sendMessage(ChatColor.YELLOW+"[MyBirthday] :"+ChatColor.YELLOW+" To set your birthday write /birthday set dd mm yyyy yourage");
+   
+   
+   
+   }else if (args[0].equalsIgnoreCase("particles") == true){
+     if (args[1].equalsIgnoreCase("on")){
+     
+     particlesbool.remove(uuid);
+     particlesbool.put(uuid, true);
+     
+     }
+     else if (args[1].equalsIgnoreCase("off")== true){
+     
+     particlesbool.remove(uuid);
+     particlesbool.put(uuid, false);
+     
+     
+     }
+   
+   
+   }else if (args[0].equalsIgnoreCase("removedatab")== true){
+   
+   if (coolsure.containsKey(uuid) && coolsure.get(uuid)> System.currentTimeMillis()){
+   pl.sendMessage((ChatColor.YELLOW+"[MyBirthday] :"+ChatColor.YELLOW+"All your data has been removed from our databases"));
+   date.remove(uuid);
+   particlesbool.remove(uuid);
+   player.remove(uuid);
+   
+   
+   }
+   
+   long time = System.currentTimeMillis()+ (30*1000) ;
+   coolsure.put(uuid, time);
+   pl.sendMessage((ChatColor.YELLOW+"[MyBirthday] :"+ChatColor.YELLOW+"Are you sure? Retype /birthday removedatab to confirm"));
+   
+   }
+   
+   
+   else {
+   
+   pl.sendMessage(ChatColor.YELLOW+"[MyBirthday] :"+ChatColor.YELLOW+" Invalid usage! Type /birthday help");
+   
+   }
+   
+   
+   
+   
+   
+   
+   }else {
+   
+   System.out.println("You can't use this command in console");}
+   
+       
+       
+       
+       
+       
+   
+   return false;
+   }
+   
     
     
 }
