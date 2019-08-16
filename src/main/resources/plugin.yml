@@ -4,6 +4,6 @@ version: ${project.version}
 website: ${project.url}
 description: Birthday for MCME!
 commands:
-  birthday:
+ birthday:
     aliases: [bd,birthd,bday]
     description: To set your birthday in game

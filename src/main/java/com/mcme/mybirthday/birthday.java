@@ -1,7 +1,18 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ *Copyright (C) 2019 MCME
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.mcme.mybirthday;
 
@@ -14,11 +25,11 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.Particle;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -70,18 +81,19 @@ System.out.println("Plugin MyBirthday Disabled");
  boolean liston = this.getConfig().getBoolean("broadcastlist");
  
  int broadcastlistevery = this.getConfig().getInt("broadcastlistevery");
- 
- int hour = broadcastlistevery * 72000;
+
  
  boolean particles = this.getConfig().getBoolean("particles");
  
  String message = this.getConfig().getString("privacymessage");
 
-boolean mactive = this.getConfig().getBoolean("messageactive");
+ boolean mactive = this.getConfig().getBoolean("messageactive");
 
 String coold = this.getConfig().getString("wait-time");
 
 long cooldown1 = this.getConfig().getLong("wait-time");
+
+boolean playeragebool = this.getConfig().getBoolean("showplayerage");
  
 public void SetListRunnable(){
 
@@ -108,11 +120,47 @@ new BukkitRunnable() {
 
 @Override 
 public void run(){
+   long delay = broadcastlistevery * 60 * 1000;
+   
+   
+    StringBuilder builder = new StringBuilder();
+    for (String value : todaybirthday){
+        if (playeragebool == true){
+           OfflinePlayer pal = Bukkit.getOfflinePlayer(value);
+           UUID uuid = pal.getUniqueId();
+           int now = Calendar.getInstance().get(Calendar.YEAR);
+           int your = date.get(uuid).get(Calendar.YEAR);
+           int year = now - your; 
+           int index = todaybirthday.size() - 1;
+           String val = todaybirthday.get(index);
+           
+           if (value.equalsIgnoreCase(val) == false){
+           builder.append(value+" ["+year+"], ");}
+           else {
+           builder.append(value+" ["+year+"] !");
+           }
+    
+      
+       
+       }else {
+       
+           int index = todaybirthday.size() - 1;
+           String val = todaybirthday.get(index);
+           
+           if (value.equalsIgnoreCase(val) == false){
+           builder.append(value+" "+", ");}
+           else {
+           builder.append(value+" "+"!");
+           }
+           
+            }
+}
+String text = builder.toString();
 if (liston == true){
 for (Player pl : Bukkit.getOnlinePlayers()){
     String si = todaybirthday.toString();
     if (!todaybirthday.isEmpty()){
-pl.sendMessage(ChatColor.YELLOW+"[MyBirthday] :"+" Today is the Birthday of "+ChatColor.YELLOW+si);
+pl.sendMessage(ChatColor.GOLD.BOLD+"[MyBirthday] :"+ChatColor.YELLOW+" Today is the Birthday of "+ChatColor.YELLOW+text);
 }
   
 
@@ -123,13 +171,58 @@ pl.sendMessage(ChatColor.YELLOW+"[MyBirthday] :"+" Today is the Birthday of "+Ch
 
 }
 
-}.runTaskTimer(this, 0L, hour);
+
+}.runTaskTimer(this, broadcastlistevery*60*20, broadcastlistevery*60*20 );
 
 
 
 
 }
+public void OtherPeopleBirthday(String nameplayer, PlayerJoinEvent  e){
 
+    StringBuilder builder = new StringBuilder();
+
+for (String value : todaybirthday){
+       
+    
+      if (playeragebool == true && !value.equalsIgnoreCase(nameplayer)){
+           OfflinePlayer pal = Bukkit.getOfflinePlayer(value);
+           UUID uuid = pal.getUniqueId();
+           int now = Calendar.getInstance().get(Calendar.YEAR);
+           int your = date.get(uuid).get(Calendar.YEAR);
+           int year = now - your; 
+           int index = todaybirthday.size() - 1;
+           String val = todaybirthday.get(index);
+           
+           if (value.equalsIgnoreCase(val) == false){
+           builder.append(value+" ["+year+"], ");}
+           else {
+           builder.append(value+" ["+year+"] !");
+           }
+    
+      
+       
+       }else if (playeragebool == false && !value.equalsIgnoreCase(nameplayer)) {
+       
+           int index = todaybirthday.size() - 1;
+           String val = todaybirthday.get(index);
+           
+           if (value.equalsIgnoreCase(val) == false){
+           builder.append(value+" "+", ");}
+           else {
+           builder.append(value+" "+"!");
+           }
+           
+            }else {
+       
+       }
+}
+String text = builder.toString();
+
+e.setJoinMessage(ChatColor.GOLD.BOLD +"[MyBirthday] :"+ChatColor.YELLOW+" Today is also the Birthday of "+ChatColor.YELLOW+text);
+
+
+}
 
 public void SetTodayBirthdays(){
 
@@ -159,13 +252,46 @@ for (Map.Entry<UUID, Calendar> entry : date.entrySet())
 }
 
 public void ShowList(Player pl, PlayerJoinEvent e){
-String si = todaybirthday.toString();
 
-if (todaybirthday.isEmpty()== false){
-e.setJoinMessage(ChatColor.GOLD.BOLD +"[MyBirthday] :"+" Today is the Birthday of "+ChatColor.YELLOW+si);
+StringBuilder builder = new StringBuilder();
+
+for (String value : todaybirthday){
+       if (playeragebool == true){
+           OfflinePlayer pal = Bukkit.getOfflinePlayer(value);
+           UUID uuid = pal.getUniqueId();
+           int now = Calendar.getInstance().get(Calendar.YEAR);
+           int your = date.get(uuid).get(Calendar.YEAR);
+           int year = now - your; 
+           int index = todaybirthday.size() - 1;
+           String val = todaybirthday.get(index);
+           
+           if (value.equalsIgnoreCase(val) == false){
+           builder.append(value+" ["+year+"], ");}
+           else {
+           builder.append(value+" ["+year+"] !");
+           }
+    
+      
+       
+       }else {
+       
+           int index = todaybirthday.size() - 1;
+           String val = todaybirthday.get(index);
+           
+           if (value.equalsIgnoreCase(val) == false){
+           builder.append(value+" "+", ");}
+           else {
+           builder.append(value+" "+"!");
+           }
+           
+            }
 }
+String text = builder.toString();
+if (todaybirthday.isEmpty()== false){
 
+    e.setJoinMessage(ChatColor.GOLD.BOLD +"[MyBirthday] :"+ChatColor.YELLOW+" Today is the Birthday of "+ChatColor.YELLOW+text);
 
+}
 }
 
 @EventHandler
@@ -175,8 +301,6 @@ public void onJoin(final PlayerJoinEvent e){
     String nameplayer = Bukkit.getOfflinePlayer(uuid).getName();
     boolean listonjoin = getConfig().getBoolean("listonjoin");
     int now = Calendar.getInstance().get(Calendar.YEAR);
-    
-    
     
     if (!player.contains(uuid)){
     
@@ -189,7 +313,13 @@ public void onJoin(final PlayerJoinEvent e){
     int year = now - your; 
      e.setJoinMessage(ChatColor.GOLD.BOLD +"[MyBirthday] :"+ChatColor.YELLOW.BOLD+" Happy Birthday "+ChatColor.YELLOW.BOLD+ nameplayer + ChatColor.YELLOW+" from all the Minecraft Middle Earth Community "
      +ChatColor.YELLOW+year+ChatColor.YELLOW+" years is a great achievement");
-    }else if (listonjoin == true){
+    if (todaybirthday.size()>1){
+    OtherPeopleBirthday(nameplayer , e);
+    
+    
+    }
+    
+    }else if (listonjoin == true && !todaybirthday.contains(nameplayer)){
         ShowList(pl,e);
         System.out.println("Dovrei mostrare");}
     if (particles == true  && todaybirthday.contains(nameplayer)){
@@ -210,17 +340,7 @@ pl.getWorld().spawnParticle(Particle.REDSTONE,location,10,1.0,1.0,0.0,null);
 }
 
 }.runTaskTimer(this, 0, 10L);
-
-
-    
-    
-    
     }
-
-
-
-
-
 }
  class Commands implements CommandExecutor {
  
@@ -240,10 +360,7 @@ pl.getWorld().spawnParticle(Particle.REDSTONE,location,10,1.0,1.0,0.0,null);
        pl.sendMessage(ChatColor.GOLD.BOLD +"[MyBirthday] :"+ChatColor.YELLOW+" Invalid Usage ! Type /birthday help for information");
    
    }
-   
-   
-   
-   
+  
    if (args.length > 1){
    if (args[0].equalsIgnoreCase("set") ){
    
@@ -272,10 +389,11 @@ pl.getWorld().spawnParticle(Particle.REDSTONE,location,10,1.0,1.0,0.0,null);
        }
        pl.sendMessage((ChatColor.GOLD.BOLD+"[MyBirthday] :"+ChatColor.YELLOW+" Birthday set correctly! Now you must wait "+ChatColor.YELLOW+coold+ChatColor.YELLOW+" hours to update it"));
        cooldown.put(uuid,System.currentTimeMillis()+ (cooldown1*3600)*1000);
-       particlesbool.put(uuid, true);
+       
        }else {
        date.put(uuid, cal);
        player.add(uuid);
+       particlesbool.put(uuid, true);
         if (mactive == true){
        pl.sendMessage((ChatColor.GOLD.BOLD+"[MyBirthday] : "+ChatColor.YELLOW+ message));
        }
@@ -290,23 +408,19 @@ pl.getWorld().spawnParticle(Particle.REDSTONE,location,10,1.0,1.0,0.0,null);
        
        pl.sendMessage(ChatColor.GOLD.BOLD+"[MyBirthday] :"+ChatColor.YELLOW+" Not enough argouments! Type /birthday help");}
    
-   
-   
-   
-   
-   
    }
    }
    else {
      
    }
-    if (args[0].equalsIgnoreCase("help") && args.length > 0){
+   if(args.length>0){
+    if (args[0].equalsIgnoreCase("help")){
    
    pl.sendMessage(ChatColor.GOLD.BOLD+"[MyBirthday] :"+ChatColor.YELLOW+" To set your birthday write /birthday set dd mm yyyy yourage");
    
    
    
-   }
+   }}
     
      if (args.length>1){
      if (args[0].equalsIgnoreCase("particles") == true){
@@ -327,7 +441,7 @@ pl.getWorld().spawnParticle(Particle.REDSTONE,location,10,1.0,1.0,0.0,null);
    
    }
      
-     
+     if (args.length >0 ){
      if (args[0].equalsIgnoreCase("removedatab") && args.length > 0){
    
    if (coolsure.containsKey(uuid) && coolsure.get(uuid)> System.currentTimeMillis()){
@@ -345,17 +459,13 @@ pl.getWorld().spawnParticle(Particle.REDSTONE,location,10,1.0,1.0,0.0,null);
    pl.sendMessage((ChatColor.GOLD.BOLD+"[MyBirthday] :"+ChatColor.YELLOW+" Are you sure? Retype /birthday removedatab to confirm"));
    
    }
-   
-   
-   
- 
+     }
    }else {
    
    System.out.println("You can't use this command in console");}
 
    return false;
-   }
-   
+   } 
    
 }
  
