@@ -104,7 +104,6 @@ public void run(){
 
 
 SetTodayBirthdays();
-System.out.println("setto");
 }
 
 }.runTaskTimer(this, 0L, 600L);
@@ -237,7 +236,7 @@ for (Map.Entry<UUID, Calendar> entry : date.entrySet())
     int dayn = call.get(Calendar.DAY_OF_MONTH);
     int monthn = call.get(Calendar.MONTH);
     int moonthn1 = monthn+1;
-    System.out.println(dc+""+mc+""+dayn+""+monthn);
+    
     if (dc == dayn && mc == moonthn1){
       
         if(todaybirthday.contains(name) == true){
@@ -321,7 +320,7 @@ public void onJoin(final PlayerJoinEvent e){
     
     }else if (listonjoin == true && !todaybirthday.contains(nameplayer)){
         ShowList(pl,e);
-        System.out.println("Dovrei mostrare");}
+        
     if (particles == true  && todaybirthday.contains(nameplayer)){
     
  new BukkitRunnable(){ 
