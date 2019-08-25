@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -30,6 +31,7 @@ import org.bukkit.Particle;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -44,11 +46,19 @@ import org.bukkit.scheduler.BukkitRunnable;
  */
 public class birthday extends JavaPlugin implements Listener {
  
+ Logger Logger = Bukkit.getLogger();
+ ConsoleCommandSender clogger = this.getServer().getConsoleSender();
+    
+
+    
+    
 @Override
 public void onEnable(){
 this.saveDefaultConfig();
 this.getConfig().options().copyDefaults();
-System.out.println("Plugin MyBirthday Enabled");
+ clogger.sendMessage(ChatColor.GREEN+ "---------------------------------------");
+ clogger.sendMessage(ChatColor.YELLOW+ "MyBirthday Plugin 1.0 Enabled");
+ clogger.sendMessage(ChatColor.GREEN+ "---------------------------------------");
 getCommand("birthday").setExecutor(new Commands());
 Bukkit.getPluginManager().registerEvents(this, this);
 SetListRunnable();
@@ -58,7 +68,9 @@ ShowListRunnable();
 @Override
 public void onDisable(){
 
-System.out.println("Plugin MyBirthday Disabled");
+clogger.sendMessage(ChatColor.RED+ "---------------------------------------");
+clogger.sendMessage(ChatColor.YELLOW+ "Environment Plugin 1.0 Disabled");
+clogger.sendMessage(ChatColor.RED+ "---------------------------------------");
 
 
 }
