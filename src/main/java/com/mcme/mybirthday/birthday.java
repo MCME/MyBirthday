@@ -25,6 +25,7 @@ import java.util.UUID;
 import java.util.logging.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Particle;
@@ -32,6 +33,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -60,6 +62,7 @@ this.getConfig().options().copyDefaults();
  clogger.sendMessage(ChatColor.YELLOW+ "MyBirthday Plugin 1.0 Enabled");
  clogger.sendMessage(ChatColor.GREEN+ "---------------------------------------");
 getCommand("birthday").setExecutor(new Commands());
+
 Bukkit.getPluginManager().registerEvents(this, this);
 SetListRunnable();
 ShowListRunnable();
@@ -85,6 +88,8 @@ clogger.sendMessage(ChatColor.RED+ "---------------------------------------");
  HashMap<UUID,Long> cooldown = new HashMap<>();  
 
  List<String> todaybirthday = new ArrayList<>();
+ 
+
  
  HashMap<UUID, Long> coolsure = new HashMap<>();
  
@@ -123,6 +128,7 @@ SetTodayBirthdays();
 
 
 }
+
 
 public void ShowListRunnable(){
 
@@ -332,7 +338,7 @@ public void onJoin(final PlayerJoinEvent e){
     
     }else if (listonjoin == true && !todaybirthday.contains(nameplayer)){
         ShowList(pl,e);
-        
+    }
     if (particles == true  && todaybirthday.contains(nameplayer)){
     
  new BukkitRunnable(){ 
@@ -341,9 +347,10 @@ public void run(){
 
 if (particlesbool.get(uuid) == true){
 Location location = pl.getLocation().add(0, 2, 0);
-
-pl.getWorld().spawnParticle(Particle.REDSTONE,location,10,1.0,1.0,0.0,null);
-
+pl.getWorld().spawnParticle(Particle.REDSTONE,location,10,1.0,1.0,1.0, new Particle.DustOptions(Color.RED, 1));
+pl.getWorld().spawnParticle(Particle.REDSTONE,location,10,1.0,1.0,1.0, new Particle.DustOptions(Color.YELLOW, 1));
+pl.getWorld().spawnParticle(Particle.REDSTONE,location,10,1.0,1.0,1.0, new Particle.DustOptions(Color.GREEN, 1));
+pl.getWorld().spawnParticle(Particle.REDSTONE,location,10,1.0,1.0,1.0, new Particle.DustOptions(Color.FUCHSIA, 1));
 }else if (particlesbool.get(uuid) == false){
 
 }
@@ -352,7 +359,8 @@ pl.getWorld().spawnParticle(Particle.REDSTONE,location,10,1.0,1.0,0.0,null);
 
 }.runTaskTimer(this, 0, 10L);
     }
-    }}
+    }
+
  class Commands implements CommandExecutor {
  
  @Override
