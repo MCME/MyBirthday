@@ -22,18 +22,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.logging.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Particle;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -47,10 +43,6 @@ import org.bukkit.scheduler.BukkitRunnable;
  * @author Fraspace5
  */
 public class birthday extends JavaPlugin implements Listener {
- 
- Logger Logger = Bukkit.getLogger();
- ConsoleCommandSender clogger = this.getServer().getConsoleSender();
-    
 
     
     
@@ -58,11 +50,9 @@ public class birthday extends JavaPlugin implements Listener {
 public void onEnable(){
 this.saveDefaultConfig();
 this.getConfig().options().copyDefaults();
- clogger.sendMessage(ChatColor.GREEN+ "---------------------------------------");
- clogger.sendMessage(ChatColor.YELLOW+ "MyBirthday Plugin 1.0 Enabled");
- clogger.sendMessage(ChatColor.GREEN+ "---------------------------------------");
-getCommand("birthday").setExecutor(new Commands());
 
+getCommand("birthday").setExecutor(new Commands());
+System.out.println("MyBirthday Plugin 1.0 Enabled");
 Bukkit.getPluginManager().registerEvents(this, this);
 SetListRunnable();
 ShowListRunnable();
@@ -71,10 +61,7 @@ ShowListRunnable();
 @Override
 public void onDisable(){
 
-clogger.sendMessage(ChatColor.RED+ "---------------------------------------");
-clogger.sendMessage(ChatColor.YELLOW+ "Environment Plugin 1.0 Disabled");
-clogger.sendMessage(ChatColor.RED+ "---------------------------------------");
-
+System.out.println("MyBirthday Plugin 1.0 Disabled");
 
 }
  HashMap<UUID, Calendar > date = new HashMap<>(); 
@@ -88,8 +75,6 @@ clogger.sendMessage(ChatColor.RED+ "---------------------------------------");
  HashMap<UUID,Long> cooldown = new HashMap<>();  
 
  List<String> todaybirthday = new ArrayList<>();
- 
-
  
  HashMap<UUID, Long> coolsure = new HashMap<>();
  
@@ -347,10 +332,8 @@ public void run(){
 
 if (particlesbool.get(uuid) == true){
 Location location = pl.getLocation().add(0, 2, 0);
-pl.getWorld().spawnParticle(Particle.REDSTONE,location,10,1.0,1.0,1.0, new Particle.DustOptions(Color.RED, 1));
-pl.getWorld().spawnParticle(Particle.REDSTONE,location,10,1.0,1.0,1.0, new Particle.DustOptions(Color.YELLOW, 1));
-pl.getWorld().spawnParticle(Particle.REDSTONE,location,10,1.0,1.0,1.0, new Particle.DustOptions(Color.GREEN, 1));
-pl.getWorld().spawnParticle(Particle.REDSTONE,location,10,1.0,1.0,1.0, new Particle.DustOptions(Color.FUCHSIA, 1));
+pl.getWorld().spawnParticle(Particle.REDSTONE,location,10,1.0,1.0,1.0,null);
+
 }else if (particlesbool.get(uuid) == false){
 
 }
