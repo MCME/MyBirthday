@@ -340,7 +340,7 @@ pl.getWorld().spawnParticle(Particle.REDSTONE,location,10,1.0,1.0,0.0,null);
 
 }.runTaskTimer(this, 0, 10L);
     }
-}
+    }}
  class Commands implements CommandExecutor {
  
  @Override
