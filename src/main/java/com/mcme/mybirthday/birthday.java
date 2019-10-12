@@ -60,7 +60,7 @@ public class birthday extends JavaPlugin implements Listener {
         this.saveDefaultConfig();
         this.getConfig().options().copyDefaults();
         clogger.sendMessage(ChatColor.GREEN + "---------------------------------------");
-        clogger.sendMessage(ChatColor.YELLOW + "MyBirthday Plugin 1.0 Enabled");
+        clogger.sendMessage(ChatColor.YELLOW + "MyBirthday Plugin 2.0 Enabled");
         clogger.sendMessage(ChatColor.GREEN + "---------------------------------------");
         getCommand("birthday").setExecutor(new Commands());
         Bukkit.getPluginManager().registerEvents(this, this);
@@ -97,7 +97,7 @@ public class birthday extends JavaPlugin implements Listener {
 
         }
         clogger.sendMessage(ChatColor.RED + "---------------------------------------");
-        clogger.sendMessage(ChatColor.YELLOW + "Environment Plugin 1.0 Disabled");
+        clogger.sendMessage(ChatColor.YELLOW + "Environment Plugin 2.0 Disabled");
         clogger.sendMessage(ChatColor.RED + "---------------------------------------");
 
     }
