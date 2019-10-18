@@ -17,42 +17,44 @@
 package com.mcme.mybirthday;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
-import static java.lang.Float.parseFloat;
-import static java.lang.Integer.parseInt;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.UUID;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  *
  * @author Fraspace5
  */
-public class BirthDayData {
+public class PluginData {
 
     @Getter
-    public UUID uuid;
-    public Calendar calendar;
-    public boolean particles;
-    public Long cooldown;
+    @Setter
+    private static Map<UUID, BirthDayData> dataMap = new HashMap<>();
 
-    public BirthDayData(String data) {
-        String[] dataArray = data.split(";");
-        uuid = UUID.fromString(dataArray[0]);
-        calendar = Calendar.getInstance();
-        calendar.set(parseInt(dataArray[1]), parseInt(dataArray[2]), parseInt(dataArray[3]));
-        particles = Boolean.getBoolean(dataArray[4]);
-        cooldown = Long.getLong(dataArray[5]);
+    public static void saveData(File file) throws FileNotFoundException {
+        for (BirthDayData data : dataMap.values()) {
+
+            String storageData = data.serialize();
+            try (PrintWriter out = new PrintWriter(new FileOutputStream(file))) {
+                out.println(storageData);
+            }
+        }
     }
 
-    public String serialize() {
-        return uuid + ";" + calendar.get(Calendar.YEAR) + ";" + calendar.get(Calendar.MONTH) + ";" + calendar.get(Calendar.DAY_OF_MONTH) + ";" + particles + ";" + cooldown;
+    public static void loadData(File file) throws FileNotFoundException {
+        try (Scanner scanner = new Scanner(file)) {
+            while (scanner.hasNext()) {
+                String line = scanner.nextLine();
+                BirthDayData data = new BirthDayData(line);
+                dataMap.put(data.getUuid(), data);
+            }
+        }
     }
 
 }

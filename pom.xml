@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.mcme</groupId>
     <artifactId>MyBirthday</artifactId>
-    <version>1.0</version>
+    <version>2.0</version>
     <packaging>jar</packaging>
     <name>MyBirthday</name>
     <url>http://www.mcmiddleearth.com/</url>
@@ -37,6 +37,11 @@
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
             <version>1.13.2-R0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.12</version>
         </dependency>
     </dependencies>
     <properties>
