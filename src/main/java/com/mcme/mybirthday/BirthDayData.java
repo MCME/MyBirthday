@@ -23,6 +23,7 @@ import static java.lang.Float.parseFloat;
 import static java.lang.Integer.parseInt;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,4 +56,14 @@ public class BirthDayData {
         return uuid + ";" + calendar.get(Calendar.YEAR) + ";" + calendar.get(Calendar.MONTH) + ";" + calendar.get(Calendar.DAY_OF_MONTH) + ";" + particles + ";" + cooldown;
     }
 
+    public static String dserialize(UUID uuid, Calendar cal, Long l) {
+        return uuid + ";" + cal.get(Calendar.YEAR) + ";" + cal.get(Calendar.MONTH) + ";" + cal.get(Calendar.DAY_OF_MONTH) + ";" + "true" + ";" + l.toString();
+    }
+
+    public static String serializeDatab(UUID uuid, Date date, Long l, Boolean bol) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+
+        return uuid + ";" + cal.get(Calendar.YEAR) + ";" + cal.get(Calendar.MONTH) + ";" + cal.get(Calendar.DAY_OF_MONTH) + ";" + bol.toString() + ";" + l.toString();
+    }
 }
