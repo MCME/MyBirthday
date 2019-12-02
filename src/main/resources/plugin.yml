@@ -1,6 +1,6 @@
+version: 2.2
 name: ${project.artifactId}
 main: ${project.groupId}.mybirthday.birthday
-version: ${project.version}
 website: ${project.url}
 description: Birthday for MCME!
 commands:
