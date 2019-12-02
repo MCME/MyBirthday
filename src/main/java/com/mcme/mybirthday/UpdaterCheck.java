@@ -33,11 +33,11 @@ public class UpdaterCheck {
         oldVersion = plugin.getDescription().getVersion();
 
         try {
-            connection = (HttpURLConnection) new URL("https://raw.githubusercontent.com/fraspace5/MyBirthday/master/src/main/resources/plugin.yml").openConnection();
+            connection = (HttpURLConnection) new URL("https://raw.githubusercontent.com/fraspace5/MyBirthday/1.13.2/src/main/resources/plugin.yml").openConnection();
             connection.connect();
             newVersion = new BufferedReader(new InputStreamReader(connection.getInputStream())).readLine().substring(9);
 
-            if (!newVersion.equalsIgnoreCase("oldVersion")) {
+            if (!newVersion.equalsIgnoreCase(oldVersion)) {
 
                 birthday.getPluginInstance().clogger.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.YELLOW + "MyBirthday" + ChatColor.DARK_GRAY + "] - " + "New version " + newVersion + " available for this Plugin");
 
