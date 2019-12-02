@@ -37,7 +37,7 @@ public class UpdaterCheck {
             connection.connect();
             newVersion = new BufferedReader(new InputStreamReader(connection.getInputStream())).readLine().substring(9);
 
-            if (newVersion.equalsIgnoreCase("oldVersion")) {
+            if (!newVersion.equalsIgnoreCase("oldVersion")) {
 
                 birthday.getPluginInstance().clogger.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.YELLOW + "MyBirthday" + ChatColor.DARK_GRAY + "] - " + "New version " + newVersion + " available for this Plugin");
 

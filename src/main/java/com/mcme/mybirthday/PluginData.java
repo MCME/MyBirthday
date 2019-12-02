@@ -45,7 +45,7 @@ public class PluginData {
             @Override
             public void run() {
                 try {
-                    String statement = "SELECT * FROM BDATA ";
+                    String statement = "SELECT * FROM BDATA;";
 
                     final ResultSet r = birthday.getPluginInstance().con.createStatement().executeQuery(statement);
 
@@ -129,7 +129,7 @@ public class PluginData {
             @Override
             public void run() {
                 try {
-                    String statement = "SELECT * FROM BDATA WHERE = " + e.getPlayer().getName();
+                    String statement = "SELECT * FROM BDATA WHERE uuid = '" + e.getPlayer().getUniqueId().toString() + "';";
 
                     final ResultSet r = birthday.getPluginInstance().con.createStatement().executeQuery(statement);
 
@@ -148,49 +148,50 @@ public class PluginData {
 
                                     pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + " You haven't set your birthday yet! Use /birthday set");
 
-                                }
-                                if (birthday.getPluginInstance().todaybirthday.contains(nameplayer)) {
-                                    int your = PluginData.convert(r.getDate("date")).get(Calendar.YEAR);
-                                    int year = now - your;
-                                    e.setJoinMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.YELLOW.BOLD + " Happy Birthday " + ChatColor.YELLOW.BOLD + nameplayer + ChatColor.YELLOW + " from all the Minecraft Middle Earth Community "
-                                            + ChatColor.YELLOW + year + ChatColor.YELLOW + " years is a great achievement");
-                                    if (birthday.getPluginInstance().todaybirthday.size() > 1) {
-                                        birthday.getPluginInstance().OtherPeopleBirthday(nameplayer, e);
-
-                                    }
-
-                                } else if (listonjoin == true && !birthday.getPluginInstance().todaybirthday.contains(nameplayer)) {
-                                    birthday.getPluginInstance().ShowList(pl, e);
-                                }
-                                if (birthday.getPluginInstance().particles == true && birthday.getPluginInstance().todaybirthday.contains(nameplayer)) {
-
-                                    new BukkitRunnable() {
-                                        @Override
-                                        public void run() {
-
-                                            try {
-                                                if (r.getBoolean("particles") == true) {
-                                                    Location location = pl.getLocation().add(0, 2, 0);
-                                                    pl.getWorld().spawnParticle(Particle.REDSTONE, location, 10, 1.0, 1.0, 1.0, new Particle.DustOptions(Color.RED, 1));
-                                                    pl.getWorld().spawnParticle(Particle.REDSTONE, location, 10, 1.0, 1.0, 1.0, new Particle.DustOptions(Color.YELLOW, 1));
-                                                    pl.getWorld().spawnParticle(Particle.REDSTONE, location, 10, 1.0, 1.0, 1.0, new Particle.DustOptions(Color.GREEN, 1));
-                                                    pl.getWorld().spawnParticle(Particle.REDSTONE, location, 10, 1.0, 1.0, 1.0, new Particle.DustOptions(Color.FUCHSIA, 1));
-                                                } else {
-                                                    try {
-                                                        if (r.getBoolean("particles") == false) {
-
-                                                        }
-                                                    } catch (SQLException ex) {
-                                                        Logger.getLogger(birthday.class.getName()).log(Level.SEVERE, null, ex);
-                                                    }
-                                                }
-                                            } catch (SQLException ex) {
-                                                Logger.getLogger(birthday.class.getName()).log(Level.SEVERE, null, ex);
-                                            }
+                                } else {
+                                    if (birthday.getPluginInstance().todaybirthday.contains(nameplayer)) {
+                                        int your = PluginData.convert(r.getDate("date")).get(Calendar.YEAR);
+                                        int year = now - your;
+                                        e.setJoinMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.YELLOW.BOLD + " Happy Birthday " + ChatColor.YELLOW.BOLD + nameplayer + ChatColor.YELLOW + " from all the Minecraft Middle Earth Community "
+                                                + ChatColor.YELLOW + year + ChatColor.YELLOW + " years is a great achievement");
+                                        if (birthday.getPluginInstance().todaybirthday.size() > 1) {
+                                            birthday.getPluginInstance().OtherPeopleBirthday(nameplayer, e);
 
                                         }
 
-                                    }.runTaskTimer(birthday.getPluginInstance(), 0, 10L);
+                                    } else if (listonjoin == true && !birthday.getPluginInstance().todaybirthday.contains(nameplayer)) {
+                                        birthday.getPluginInstance().ShowList(pl, e);
+                                    }
+                                    if (birthday.getPluginInstance().particles == true && birthday.getPluginInstance().todaybirthday.contains(nameplayer)) {
+
+                                        new BukkitRunnable() {
+                                            @Override
+                                            public void run() {
+
+                                                try {
+                                                    if (r.getBoolean("particles") == true) {
+                                                        Location location = pl.getLocation().add(0, 2, 0);
+                                                        pl.getWorld().spawnParticle(Particle.REDSTONE, location, 10, 1.0, 1.0, 1.0, new Particle.DustOptions(Color.RED, 1));
+                                                        pl.getWorld().spawnParticle(Particle.REDSTONE, location, 10, 1.0, 1.0, 1.0, new Particle.DustOptions(Color.YELLOW, 1));
+                                                        pl.getWorld().spawnParticle(Particle.REDSTONE, location, 10, 1.0, 1.0, 1.0, new Particle.DustOptions(Color.GREEN, 1));
+                                                        pl.getWorld().spawnParticle(Particle.REDSTONE, location, 10, 1.0, 1.0, 1.0, new Particle.DustOptions(Color.FUCHSIA, 1));
+                                                    } else {
+                                                        try {
+                                                            if (r.getBoolean("particles") == false) {
+
+                                                            }
+                                                        } catch (SQLException ex) {
+                                                            Logger.getLogger(birthday.class.getName()).log(Level.SEVERE, null, ex);
+                                                        }
+                                                    }
+                                                } catch (SQLException ex) {
+                                                    Logger.getLogger(birthday.class.getName()).log(Level.SEVERE, null, ex);
+                                                }
+
+                                            }
+
+                                        }.runTaskTimer(birthday.getPluginInstance(), 0, 10L);
+                                    }
                                 }
 
                             } catch (SQLException e) {
@@ -213,7 +214,7 @@ public class PluginData {
             @Override
             public void run() {
                 try {
-                    String statement = "SELECT * FROM BDATA ";
+                    String statement = "SELECT * FROM BDATA;";
 
                     final ResultSet r = birthday.getPluginInstance().con.createStatement().executeQuery(statement);
 
@@ -283,7 +284,7 @@ public class PluginData {
             @Override
             public void run() {
                 try {
-                    String statement = "SELECT * FROM BDATA ";
+                    String statement = "SELECT * FROM BDATA;";
 
                     final ResultSet r = birthday.getPluginInstance().con.createStatement().executeQuery(statement);
 
@@ -352,7 +353,7 @@ public class PluginData {
             @Override
             public void run() {
                 try {
-                    String statement = "SELECT * FROM BDATA";
+                    String statement = "SELECT * FROM BDATA;";
 
                     final ResultSet r = birthday.getPluginInstance().con.createStatement().executeQuery(statement);
 
@@ -410,7 +411,7 @@ public class PluginData {
                 @Override
                 public void run() {
 
-                    String statement = "SELECT * FROM BDATA WHERE uuid = " + uuid.toString();
+                    String statement = "SELECT * FROM BDATA WHERE uuid = '" + uuid.toString() + "';";
                     ResultSet r = null;
                     try {
                         r = birthday.getPluginInstance().con.createStatement().executeQuery(statement);
@@ -421,12 +422,12 @@ public class PluginData {
                     try {
                         if (r.first()) {
                             Date d = new Date(date.getTimeInMillis());
-                            String stat = "UPDATE INTO BDATA (uuid, date, particles, cooldown) VALUES  (" + uuid + ", " + d + ", " + bol + ", " + cooldown + ") WHERE uuid = " + uuid;
+                            String stat = "UPDATE BDATA SET date = '" + d + "',particles = '" + bol + "', cooldown = '" + cooldown + "' WHERE uuid = '" + uuid + "';";
                             birthday.getPluginInstance().con.createStatement().execute(stat);
 
                         } else {
                             Date d = new Date(date.getTimeInMillis());
-                            String stat = "INSERT INTO BDATA (uuid, date, particles, cooldown) VALUES  (" + uuid + ", " + d + ", " + bol + ", " + cooldown + ")";
+                            String stat = "INSERT INTO BDATA(uuid, date, particles, cooldown) VALUES ('" + uuid + "', '" + d + "', '" + bol + "', '" + cooldown + "');";
                             birthday.getPluginInstance().con.createStatement().execute(stat);
                         }
                     } catch (SQLException ex) {
@@ -449,9 +450,9 @@ public class PluginData {
                 public void run() {
 
                     Date d = new Date(date.getTimeInMillis());
-                    String stat = "INSERT INTO BDATA (uuid, date, particles, cooldown) VALUES  (" + uuid + ", " + d + ", " + bol + ", " + cooldown + ")";
+                    String stat = "INSERT INTO BDATA(uuid, date, particles, cooldown) VALUES ('" + uuid + "', '" + d + "', '" + bol + "', '" + cooldown + "');";
                     try {
-                        birthday.getPluginInstance().con.createStatement().executeQuery(stat);
+                        birthday.getPluginInstance().con.createStatement().execute(stat);
                     } catch (SQLException ex) {
                         Logger.getLogger(PluginData.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -471,7 +472,7 @@ public class PluginData {
                 @Override
                 public void run() {
 
-                    String stat = "DELETE BDATA WHERE " + uuid;
+                    String stat = "DELETE BDATA WHERE uuid = '" + uuid.toString() + "';";
                     try {
                         birthday.getPluginInstance().con.createStatement().execute(stat);
                     } catch (SQLException ex) {
@@ -488,7 +489,7 @@ public class PluginData {
 
     public static synchronized boolean exist(UUID uuid) throws SQLException {
         if (birthday.getPluginInstance().isConnect()) {
-            String statement = "SELECT * FROM BDATA WHERE uuid = " + uuid.toString();
+            String statement = "SELECT * FROM BDATA WHERE uuid = '" + uuid.toString() + "';";
             ResultSet r = birthday.getPluginInstance().con.createStatement().executeQuery(statement);
 
             if (r.first()) {
@@ -522,7 +523,7 @@ public class PluginData {
             @Override
             public void run() {
                 try {
-                    String statement = "SELECT * FROM BDATA WHERE = " + uuid;
+                    String statement = "SELECT * FROM BDATA WHERE uuid = '" + uuid.toString() + "';";
 
                     final ResultSet r = birthday.getPluginInstance().con.createStatement().executeQuery(statement);
 
@@ -536,7 +537,7 @@ public class PluginData {
                                         try {
                                             pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.YELLOW + " Particles on");
 
-                                            PluginData.insertData(uuid, PluginData.convert(r.getDate("date")), Boolean.TRUE, r.getLong("cooldown"));
+                                            PluginData.updateData(uuid, PluginData.convert(r.getDate("date")), Boolean.TRUE, r.getLong("cooldown"));
                                         } catch (SQLException ex) {
                                             Logger.getLogger(command.class.getName()).log(Level.SEVERE, null, ex);
                                         }
@@ -545,7 +546,7 @@ public class PluginData {
                                         try {
                                             pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.YELLOW + " Particles off");
 
-                                            PluginData.insertData(uuid, PluginData.convert(r.getDate("date")), Boolean.FALSE, r.getLong("cooldown"));
+                                            PluginData.updateData(uuid, PluginData.convert(r.getDate("date")), Boolean.FALSE, r.getLong("cooldown"));
                                         } catch (SQLException ex) {
                                             Logger.getLogger(command.class.getName()).log(Level.SEVERE, null, ex);
                                         }
@@ -573,7 +574,7 @@ public class PluginData {
             public void run() {
 
                 try {
-                    String statement = "SELECT * FROM BDATA WHERE = " + uuid;
+                    String statement = "SELECT * FROM BDATA WHERE uuid = '" + uuid.toString() + "';";
 
                     final ResultSet r = birthday.getPluginInstance().con.createStatement().executeQuery(statement);
 

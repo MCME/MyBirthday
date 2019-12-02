@@ -5,7 +5,17 @@ showplayerage: true
 # wait-time in hour
 wait-time: 24
 listonjoin: true
+#For Bungeecord set TRUE only on one server
 broadcastlist: true
 # broadcastlistevery in minutes
 broadcastlistevery: 180
 particles: true
+#send updates to the console
+findupdates: true
+
+#***DATABASE CONNECTION***
+host: localhost
+port: 3306
+database: birthday_data
+username: root
+password: default
