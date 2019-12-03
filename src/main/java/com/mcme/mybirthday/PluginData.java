@@ -45,9 +45,9 @@ public class PluginData {
             @Override
             public void run() {
                 try {
-                    String statement = "SELECT * FROM BDATA;";
+                    String statement = "SELECT * FROM b_data ;";
 
-                    final ResultSet r = birthday.getPluginInstance().con.createStatement().executeQuery(statement);
+                    final ResultSet r = birthday.getPluginInstance().con.prepareStatement(statement).executeQuery();
 
                     // do database stuff here
                     new BukkitRunnable() {
@@ -129,9 +129,9 @@ public class PluginData {
             @Override
             public void run() {
                 try {
-                    String statement = "SELECT * FROM BDATA WHERE uuid = '" + e.getPlayer().getUniqueId().toString() + "';";
+                    String statement = "SELECT * FROM b_data WHERE uuid = '" + e.getPlayer().getUniqueId().toString() + "' ;";
 
-                    final ResultSet r = birthday.getPluginInstance().con.createStatement().executeQuery(statement);
+                    final ResultSet r = birthday.getPluginInstance().con.prepareStatement(statement).executeQuery();
 
                     // do database stuff here
                     new BukkitRunnable() {
@@ -214,9 +214,9 @@ public class PluginData {
             @Override
             public void run() {
                 try {
-                    String statement = "SELECT * FROM BDATA;";
+                    String statement = "SELECT * FROM b_data ;";
 
-                    final ResultSet r = birthday.getPluginInstance().con.createStatement().executeQuery(statement);
+                    final ResultSet r = birthday.getPluginInstance().con.prepareStatement(statement).executeQuery();
 
                     // do database stuff here
                     new BukkitRunnable() {
@@ -284,9 +284,9 @@ public class PluginData {
             @Override
             public void run() {
                 try {
-                    String statement = "SELECT * FROM BDATA;";
+                    String statement = "SELECT * FROM b_data ;";
 
-                    final ResultSet r = birthday.getPluginInstance().con.createStatement().executeQuery(statement);
+                    final ResultSet r = birthday.getPluginInstance().con.prepareStatement(statement).executeQuery();
 
                     // do database stuff here
                     new BukkitRunnable() {
@@ -353,9 +353,9 @@ public class PluginData {
             @Override
             public void run() {
                 try {
-                    String statement = "SELECT * FROM BDATA;";
+                    String statement = "SELECT * FROM b_data ;";
 
-                    final ResultSet r = birthday.getPluginInstance().con.createStatement().executeQuery(statement);
+                    final ResultSet r = birthday.getPluginInstance().con.prepareStatement(statement).executeQuery();
 
                     // do database stuff here
                     new BukkitRunnable() {
@@ -411,10 +411,10 @@ public class PluginData {
                 @Override
                 public void run() {
 
-                    String statement = "SELECT * FROM BDATA WHERE uuid = '" + uuid.toString() + "';";
+                    String statement = "SELECT * FROM b_data WHERE uuid = '" + uuid.toString() + "' ;";
                     ResultSet r = null;
                     try {
-                        r = birthday.getPluginInstance().con.createStatement().executeQuery(statement);
+                        r = birthday.getPluginInstance().con.prepareStatement(statement).executeQuery();
                     } catch (SQLException ex) {
                         Logger.getLogger(PluginData.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -422,13 +422,13 @@ public class PluginData {
                     try {
                         if (r.first()) {
                             Date d = new Date(date.getTimeInMillis());
-                            String stat = "UPDATE BDATA SET date = '" + d + "',particles = '" + bol + "', cooldown = '" + cooldown + "' WHERE uuid = '" + uuid + "';";
-                            birthday.getPluginInstance().con.createStatement().execute(stat);
+                            String stat = "UPDATE b_data SET date = '" + d + "', particles = " + convertBol(bol) + ", cooldown = '" + cooldown.toString() + "' WHERE uuid = '" + uuid.toString() + "' ;";
+                            birthday.getPluginInstance().con.prepareStatement(stat).executeUpdate(stat);
 
                         } else {
                             Date d = new Date(date.getTimeInMillis());
-                            String stat = "INSERT INTO BDATA(uuid, date, particles, cooldown) VALUES ('" + uuid + "', '" + d + "', '" + bol + "', '" + cooldown + "');";
-                            birthday.getPluginInstance().con.createStatement().execute(stat);
+                            String stat = "INSERT INTO b_data (uuid, date, particles, cooldown) VALUES ('" + uuid.toString() + "' , '" + d.toString() + "' , true, '" + cooldown.toString() + "' ) ;";
+                            birthday.getPluginInstance().con.prepareStatement(stat).executeUpdate(stat);
                         }
                     } catch (SQLException ex) {
                         Logger.getLogger(PluginData.class.getName()).log(Level.SEVERE, null, ex);
@@ -450,9 +450,9 @@ public class PluginData {
                 public void run() {
 
                     Date d = new Date(date.getTimeInMillis());
-                    String stat = "INSERT INTO BDATA(uuid, date, particles, cooldown) VALUES ('" + uuid + "', '" + d + "', '" + bol + "', '" + cooldown + "');";
+                    String stat = "INSERT INTO b_data (uuid, date, particles, cooldown) VALUES ('" + uuid.toString() + "' , '" + d.toString() + "' , true , '" + cooldown.toString() + "' ) ;";
                     try {
-                        birthday.getPluginInstance().con.createStatement().execute(stat);
+                        birthday.getPluginInstance().con.prepareStatement(stat).executeUpdate(stat);
                     } catch (SQLException ex) {
                         Logger.getLogger(PluginData.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -472,9 +472,9 @@ public class PluginData {
                 @Override
                 public void run() {
 
-                    String stat = "DELETE BDATA WHERE uuid = '" + uuid.toString() + "';";
+                    String stat = "DELETE b_data WHERE uuid = '" + uuid.toString() + "' ;";
                     try {
-                        birthday.getPluginInstance().con.createStatement().execute(stat);
+                        birthday.getPluginInstance().con.prepareStatement(stat).executeQuery();
                     } catch (SQLException ex) {
                         Logger.getLogger(PluginData.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -484,27 +484,6 @@ public class PluginData {
 
         } else {
             birthday.getPluginInstance().openConnection();
-        }
-    }
-
-    public static synchronized boolean exist(UUID uuid) throws SQLException {
-        if (birthday.getPluginInstance().isConnect()) {
-            String statement = "SELECT * FROM BDATA WHERE uuid = '" + uuid.toString() + "';";
-            ResultSet r = birthday.getPluginInstance().con.createStatement().executeQuery(statement);
-
-            if (r.first()) {
-
-                return true;
-
-            } else {
-
-                return false;
-
-            }
-
-        } else {
-            birthday.getPluginInstance().openConnection();
-            return false;
         }
     }
 
@@ -523,9 +502,9 @@ public class PluginData {
             @Override
             public void run() {
                 try {
-                    String statement = "SELECT * FROM BDATA WHERE uuid = '" + uuid.toString() + "';";
+                    String statement = "SELECT * FROM b_data WHERE uuid = '" + uuid.toString() + "' ;";
 
-                    final ResultSet r = birthday.getPluginInstance().con.createStatement().executeQuery(statement);
+                    final ResultSet r = birthday.getPluginInstance().con.prepareStatement(statement).executeQuery();
 
                     // do database stuff here
                     new BukkitRunnable() {
@@ -574,16 +553,16 @@ public class PluginData {
             public void run() {
 
                 try {
-                    String statement = "SELECT * FROM BDATA WHERE uuid = '" + uuid.toString() + "';";
+                    String statement = "SELECT * FROM b_data WHERE uuid = '" + uuid.toString() + "' ;";
 
-                    final ResultSet r = birthday.getPluginInstance().con.createStatement().executeQuery(statement);
+                    final ResultSet r = birthday.getPluginInstance().con.prepareStatement(statement).executeQuery();
 
                     // do database stuff here
                     new BukkitRunnable() {
                         @Override
                         public void run() {
                             try {
-                                if (r.first()) {
+                                if (r.isFirst()) {
                                     if (r.getLong("cooldown") > System.currentTimeMillis()) {
 
                                         long timerem = r.getLong("cooldown") - System.currentTimeMillis();
@@ -601,13 +580,15 @@ public class PluginData {
                                         cal.set(y, m, d);
 
                                         ResultSet ob = r;
-                                        PluginData.updateData(uuid, cal, ob.getBoolean("particles"), ob.getLong("cooldown"));
+                                        
 
                                         if (birthday.getPluginInstance().isMactive() == true) {
                                             pl.sendMessage((ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.YELLOW + birthday.getPluginInstance().getMessage()));
                                         }
                                         pl.sendMessage((ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.YELLOW + " Birthday set correctly! Now you must wait " + ChatColor.YELLOW + birthday.getPluginInstance().getCoold() + ChatColor.YELLOW + " hours to update it"));
-                                        PluginData.updateData(uuid, cal, ob.getBoolean("particles"), (System.currentTimeMillis() + (birthday.getPluginInstance().getCooldown1() * 3600) * 1000));
+                                        Long l = (System.currentTimeMillis() + (birthday.getPluginInstance().getCooldown1() * 3600) * 1000);
+
+                                        PluginData.updateData(uuid, cal, ob.getBoolean("particles"), l);
 
                                     }
 
@@ -621,8 +602,8 @@ public class PluginData {
                                     int y = Integer.parseInt(yyyy);
                                     Calendar cal = Calendar.getInstance();
                                     cal.set(y, m, d);
-
-                                    PluginData.insertData(uuid, cal, Boolean.TRUE, System.currentTimeMillis() + (birthday.getPluginInstance().getCooldown1() * 3600) * 1000);
+                                    Long l = (System.currentTimeMillis() + (birthday.getPluginInstance().getCooldown1() * 3600) * 1000);
+                                    PluginData.insertData(uuid, cal, Boolean.TRUE, l);
 
                                     if (birthday.getPluginInstance().isMactive() == true) {
                                         pl.sendMessage((ChatColor.GOLD.BOLD + "[MyBirthday] : " + ChatColor.YELLOW + birthday.getPluginInstance().getMessage()));
@@ -642,6 +623,16 @@ public class PluginData {
 
             }
         }.runTaskAsynchronously(birthday.getPluginInstance());
+
+    }
+
+    public static String convertBol(boolean bol) {
+        if (bol = true) {
+            return "true";
+
+        } else {
+            return "false";
+        }
 
     }
 
