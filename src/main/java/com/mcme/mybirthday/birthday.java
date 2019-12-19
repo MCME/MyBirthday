@@ -53,6 +53,7 @@ public class birthday extends JavaPlugin implements Listener {
     private File data;
     @Getter
     public Connection con;
+
     @Getter
     private static birthday pluginInstance;
 
@@ -66,7 +67,7 @@ public class birthday extends JavaPlugin implements Listener {
         this.saveDefaultConfig();
         this.getConfig().options().copyDefaults();
         clogger.sendMessage(ChatColor.GREEN + "---------------------------------------");
-        clogger.sendMessage(ChatColor.YELLOW + "MyBirthday Plugin 2.2 Enabled");
+        clogger.sendMessage(ChatColor.YELLOW + "MyBirthday Plugin 2.25 Enabled");
         clogger.sendMessage(ChatColor.GREEN + "---------------------------------------");
 
         getCommand("birthday").setExecutor(new command());
@@ -92,6 +93,7 @@ public class birthday extends JavaPlugin implements Listener {
             Logger.getLogger(birthday.class.getName()).log(Level.SEVERE, null, ex);
             Bukkit.getPluginManager().disablePlugin(this);
         }
+        ConnectionRunnable();
     }
 
     public void openConnection() throws SQLException {
@@ -108,7 +110,30 @@ public class birthday extends JavaPlugin implements Listener {
                     + birthday.getPluginInstance().database,
                     birthday.getPluginInstance().username,
                     birthday.getPluginInstance().password);
+
         }
+
+    }
+
+    public void ConnectionRunnable() {
+
+        new BukkitRunnable() {
+
+            @Override
+            public void run() {
+                try {
+                    if (!con.isValid(5)) {
+
+                        openConnection();
+
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(birthday.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+
+        }.runTaskTimer(birthday.getPluginInstance(), 60L, 150L);
 
     }
 
@@ -127,7 +152,7 @@ public class birthday extends JavaPlugin implements Listener {
     public void onDisable() {
 
         clogger.sendMessage(ChatColor.RED + "---------------------------------------");
-        clogger.sendMessage(ChatColor.YELLOW + "MyBirthday Plugin 2.2 Disabled");
+        clogger.sendMessage(ChatColor.YELLOW + "MyBirthday Plugin 2.25 Disabled");
         clogger.sendMessage(ChatColor.RED + "---------------------------------------");
 
     }
