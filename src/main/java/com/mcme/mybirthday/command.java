@@ -116,7 +116,6 @@ public class command implements CommandExecutor, TabExecutor {
                 }
             }
         } else {
-
             System.out.println("You can't use this command in console");
 
         }
