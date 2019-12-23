@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Logger;
 import org.bukkit.Bukkit;
@@ -67,10 +66,11 @@ public class birthday extends JavaPlugin implements Listener {
         this.saveDefaultConfig();
         this.getConfig().options().copyDefaults();
         clogger.sendMessage(ChatColor.GREEN + "---------------------------------------");
-        clogger.sendMessage(ChatColor.YELLOW + "MyBirthday Plugin 2.25 Enabled");
+        clogger.sendMessage(ChatColor.YELLOW + "MyBirthday Plugin v2.5 Enabled");
         clogger.sendMessage(ChatColor.GREEN + "---------------------------------------");
 
         getCommand("birthday").setExecutor(new command());
+        getCommand("birthday").setTabCompleter(new command());
         Bukkit.getPluginManager().registerEvents(this, this);
         try {
             InitiateFile();
@@ -94,6 +94,8 @@ public class birthday extends JavaPlugin implements Listener {
             Bukkit.getPluginManager().disablePlugin(this);
         }
         ConnectionRunnable();
+        SetListRunnable();
+        ShowListRunnable();
     }
 
     public void openConnection() throws SQLException {
@@ -107,7 +109,7 @@ public class birthday extends JavaPlugin implements Listener {
 
             con = DriverManager.getConnection("jdbc:mysql://" + birthday.getPluginInstance().host + ":"
                     + birthday.getPluginInstance().port + "/"
-                    + birthday.getPluginInstance().database,
+                    + birthday.getPluginInstance().database + "?useSSL=false",
                     birthday.getPluginInstance().username,
                     birthday.getPluginInstance().password);
 
@@ -122,7 +124,7 @@ public class birthday extends JavaPlugin implements Listener {
             @Override
             public void run() {
                 try {
-                    if (!con.isValid(5)) {
+                    if (!con.isValid(2)) {
 
                         openConnection();
 
@@ -133,7 +135,7 @@ public class birthday extends JavaPlugin implements Listener {
 
             }
 
-        }.runTaskTimer(birthday.getPluginInstance(), 60L, 150L);
+        }.runTaskTimer(birthday.getPluginInstance(), 60L, 100L);
 
     }
 
@@ -152,7 +154,7 @@ public class birthday extends JavaPlugin implements Listener {
     public void onDisable() {
 
         clogger.sendMessage(ChatColor.RED + "---------------------------------------");
-        clogger.sendMessage(ChatColor.YELLOW + "MyBirthday Plugin 2.25 Disabled");
+        clogger.sendMessage(ChatColor.YELLOW + "MyBirthday Plugin v2.5 Disabled");
         clogger.sendMessage(ChatColor.RED + "---------------------------------------");
 
     }

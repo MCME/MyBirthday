@@ -5,6 +5,7 @@
  */
 package com.mcme.mybirthday;
 
+import java.sql.ResultSet;
 import java.util.Calendar;
 import java.util.UUID;
 import org.bukkit.ChatColor;
@@ -13,23 +14,27 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.command.TabExecutor;
 
 /**
  *
  * @author fraspace5
  */
-public class command implements CommandExecutor {
+public class command implements CommandExecutor, TabExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
         if (sender instanceof Player) {
 
-            Player pl = (Player) sender;
-            UUID uuid = pl.getUniqueId();
+            final Player pl = (Player) sender;
+            final UUID uuid = pl.getUniqueId();
             Calendar call = Calendar.getInstance();
 
             if (args.length < 1) {
@@ -75,24 +80,39 @@ public class command implements CommandExecutor {
 
             if (args.length > 0) {
                 if (args[0].equalsIgnoreCase("removedatab") && args.length > 0) {
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                String statement = "SELECT * FROM birthday_data.b_data WHERE uuid = '" + uuid.toString() + "' ;";
 
-                    if (birthday.getPluginInstance().getCoolsure().containsKey(uuid) && birthday.getPluginInstance().getCoolsure().get(uuid) > System.currentTimeMillis()) {
-                        pl.sendMessage((ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.YELLOW + " All your data has been removed from our databases"));
+                                final ResultSet r = birthday.getPluginInstance().con.createStatement().executeQuery(statement);
+                                if (r.first() && r.getInt("year") != 1500) {
+                                    if (birthday.getPluginInstance().getCoolsure().containsKey(uuid) && birthday.getPluginInstance().getCoolsure().get(uuid) > System.currentTimeMillis()) {
+                                        pl.sendMessage((ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.YELLOW + " All your data has been removed from our databases"));
+                                        Calendar cal = Calendar.getInstance();
+                                        cal.set(1500, 1, 1);
+                                        try {
+                                            Long l = (System.currentTimeMillis() + (birthday.getPluginInstance().getCooldown1() * 3600) * 1000);
+                                            PluginData.updateData(uuid, cal, Boolean.TRUE, l);
+                                        } catch (SQLException ex) {
+                                            Logger.getLogger(command.class.getName()).log(Level.SEVERE, null, ex);
+                                        }
 
-                        try {
-                            PluginData.deleteData(uuid);
-                        } catch (SQLException ex) {
-                            Logger.getLogger(command.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
+
+                                    long time = System.currentTimeMillis() + (30 * 1000);
+                                    birthday.getPluginInstance().getCoolsure().put(uuid, time);
+                                    pl.sendMessage((ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.YELLOW + " Are you sure? Retype /birthday removedatab to confirm"));
+                                } else {
+                                    pl.sendMessage((ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.YELLOW + " Nothing to remove"));
+                                }
+                            } catch (SQLException ex) {
+                                Logger.getLogger(command.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+
                         }
-
-                        return false;
-
-                    }
-
-                    long time = System.currentTimeMillis() + (30 * 1000);
-                    birthday.getPluginInstance().getCoolsure().put(uuid, time);
-                    pl.sendMessage((ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.YELLOW + " Are you sure? Retype /birthday removedatab to confirm"));
-
+                    }.runTaskAsynchronously(birthday.getPluginInstance());
                 }
             }
         } else {
@@ -104,6 +124,73 @@ public class command implements CommandExecutor {
         return false;
     }
 
-    
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        Player pl = (Player) sender;
+        List<String> arguments = new ArrayList<>();
+        arguments.add("set");
+        arguments.add("help");
+        arguments.add("particles");
+        arguments.add("removedatab");
+
+        List<String> Flist = new ArrayList<>();
+        List<String> particles = new ArrayList<>();
+        List<String> day = new ArrayList<>();
+        List<String> month = new ArrayList<>();
+        List<String> year = new ArrayList<>();
+        if (args.length == 1) {
+            for (String s : arguments) {
+                if (s.toLowerCase().startsWith(args[0].toLowerCase())) {
+                    Flist.add(s);
+                }
+            }
+            return Flist;
+        } else if (args.length == 2) {
+            if (args[0].equalsIgnoreCase("particles")) {
+
+                List<String> a = Arrays.asList("on", "off");
+                for (String s : a) {
+                    if (s.toLowerCase().startsWith(args[1].toLowerCase())) {
+                        particles.add(s);
+                    }
+                }
+                return particles;
+
+            } else if (args[0].equalsIgnoreCase("set")) {
+
+                List<String> a = Arrays.asList("day");
+                for (String s : a) {
+                    if (s.toLowerCase().startsWith(args[1].toLowerCase())) {
+                        day.add(s);
+                    }
+                }
+                return day;
+
+            } else {
+                return null;
+            }
+
+        } else if (args.length == 3) {
+            List<String> a = Arrays.asList("month");
+            for (String s : a) {
+                if (s.toLowerCase().startsWith(args[1].toLowerCase())) {
+                    month.add(s);
+                }
+            }
+            return month;
+
+        } else if (args.length == 4) {
+            List<String> a = Arrays.asList("year");
+            for (String s : a) {
+                if (s.toLowerCase().startsWith(args[1].toLowerCase())) {
+                    year.add(s);
+                }
+            }
+            return year;
+        } else {
+
+            return null;
+        }
+    }
 
 }
