@@ -12,7 +12,13 @@ broadcastlistevery: 180
 particles: true
 #send updates to the console
 findupdates: true
-
+#Discord channel
+dchannel: "birthday"
+#Hours and minutes when the plugin sends a discord message, London Time
+Time:
+    hours: 6
+    minutes: 30
+        
 #***DATABASE CONNECTION***
 host: localhost
 port: 3306

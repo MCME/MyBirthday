@@ -16,6 +16,7 @@
  */
 package com.mcme.mybirthday;
 
+import github.scarsz.discordsrv.DiscordSRV;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -37,6 +38,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import lombok.Getter;
 import lombok.Setter;
@@ -45,16 +47,22 @@ import lombok.Setter;
  *
  * @author Fraspace5
  */
-public class birthday extends JavaPlugin implements Listener {
+public class MyBirthday extends JavaPlugin implements Listener {
 
     Logger Logger = Bukkit.getLogger();
     ConsoleCommandSender clogger = this.getServer().getConsoleSender();
     private File data;
+
     @Getter
     public Connection con;
 
     @Getter
-    private static birthday pluginInstance;
+    String discordChannel = this.getConfig().getString("dchannel");
+    @Setter
+    @Getter
+    boolean discordFound;
+    @Getter
+    private static MyBirthday pluginInstance;
 
     private void checkUpdate() {
         final UpdaterCheck updater = new UpdaterCheck(this);
@@ -66,7 +74,7 @@ public class birthday extends JavaPlugin implements Listener {
         this.saveDefaultConfig();
         this.getConfig().options().copyDefaults();
         clogger.sendMessage(ChatColor.GREEN + "---------------------------------------");
-        clogger.sendMessage(ChatColor.YELLOW + "MyBirthday Plugin v2.5 Enabled");
+        clogger.sendMessage(ChatColor.YELLOW + "MyBirthday Plugin v" + this.getDescription().getVersion() + " Enabled");
         clogger.sendMessage(ChatColor.GREEN + "---------------------------------------");
 
         getCommand("birthday").setExecutor(new command());
@@ -75,7 +83,7 @@ public class birthday extends JavaPlugin implements Listener {
         try {
             InitiateFile();
         } catch (IOException ex) {
-            Logger.getLogger(birthday.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MyBirthday.class.getName()).log(Level.SEVERE, null, ex);
         }
         SetListRunnable();
         ShowListRunnable();
@@ -90,29 +98,46 @@ public class birthday extends JavaPlugin implements Listener {
         } catch (SQLException ex) {
             ex.printStackTrace();
             clogger.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.YELLOW + "MyBirthday" + ChatColor.DARK_GRAY + "] - " + ChatColor.RED + "Database error! (MyBirthday)");
-            Logger.getLogger(birthday.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MyBirthday.class.getName()).log(Level.SEVERE, null, ex);
             Bukkit.getPluginManager().disablePlugin(this);
         }
         ConnectionRunnable();
         SetListRunnable();
         ShowListRunnable();
+        CheckDiscord();
+
     }
 
     public void openConnection() throws SQLException {
         if (con != null && !con.isClosed()) {
             return;
         }
-        if (birthday.getPluginInstance().password.equalsIgnoreCase("default")) {
+        if (MyBirthday.getPluginInstance().password.equalsIgnoreCase("default")) {
             clogger.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.YELLOW + "MyBirthday" + ChatColor.DARK_GRAY + "] - " + ChatColor.YELLOW + "Plugin INITIALIZED, change database information!");
             Bukkit.getPluginManager().disablePlugin(this);
         } else {
 
-            con = DriverManager.getConnection("jdbc:mysql://" + birthday.getPluginInstance().host + ":"
-                    + birthday.getPluginInstance().port + "/"
-                    + birthday.getPluginInstance().database + "?useSSL=false",
-                    birthday.getPluginInstance().username,
-                    birthday.getPluginInstance().password);
+            con = DriverManager.getConnection("jdbc:mysql://" + MyBirthday.getPluginInstance().host + ":"
+                    + MyBirthday.getPluginInstance().port + "/"
+                    + MyBirthday.getPluginInstance().database + "?useSSL=false&allowPublicKeyRetrieval=true",
+                    MyBirthday.getPluginInstance().username,
+                    MyBirthday.getPluginInstance().password);
 
+        }
+
+    }
+
+    public void CheckDiscord() {
+
+        DiscordSRV discordPlugin = DiscordSRV.getPlugin();
+        if (discordPlugin == null) {
+            this.setDiscordFound(Boolean.FALSE);
+            clogger.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.YELLOW + "MyBirthday" + ChatColor.DARK_GRAY + "] - " + ChatColor.RED + "DiscordSRV not found!");
+
+        } else {
+            this.setDiscordFound(Boolean.TRUE);
+            DiscordRunnable();
+            clogger.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.YELLOW + "MyBirthday" + ChatColor.DARK_GRAY + "] - " + ChatColor.GREEN + "DiscordSRV found!");
         }
 
     }
@@ -130,12 +155,34 @@ public class birthday extends JavaPlugin implements Listener {
 
                     }
                 } catch (SQLException ex) {
-                    Logger.getLogger(birthday.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(MyBirthday.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
             }
 
-        }.runTaskTimer(birthday.getPluginInstance(), 60L, 100L);
+        }.runTaskTimer(MyBirthday.getPluginInstance(), 60L, 100L);
+
+    }
+
+    public void DiscordRunnable() {
+
+        new BukkitRunnable() {
+
+            @Override
+            public void run() {
+                TimeZone tim = TimeZone.getTimeZone("Europe/London");
+                Calendar cal = Calendar.getInstance(tim);
+
+                if (cal.get(Calendar.HOUR_OF_DAY) == MyBirthday.getPluginInstance().getConfig().getInt("hours")
+                        && cal.get(Calendar.MINUTE) == MyBirthday.getPluginInstance().getConfig().getInt("minutes")) {
+
+                    PluginData.createMessageandSend();
+
+                }
+
+            }
+
+        }.runTaskTimer(MyBirthday.getPluginInstance(), 0L, 1200L);
 
     }
 
@@ -154,7 +201,7 @@ public class birthday extends JavaPlugin implements Listener {
     public void onDisable() {
 
         clogger.sendMessage(ChatColor.RED + "---------------------------------------");
-        clogger.sendMessage(ChatColor.YELLOW + "MyBirthday Plugin v2.5 Disabled");
+        clogger.sendMessage(ChatColor.YELLOW + "MyBirthday Plugin v" + this.getDescription().getVersion() + " Disabled");
         clogger.sendMessage(ChatColor.RED + "---------------------------------------");
 
     }
@@ -162,7 +209,7 @@ public class birthday extends JavaPlugin implements Listener {
     @Setter
     public boolean connect;
     @Getter
-    List<String> todaybirthday = new ArrayList<>();
+    List<UUID> todaybirthday = new ArrayList<>();
     @Getter
     HashMap<UUID, Long> coolsure = new HashMap<>();
     @Getter
@@ -204,7 +251,7 @@ public class birthday extends JavaPlugin implements Listener {
                 try {
                     SetTodayBirthdays();
                 } catch (SQLException ex) {
-                    Logger.getLogger(birthday.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(MyBirthday.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
 
@@ -226,11 +273,12 @@ public class birthday extends JavaPlugin implements Listener {
 
     }
 
-    public void OtherPeopleBirthday(String nameplayer, PlayerJoinEvent e) throws SQLException {
+    public void OtherPeopleBirthday(UUID nameplayer, PlayerJoinEvent e) throws SQLException {
 
         PluginData.otherpeopleSQL(nameplayer, e);
 
     }
+    
 
     public void SetTodayBirthdays() throws SQLException {
 

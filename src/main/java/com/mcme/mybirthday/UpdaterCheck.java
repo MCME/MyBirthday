@@ -19,6 +19,7 @@ package com.mcme.mybirthday;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import static java.lang.Double.parseDouble;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import org.bukkit.ChatColor;
@@ -28,7 +29,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  *
  * @author fraspace5
  */
-public class UpdaterCheck {
+public final class UpdaterCheck {
 
     private HttpURLConnection connection;
     private String WRITE_STRING;
@@ -45,13 +46,12 @@ public class UpdaterCheck {
             connection.connect();
             newVersion = new BufferedReader(new InputStreamReader(connection.getInputStream())).readLine().substring(9);
 
-            if (!newVersion.equalsIgnoreCase(oldVersion)) {
+            if (parseDouble(newVersion) > parseDouble(oldVersion)) {
 
-                birthday.getPluginInstance().clogger.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.YELLOW + "MyBirthday" + ChatColor.DARK_GRAY + "] - " + "New version " + newVersion + " available for this Plugin");
+                MyBirthday.getPluginInstance().clogger.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.YELLOW + "MyBirthday" + ChatColor.DARK_GRAY + "] - " + "New version " + newVersion + " available for this Plugin");
 
             } else {
-                birthday.getPluginInstance().clogger.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.YELLOW + "MyBirthday" + ChatColor.DARK_GRAY + "] - " + "No new version found!");
-
+                MyBirthday.getPluginInstance().clogger.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.YELLOW + "MyBirthday" + ChatColor.DARK_GRAY + "] - " + "No new version found!");
             }
 
         } catch (IOException e) {
@@ -59,4 +59,5 @@ public class UpdaterCheck {
         }
 
     }
+
 }

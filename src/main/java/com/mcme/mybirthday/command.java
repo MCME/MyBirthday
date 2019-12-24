@@ -84,26 +84,28 @@ public class command implements CommandExecutor, TabExecutor {
                         @Override
                         public void run() {
                             try {
-                                String statement = "SELECT * FROM birthday_data.b_data WHERE uuid = '" + uuid.toString() + "' ;";
+                                String statement = "SELECT * FROM " + MyBirthday.getPluginInstance().database + ".b_data WHERE uuid = '" + uuid.toString() + "' ;";
 
-                                final ResultSet r = birthday.getPluginInstance().con.createStatement().executeQuery(statement);
-                                if (r.first() && r.getInt("year") != 1500) {
-                                    if (birthday.getPluginInstance().getCoolsure().containsKey(uuid) && birthday.getPluginInstance().getCoolsure().get(uuid) > System.currentTimeMillis()) {
+                                final ResultSet r = MyBirthday.getPluginInstance().con.createStatement().executeQuery(statement);
+                                if (r.first() && r.getInt("year") != 1970) {
+                                    if (MyBirthday.getPluginInstance().getCoolsure().containsKey(uuid) && MyBirthday.getPluginInstance().getCoolsure().get(uuid) > System.currentTimeMillis()) {
                                         pl.sendMessage((ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.YELLOW + " All your data has been removed from our databases"));
                                         Calendar cal = Calendar.getInstance();
-                                        cal.set(1500, 1, 1);
+                                        cal.set(1970, 1, 1);
                                         try {
-                                            Long l = (System.currentTimeMillis() + (birthday.getPluginInstance().getCooldown1() * 3600) * 1000);
+                                            Long l = (System.currentTimeMillis() + (MyBirthday.getPluginInstance().getCooldown1() * 3600) * 1000);
                                             PluginData.updateData(uuid, cal, Boolean.TRUE, l);
+                                            MyBirthday.getPluginInstance().getCoolsure().remove(uuid);
                                         } catch (SQLException ex) {
                                             Logger.getLogger(command.class.getName()).log(Level.SEVERE, null, ex);
                                         }
 
+                                    } else {
+                                        long time = System.currentTimeMillis() + (30 * 1000);
+                                        MyBirthday.getPluginInstance().getCoolsure().put(uuid, time);
+                                        pl.sendMessage((ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.YELLOW + " Are you sure? Retype /birthday removedatab to confirm"));
                                     }
 
-                                    long time = System.currentTimeMillis() + (30 * 1000);
-                                    birthday.getPluginInstance().getCoolsure().put(uuid, time);
-                                    pl.sendMessage((ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.YELLOW + " Are you sure? Retype /birthday removedatab to confirm"));
                                 } else {
                                     pl.sendMessage((ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.YELLOW + " Nothing to remove"));
                                 }
@@ -112,7 +114,7 @@ public class command implements CommandExecutor, TabExecutor {
                             }
 
                         }
-                    }.runTaskAsynchronously(birthday.getPluginInstance());
+                    }.runTaskAsynchronously(MyBirthday.getPluginInstance());
                 }
             }
         } else {
@@ -170,22 +172,29 @@ public class command implements CommandExecutor, TabExecutor {
             }
 
         } else if (args.length == 3) {
-            List<String> a = Arrays.asList("month");
-            for (String s : a) {
-                if (s.toLowerCase().startsWith(args[1].toLowerCase())) {
-                    month.add(s);
+            if (args[0].equalsIgnoreCase("set")) {
+                List<String> a = Arrays.asList("month");
+                for (String s : a) {
+                    if (s.toLowerCase().startsWith(args[1].toLowerCase())) {
+                        month.add(s);
+                    }
                 }
+                return month;
+            } else {
+                return null;
             }
-            return month;
-
         } else if (args.length == 4) {
-            List<String> a = Arrays.asList("year");
-            for (String s : a) {
-                if (s.toLowerCase().startsWith(args[1].toLowerCase())) {
-                    year.add(s);
+            if (args[0].equalsIgnoreCase("set")) {
+                List<String> a = Arrays.asList("year");
+                for (String s : a) {
+                    if (s.toLowerCase().startsWith(args[1].toLowerCase())) {
+                        year.add(s);
+                    }
                 }
+                return year;
+            } else {
+                return null;
             }
-            return year;
         } else {
 
             return null;
