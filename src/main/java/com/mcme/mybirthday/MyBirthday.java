@@ -1,5 +1,5 @@
 /*
- *Copyright (C) 2019 MCME (Fraspace5)
+ *Copyright (C) 2020 MCME (Fraspace5)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  */
 package com.mcme.mybirthday;
 
-import github.scarsz.discordsrv.DiscordSRV;
+import org.bukkit.plugin.Plugin;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -129,7 +129,7 @@ public class MyBirthday extends JavaPlugin implements Listener {
 
     public void CheckDiscord() {
 
-        DiscordSRV discordPlugin = DiscordSRV.getPlugin();
+        Plugin discordPlugin = Bukkit.getServer().getPluginManager().getPlugin("DiscordSRV");
         if (discordPlugin == null) {
             this.setDiscordFound(Boolean.FALSE);
             clogger.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.YELLOW + "MyBirthday" + ChatColor.DARK_GRAY + "] - " + ChatColor.RED + "DiscordSRV not found!");
@@ -278,7 +278,6 @@ public class MyBirthday extends JavaPlugin implements Listener {
         PluginData.otherpeopleSQL(nameplayer, e);
 
     }
-    
 
     public void SetTodayBirthdays() throws SQLException {
 

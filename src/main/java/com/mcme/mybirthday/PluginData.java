@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 MCME (Fraspace5)
+ * Copyright (C) 2020 MCME (Fraspace5)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,6 +34,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 /**
@@ -626,9 +627,11 @@ public class PluginData {
 
     private static void sendDiscord(String message) {
         if ((MyBirthday.getPluginInstance().getDiscordChannel() != null) && (!MyBirthday.getPluginInstance().getDiscordChannel().equals(""))) {
-            DiscordSRV discordPlugin = DiscordSRV.getPlugin();
+
+            Plugin discordPlugin = Bukkit.getServer().getPluginManager().getPlugin("DiscordSRV");
             if (discordPlugin != null) {
-                TextChannel channel = discordPlugin.getDestinationTextChannelForGameChannelName(MyBirthday.getPluginInstance().getDiscordChannel());
+                DiscordSRV discordPlugins = DiscordSRV.getPlugin();
+                TextChannel channel = discordPlugins.getDestinationTextChannelForGameChannelName(MyBirthday.getPluginInstance().getDiscordChannel());
                 if (channel != null) {
                     DiscordUtil.sendMessage(channel, message, 0, false);
                 } else {

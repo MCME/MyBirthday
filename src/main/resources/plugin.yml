@@ -1,9 +1,11 @@
-version: 2.6
+version: 2.7
 name: ${project.artifactId}
-main: ${project.groupId}.mybirthday.birthday
+main: ${project.groupId}.mybirthday.MyBirthday
 website: ${project.url}
 description: Birthday for MCME!
 commands:
  birthday:
     aliases: [bd,birthd,bday]
     description: To set your birthday in game
+
+# Copyright (C) 2020 MCME Fraspace5
