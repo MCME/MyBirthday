@@ -122,7 +122,6 @@ public class PluginData {
     }
 
     public static synchronized void onJoinSQL(final PlayerJoinEvent e) {
-
         new BukkitRunnable() {
             @Override
             public void run() {
