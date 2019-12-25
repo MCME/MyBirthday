@@ -58,15 +58,14 @@ public class PluginData {
 
                             StringBuilder builder = new StringBuilder();
                             do {
-                                OfflinePlayer pal = Bukkit.getOfflinePlayer(r.getString("uuid"));
-                                UUID uuid = pal.getUniqueId();
+                                UUID uuid = UUID.fromString(r.getString("uuid"));
+                                OfflinePlayer pal = Bukkit.getOfflinePlayer(uuid);
                                 if (MyBirthday.getPluginInstance().todaybirthday.contains(uuid)) {
                                     long delay = MyBirthday.getPluginInstance().broadcastlistevery * 60 * 1000;
 
                                     if (MyBirthday.getPluginInstance().playeragebool == true) {
                                         try {
 
-                                            
                                             int now = Calendar.getInstance().get(Calendar.YEAR);
 
                                             int your = r.getInt("year");
@@ -227,13 +226,12 @@ public class PluginData {
                         if (r.first()) {
                             StringBuilder builder = new StringBuilder();
                             do {
-                                OfflinePlayer pal = Bukkit.getOfflinePlayer(r.getString("uuid"));
-                                UUID uuid = pal.getUniqueId();
+                                UUID uuid = UUID.fromString(r.getString("uuid"));
+                                OfflinePlayer pal = Bukkit.getOfflinePlayer(uuid);
                                 if (MyBirthday.getPluginInstance().todaybirthday.contains(uuid)) {
 
                                     if (MyBirthday.getPluginInstance().playeragebool == true && !uuid.equals(uu)) {
 
-                                       
                                         int now = Calendar.getInstance().get(Calendar.YEAR);
                                         int your = r.getInt("year");
                                         int year = now - your;
@@ -247,7 +245,7 @@ public class PluginData {
                                         }
 
                                     } else if (MyBirthday.getPluginInstance().playeragebool == false && !uuid.equals(uu)) {
-                                        
+
                                         int index = MyBirthday.getPluginInstance().todaybirthday.size() - 1;
                                         UUID val = MyBirthday.getPluginInstance().todaybirthday.get(index);
 
@@ -294,13 +292,12 @@ public class PluginData {
                         if (r.first()) {
                             StringBuilder builder = new StringBuilder();
 
-                            OfflinePlayer pal = Bukkit.getOfflinePlayer(r.getString("uuid"));
-
+                            UUID uuid = UUID.fromString(r.getString("uuid"));
+                            OfflinePlayer pal = Bukkit.getOfflinePlayer(uuid);
                             do {
-                                if (MyBirthday.getPluginInstance().todaybirthday.contains(pal.getName())) {
+                                if (MyBirthday.getPluginInstance().todaybirthday.contains(UUID.fromString(r.getString("uuid")))) {
                                     if (MyBirthday.getPluginInstance().playeragebool == true) {
 
-                                        UUID uuid = pal.getUniqueId();
                                         int now = Calendar.getInstance().get(Calendar.YEAR);
                                         int your = r.getInt("year");
                                         int year = now - your;
@@ -318,7 +315,7 @@ public class PluginData {
 
                                         int index = MyBirthday.getPluginInstance().todaybirthday.size() - 1;
                                         UUID val = MyBirthday.getPluginInstance().todaybirthday.get(index);
-                                        UUID uuid = pal.getUniqueId();
+
                                         if (uuid.equals(val) == false) {
                                             builder.append(pal.getName() + " " + ", ");
                                         } else {
@@ -619,7 +616,8 @@ public class PluginData {
             }
             String s = builder.toString();
 
-            String discordMessage = ":gift:" + " ***" + DiscordUtil.convertMentionsFromNames("@everyone", guild) + "Today is the birthday of : *** " + s;
+            String discordMessage = ":gift:" + " ***" + "Today is the birthday of : *** " + s
+                    + "\n" + "Happy birthday wishes from the whole MCME community!";
 
             sendDiscord(discordMessage);
 
@@ -643,6 +641,5 @@ public class PluginData {
         }
 
     }
-;
 
 }
