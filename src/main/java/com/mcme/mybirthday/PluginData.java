@@ -255,8 +255,6 @@ public class PluginData {
                                             builder.append(pal.getName() + " " + "!");
                                         }
 
-                                    } else {
-
                                     }
 
                                 }
@@ -566,6 +564,7 @@ public class PluginData {
 
             final Guild guild = DiscordSRV.getPlugin().getMainGuild();
             final StringBuilder builder = new StringBuilder();
+
             for (final UUID uuid : MyBirthday.getPluginInstance().todaybirthday) {
                 new BukkitRunnable() {
                     @Override
@@ -573,7 +572,7 @@ public class PluginData {
 
                         try {
                             OfflinePlayer pal = Bukkit.getOfflinePlayer(uuid);
-                            String statement = "SELECT year FROM " + MyBirthday.getPluginInstance().database + ".b_data WHERE uuid = " + pal.getUniqueId().toString() + " ;";
+                            String statement = "SELECT * FROM " + MyBirthday.getPluginInstance().database + ".b_data WHERE uuid = " + uuid.toString() + " ;";
                             final ResultSet r = MyBirthday.getPluginInstance().con.createStatement().executeQuery(statement);
 
                             if (MyBirthday.getPluginInstance().playeragebool == true) {
@@ -587,9 +586,9 @@ public class PluginData {
                                     UUID val = MyBirthday.getPluginInstance().todaybirthday.get(index);
 
                                     if (uuid.equals(val) == false) {
-                                        builder.append("\n" + " ***" + DiscordUtil.convertMentionsFromNames("@" + pal.getName(), guild) + " ," + year + " years,  " + ":tada: ***");
+                                        builder.append("\n" + " ***").append(DiscordUtil.convertMentionsFromNames("@" + pal.getName(), guild)).append(" ,").append(year).append(" years,  " + ":tada: ***");
                                     } else {
-                                        builder.append("\n" + " ***" + DiscordUtil.convertMentionsFromNames("@" + pal.getName(), guild) + " ," + year + " years!" + ":tada: ***");
+                                        builder.append("\n" + " ***").append(DiscordUtil.convertMentionsFromNames("@" + pal.getName(), guild)).append(" ,").append(year).append(" years!" + ":tada: ***");
                                     }
                                 } catch (SQLException ex) {
                                     Logger.getLogger(PluginData.class.getName()).log(Level.SEVERE, null, ex);
@@ -601,9 +600,9 @@ public class PluginData {
                                 UUID val = MyBirthday.getPluginInstance().todaybirthday.get(index);
 
                                 if (uuid.equals(val) == false) {
-                                    builder.append("\n" + " ***" + DiscordUtil.convertMentionsFromNames("@" + pal.getName(), guild) + "" + ", " + ":tada: ***");
+                                    builder.append("\n" + " ***").append(DiscordUtil.convertMentionsFromNames("@" + pal.getName(), guild)).append("" + ", " + ":tada: ***");
                                 } else {
-                                    builder.append("\n" + " ***" + DiscordUtil.convertMentionsFromNames("@" + pal.getName(), guild) + "" + "!" + ":tada: ***");
+                                    builder.append("\n" + " ***").append(DiscordUtil.convertMentionsFromNames("@" + pal.getName(), guild)).append("" + "!" + ":tada: ***");
                                 }
 
                             }
@@ -614,6 +613,7 @@ public class PluginData {
                 }.runTaskAsynchronously(MyBirthday.getPluginInstance());
 
             }
+            
             String s = builder.toString();
 
             String discordMessage = ":gift:" + " ***" + "Today is the birthday of : *** " + s
@@ -634,11 +634,7 @@ public class PluginData {
                 TextChannel channel = discordPlugins.getDestinationTextChannelForGameChannelName(MyBirthday.getPluginInstance().getDiscordChannel());
                 if (channel != null) {
                     DiscordUtil.sendMessage(channel, message, 0, false);
-                } else {
-
                 }
-            } else {
-
             }
         }
 

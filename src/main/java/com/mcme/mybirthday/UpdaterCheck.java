@@ -22,8 +22,11 @@ import java.io.InputStreamReader;
 import static java.lang.Double.parseDouble;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 /**
  *
@@ -41,22 +44,30 @@ public final class UpdaterCheck {
 
         oldVersion = plugin.getDescription().getVersion();
 
-        try {
-            connection = (HttpURLConnection) new URL("https://raw.githubusercontent.com/fraspace5/MyBirthday/1.13.2/src/main/resources/plugin.yml").openConnection();
-            connection.connect();
-            newVersion = new BufferedReader(new InputStreamReader(connection.getInputStream())).readLine().substring(9);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
 
-            if (parseDouble(newVersion) > parseDouble(oldVersion)) {
+                try {
+                    connection = (HttpURLConnection) new URL("https://raw.githubusercontent.com/fraspace5/MyBirthday/1.13.2/src/main/resources/plugin.yml").openConnection();
 
-                MyBirthday.getPluginInstance().clogger.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.YELLOW + "MyBirthday" + ChatColor.DARK_GRAY + "] - " + "New version " + newVersion + " available for this Plugin");
+                    connection.connect();
 
-            } else {
-                MyBirthday.getPluginInstance().clogger.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.YELLOW + "MyBirthday" + ChatColor.DARK_GRAY + "] - " + "No new version found!");
+                    newVersion = new BufferedReader(new InputStreamReader(connection.getInputStream())).readLine().substring(9);
+
+                    if (parseDouble(newVersion) > parseDouble(oldVersion)) {
+
+                        MyBirthday.getPluginInstance().clogger.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.YELLOW + "MyBirthday" + ChatColor.DARK_GRAY + "] - " + "New version " + newVersion + " available for this Plugin");
+
+                    } else {
+                        MyBirthday.getPluginInstance().clogger.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.YELLOW + "MyBirthday" + ChatColor.DARK_GRAY + "] - " + "No new version found!");
+                    }
+                } catch (IOException ex) {
+                    Logger.getLogger(UpdaterCheck.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
             }
-
-        } catch (IOException e) {
-            return;
-        }
+        }.runTaskAsynchronously(MyBirthday.getPluginInstance());
 
     }
 

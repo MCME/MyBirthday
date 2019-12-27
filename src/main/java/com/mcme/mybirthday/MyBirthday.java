@@ -94,7 +94,7 @@ public class MyBirthday extends JavaPlugin implements Listener {
 
         try {
             openConnection();
-            clogger.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.YELLOW + "MyBirthday" + ChatColor.DARK_GRAY + "] - " + ChatColor.GREEN + "Database Found! ");
+
         } catch (SQLException ex) {
             ex.printStackTrace();
             clogger.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.YELLOW + "MyBirthday" + ChatColor.DARK_GRAY + "] - " + ChatColor.RED + "Database error! (MyBirthday)");
@@ -122,7 +122,7 @@ public class MyBirthday extends JavaPlugin implements Listener {
                     + MyBirthday.getPluginInstance().database + "?useSSL=false&allowPublicKeyRetrieval=true",
                     MyBirthday.getPluginInstance().username,
                     MyBirthday.getPluginInstance().password);
-
+            clogger.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.YELLOW + "MyBirthday" + ChatColor.DARK_GRAY + "] - " + ChatColor.GREEN + "Database Found! ");
         }
 
     }
@@ -173,8 +173,8 @@ public class MyBirthday extends JavaPlugin implements Listener {
                 TimeZone tim = TimeZone.getTimeZone("Europe/London");
                 Calendar cal = Calendar.getInstance(tim);
 
-                if (cal.get(Calendar.HOUR_OF_DAY) == MyBirthday.getPluginInstance().getConfig().getInt("hours")
-                        && cal.get(Calendar.MINUTE) == MyBirthday.getPluginInstance().getConfig().getInt("minutes")) {
+                if (cal.get(Calendar.HOUR_OF_DAY) == MyBirthday.getPluginInstance().getConfig().getInt("time.hours")
+                        && cal.get(Calendar.MINUTE) == MyBirthday.getPluginInstance().getConfig().getInt("time.minutes")) {
 
                     PluginData.createMessageandSend();
 
