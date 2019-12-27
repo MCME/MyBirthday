@@ -123,6 +123,19 @@ public class MyBirthday extends JavaPlugin implements Listener {
                     MyBirthday.getPluginInstance().username,
                     MyBirthday.getPluginInstance().password);
             clogger.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.YELLOW + "MyBirthday" + ChatColor.DARK_GRAY + "] - " + ChatColor.GREEN + "Database Found! ");
+
+            new BukkitRunnable() {
+
+                @Override
+                public void run() {
+                    try {
+                        String statement = "CREATE TABLE IF NOT EXISTS b_data (uuid VARCHAR(50), particles BOOLEAN, cooldown LONG, year INT, month INT, day INT";
+                        con.createStatement().execute(statement);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(MyBirthday.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }.runTaskAsynchronously(MyBirthday.getPluginInstance());
         }
 
     }
@@ -170,6 +183,7 @@ public class MyBirthday extends JavaPlugin implements Listener {
 
             @Override
             public void run() {
+
                 TimeZone tim = TimeZone.getTimeZone("Europe/London");
                 Calendar cal = Calendar.getInstance(tim);
 
@@ -269,7 +283,7 @@ public class MyBirthday extends JavaPlugin implements Listener {
 
             }
 
-        }.runTaskTimer(this, broadcastlistevery * 60 * 20, broadcastlistevery * 60 * 20);
+        }.runTaskTimer(this, broadcastlistevery * 60 * 20 * 1000000, broadcastlistevery * 60 * 20);
 
     }
 
@@ -295,5 +309,7 @@ public class MyBirthday extends JavaPlugin implements Listener {
     @EventHandler
     public void onJoin(final PlayerJoinEvent e) throws FileNotFoundException, SQLException {
         PluginData.onJoinSQL(e);
+        Player pl = e.getPlayer();
+
     }
 }

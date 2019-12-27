@@ -1,4 +1,4 @@
-version: 2.7
+version: 2.8
 name: ${project.artifactId}
 main: ${project.groupId}.mybirthday.MyBirthday
 website: ${project.url}
