@@ -124,7 +124,7 @@ public class MyBirthday extends JavaPlugin implements Listener {
                 @Override
                 public void run() {
                     try {
-                        String statement = "CREATE TABLE IF NOT EXISTS b_data (uuid VARCHAR(50), particles BOOLEAN, cooldown LONG, year INT, month INT, day INT";
+                        String statement = "CREATE TABLE IF NOT EXISTS b_data (uuid VARCHAR(50), particles BOOLEAN, cooldown LONG, year INT, month INT, day INT ;";
                         con.createStatement().execute(statement);
                     } catch (SQLException ex) {
                         Logger.getLogger(MyBirthday.class.getName()).log(Level.SEVERE, null, ex);

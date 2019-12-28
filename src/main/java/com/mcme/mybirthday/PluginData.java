@@ -573,9 +573,9 @@ public class PluginData {
                 final ResultSet r = MyBirthday.getPluginInstance().con.createStatement().executeQuery(statement);
                 if (r.first()) {
                     do {
-
-                        OfflinePlayer pal = Bukkit.getOfflinePlayer(UUID.fromString(r.getString("uuid")));
                         UUID uuid = UUID.fromString(r.getString("uuid"));
+                        OfflinePlayer pal = Bukkit.getOfflinePlayer(uuid);
+
                         if (MyBirthday.getPluginInstance().todaybirthday.contains(uuid)) {
 
                             if (MyBirthday.getPluginInstance().playeragebool == true) {
@@ -587,9 +587,9 @@ public class PluginData {
                                 UUID val = MyBirthday.getPluginInstance().todaybirthday.get(index);
 
                                 if (uuid.equals(val) == false) {
-                                    builder.append("\n" + " ***" + DiscordUtil.convertMentionsFromNames("@" + pal.getName(), guild) + " " + year + " years,  " + ":tada: ***");
+                                    builder.append("\n" + " ***" + pal.getName() + " " + year + " years,  " + ":tada: ***");
                                 } else {
-                                    builder.append("\n" + " ***" + DiscordUtil.convertMentionsFromNames("@" + pal.getName(), guild) + " " + year + " years!  " + ":tada: ***");
+                                    builder.append("\n" + " ***" + pal.getName() + " " + year + " years!  " + ":tada: ***");
                                 }
 
                             } else if (MyBirthday.getPluginInstance().playeragebool == false) {
@@ -598,9 +598,9 @@ public class PluginData {
                                 UUID val = MyBirthday.getPluginInstance().todaybirthday.get(index);
 
                                 if (uuid.equals(val) == false) {
-                                    builder.append(" ***" + " " + DiscordUtil.convertMentionsFromNames("@" + pal.getName(), guild) + ", " + ":tada: ***");
+                                    builder.append(" ***" + " " + pal.getName()+ ", " + ":tada: ***");
                                 } else {
-                                    builder.append(" ***" + " " + DiscordUtil.convertMentionsFromNames("@" + pal.getName(), guild) + "!" + ":tada: ***");
+                                    builder.append(" ***" + " " + pal.getName()+ "!" + ":tada: ***");
                                 }
 
                             }
