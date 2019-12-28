@@ -51,7 +51,6 @@ public class MyBirthday extends JavaPlugin implements Listener {
 
     Logger Logger = Bukkit.getLogger();
     ConsoleCommandSender clogger = this.getServer().getConsoleSender();
-    private File data;
 
     @Getter
     public Connection con;
@@ -80,11 +79,7 @@ public class MyBirthday extends JavaPlugin implements Listener {
         getCommand("birthday").setExecutor(new command());
         getCommand("birthday").setTabCompleter(new command());
         Bukkit.getPluginManager().registerEvents(this, this);
-        try {
-            InitiateFile();
-        } catch (IOException ex) {
-            Logger.getLogger(MyBirthday.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
         SetListRunnable();
         ShowListRunnable();
         if (this.getConfig().getBoolean("findupdates")) {
@@ -197,17 +192,6 @@ public class MyBirthday extends JavaPlugin implements Listener {
             }
 
         }.runTaskTimer(MyBirthday.getPluginInstance(), 0L, 1200L);
-
-    }
-
-    public void InitiateFile() throws IOException {
-
-        data = new File(Bukkit.getServer().getPluginManager().getPlugin("MyBirthday").getDataFolder(), "data.yml");
-
-        if (!data.exists()) {
-
-            data.createNewFile();
-        }
 
     }
 

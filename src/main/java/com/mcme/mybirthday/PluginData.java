@@ -574,7 +574,7 @@ public class PluginData {
                 if (r.first()) {
                     do {
 
-                        OfflinePlayer pal = Bukkit.getOfflinePlayer(r.getString("uuid"));
+                        OfflinePlayer pal = Bukkit.getOfflinePlayer(UUID.fromString(r.getString("uuid")));
                         UUID uuid = UUID.fromString(r.getString("uuid"));
                         if (MyBirthday.getPluginInstance().todaybirthday.contains(uuid)) {
 
