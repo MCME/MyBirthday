@@ -29,6 +29,8 @@ particles: true
 findupdates: true
 #Discord channel
 dchannel: "birthday"
+#For Bungeecord, set true only at one server 
+dmessage: true
 #Hours and minutes when the plugin sends a discord message, London Time
 time:
     hours: 6

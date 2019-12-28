@@ -142,7 +142,7 @@ public class MyBirthday extends JavaPlugin implements Listener {
             this.setDiscordFound(Boolean.FALSE);
             clogger.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.YELLOW + "MyBirthday" + ChatColor.DARK_GRAY + "] - " + ChatColor.RED + "DiscordSRV not found!");
 
-        } else {
+        } else if (discorden = true) {
             this.setDiscordFound(Boolean.TRUE);
             DiscordRunnable();
             clogger.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.YELLOW + "MyBirthday" + ChatColor.DARK_GRAY + "] - " + ChatColor.GREEN + "DiscordSRV found!");
@@ -226,6 +226,8 @@ public class MyBirthday extends JavaPlugin implements Listener {
     String port = this.getConfig().getString("port");
     @Getter
     String database = this.getConfig().getString("database");
+    @Getter
+    Boolean discorden = this.getConfig().getBoolean("dmessage");
     @Getter
     String username = this.getConfig().getString("username");
     @Getter
