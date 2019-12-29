@@ -30,7 +30,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 /**
  *
- * @author fraspace5
+ * @author Fraspace5
  */
 public final class UpdaterCheck {
 

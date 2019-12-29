@@ -2,10 +2,18 @@ version: 3.0
 name: ${project.artifactId}
 main: ${project.groupId}.mybirthday.MyBirthday
 website: ${project.url}
+author: Fraspace5
 description: Birthday for MCME!
 commands:
  birthday:
     aliases: [bd,birthd,bday]
     description: To set your birthday in game
-
+permissions:
+    mybirthday.*:
+        description: Allows to use all the commands of this plugin
+        default: op
+        children:
+            mybirthday.set: Allows to use set command
+            mybirthday.delete: Allows to use delete data from database
+            mybirthday.particles: Allows to set particles boolean
 # Copyright (C) 2020 MCME Fraspace5

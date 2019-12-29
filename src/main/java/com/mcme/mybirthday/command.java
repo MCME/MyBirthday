@@ -35,7 +35,7 @@ import org.bukkit.command.TabExecutor;
 
 /**
  *
- * @author fraspace5
+ * @author Fraspace5
  */
 public class command implements CommandExecutor, TabExecutor {
 
