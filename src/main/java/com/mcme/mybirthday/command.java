@@ -50,13 +50,10 @@ public class command implements CommandExecutor, TabExecutor {
 
             if (args.length < 1) {
 
-                pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.YELLOW + " Invalid Usage ! Type /birthday help for information");
+                pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.RED + " Invalid Usage ! Type /birthday help for information");
 
-            }
-
-            if (args.length > 1) {
-                if (args[0].equalsIgnoreCase("set")) {
-
+            } else if (args[0].equalsIgnoreCase("set")) {
+                if (pl.hasPermission("mybirthday.*") || pl.hasPermission("mybirthday.set")) {
                     if (args.length == 4) {
 
                         try {
@@ -67,28 +64,31 @@ public class command implements CommandExecutor, TabExecutor {
 
                     } else {
 
-                        pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.YELLOW + " Not enough argouments! Type /birthday help");
+                        pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.RED + " Not enough argouments! Type /birthday help");
                     }
 
-                }
-            } 
-            if (args.length > 0) {
-                if (args[0].equalsIgnoreCase("help")) {
-
-                    pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.YELLOW + " To set your birthday write /birthday set dd mm yyyy");
+                } else {
+                    pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.RED + " You don't have enough permissions to use this command");
 
                 }
-            }
 
-            if (args.length > 1) {
-                if (args[0].equalsIgnoreCase("particles") == true) {
-                    PluginData.particlesSQL(uuid, args, pl);
+            } else if (args[0].equalsIgnoreCase("help")) {
+
+                pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.YELLOW + " To set your birthday write /birthday set dd mm yyyy");
+
+            } else if (args[0].equalsIgnoreCase("particles")) {
+                if (pl.hasPermission("mybirthday.*") || pl.hasPermission("mybirthday.particles")) {
+                    if (args.length == 2) {
+                        PluginData.particlesSQL(uuid, args, pl);
+                    } else {
+                        pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.RED + " Not enough argouments! Type /birthday help");
+                    }
+                } else {
+                    pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.RED + " You don't have enough permissions to use this command");
                 }
 
-            }
-
-            if (args.length > 0) {
-                if (args[0].equalsIgnoreCase("removedatab") && args.length > 0) {
+            } else if (args[0].equalsIgnoreCase("removedatab")) {
+                if (pl.hasPermission("mybirthday.*") || pl.hasPermission("mybirthday.delete")) {
                     new BukkitRunnable() {
                         @Override
                         public void run() {
@@ -103,7 +103,7 @@ public class command implements CommandExecutor, TabExecutor {
                                         cal.set(1970, 1, 1);
                                         try {
                                             Long l = (System.currentTimeMillis() + (MyBirthday.getPluginInstance().getCooldown1() * 3600) * 1000);
-                                            PluginData.updateData(uuid, cal, Boolean.TRUE, l);
+                                            PluginData.updateData(uuid, cal, Boolean.FALSE, l);
                                             MyBirthday.getPluginInstance().getCoolsure().remove(uuid);
                                         } catch (SQLException ex) {
                                             Logger.getLogger(command.class.getName()).log(Level.SEVERE, null, ex);
@@ -124,8 +124,16 @@ public class command implements CommandExecutor, TabExecutor {
 
                         }
                     }.runTaskAsynchronously(MyBirthday.getPluginInstance());
+
+                } else {
+                    pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.RED + " You don't have enough permissions to use this command");
                 }
+            } else {
+
+                pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.RED + " Invalid Usage ! Type /birthday help for information");
+
             }
+
         } else {
             System.out.println("You can't use this command in console");
 

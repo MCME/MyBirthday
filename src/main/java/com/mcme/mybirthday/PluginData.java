@@ -174,7 +174,7 @@ public class PluginData {
                                                     s.first();
                                                     if (s.first()) {
 
-                                                        if (s.getBoolean("particles") == true) {
+                                                        if (s.getBoolean("particles") == true && s.getInt("year") != 1970) {
                                                             Location location = pl.getLocation().add(0, 2, 0);
                                                             pl.getWorld().spawnParticle(Particle.REDSTONE, location, 10, 1.0, 1.0, 1.0, new Particle.DustOptions(Color.RED, 1));
                                                             pl.getWorld().spawnParticle(Particle.REDSTONE, location, 10, 1.0, 1.0, 1.0, new Particle.DustOptions(Color.YELLOW, 1));
@@ -364,14 +364,18 @@ public class PluginData {
                             int mc = cale.get(Calendar.MONTH);
                             int dayn = MyBirthday.getPluginInstance().call.get(Calendar.DAY_OF_MONTH);
                             int month = MyBirthday.getPluginInstance().call.get(Calendar.MONTH);
+                            if (r.getInt("day") == 0 && r.getInt("month") == 0 && r.getInt("year") == 1970) {
 
-                            if (dc == dayn && mc == month) {
+                            } else {
+                                if (dc == dayn && mc == month && Bukkit.getOfflinePlayer(uuid).getLastPlayed() > (System.currentTimeMillis() - (15552000 * 1000))) {
 
-                                if (MyBirthday.getPluginInstance().todaybirthday.contains(uuid) == true) {
+                                    if (MyBirthday.getPluginInstance().todaybirthday.contains(uuid) == true) {
 
-                                } else {
+                                    } else {
 
-                                    MyBirthday.getPluginInstance().todaybirthday.add(uuid);
+                                        MyBirthday.getPluginInstance().todaybirthday.add(uuid);
+                                    }
+
                                 }
 
                             }
@@ -598,9 +602,9 @@ public class PluginData {
                                 UUID val = MyBirthday.getPluginInstance().todaybirthday.get(index);
 
                                 if (uuid.equals(val) == false) {
-                                    builder.append(" ***" + " " + pal.getName()+ ", " + ":tada: ***");
+                                    builder.append(" ***" + " " + pal.getName() + ", " + ":tada: ***");
                                 } else {
-                                    builder.append(" ***" + " " + pal.getName()+ "!" + ":tada: ***");
+                                    builder.append(" ***" + " " + pal.getName() + "!" + ":tada: ***");
                                 }
 
                             }
