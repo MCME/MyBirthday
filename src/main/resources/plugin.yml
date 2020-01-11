@@ -13,7 +13,7 @@ permissions:
         description: Allows to use all the commands of this plugin
         default: op
         children:
-            mybirthday.set: Allows to use set command
-            mybirthday.delete: Allows to use delete data from database
-            mybirthday.particles: Allows to set particles boolean
+            mybirthday.set: true
+            mybirthday.delete: true
+            mybirthday.particles: true
 # Copyright (C) 2020 MCME Fraspace5
