@@ -192,7 +192,7 @@ public class command implements CommandExecutor, TabExecutor {
             if (args[0].equalsIgnoreCase("set")) {
                 List<String> a = Arrays.asList("month");
                 for (String s : a) {
-                    if (s.toLowerCase().startsWith(args[1].toLowerCase())) {
+                    if (s.toLowerCase().startsWith(args[2].toLowerCase())) {
                         month.add(s);
                     }
                 }
@@ -204,7 +204,7 @@ public class command implements CommandExecutor, TabExecutor {
             if (args[0].equalsIgnoreCase("set")) {
                 List<String> a = Arrays.asList("year");
                 for (String s : a) {
-                    if (s.toLowerCase().startsWith(args[1].toLowerCase())) {
+                    if (s.toLowerCase().startsWith(args[3].toLowerCase())) {
                         year.add(s);
                     }
                 }

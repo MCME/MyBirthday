@@ -17,8 +17,8 @@ privacymessage: "All personal information collected by Minecraft Middle-earth wi
 The date of your birthday and all your personal information are treated with the exclusive purpose of using the service. " 
 messageactive: true
 showplayerage: true
-# wait-time in hour
-wait-time: 24
+# wait-time in hours
+wait-time: 4320
 listonjoin: true
 #For Bungeecord, set true on each server
 broadcastlist: true
