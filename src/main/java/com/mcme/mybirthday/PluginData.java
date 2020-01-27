@@ -104,7 +104,9 @@ public class PluginData {
                                 for (Player pl : Bukkit.getOnlinePlayers()) {
 
                                     if (!MyBirthday.getPluginInstance().todaybirthday.isEmpty()) {
+
                                         pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.YELLOW + " Today is the Birthday of " + ChatColor.YELLOW + text);
+
                                     }
 
                                 }
@@ -135,7 +137,7 @@ public class PluginData {
                     try {
                         final Player pl = e.getPlayer();
                         final UUID uuid = pl.getUniqueId();
-                        String nameplayer = Bukkit.getOfflinePlayer(uuid).getName();
+                        final String nameplayer = Bukkit.getOfflinePlayer(uuid).getName();
                         boolean listonjoin = MyBirthday.getPluginInstance().getConfig().getBoolean("listonjoin");
                         int now = Calendar.getInstance().get(Calendar.YEAR);
 
@@ -146,9 +148,17 @@ public class PluginData {
                         } else {
                             if (MyBirthday.getPluginInstance().todaybirthday.contains(uuid)) {
                                 int your = r.getInt("year");
-                                int year = now - your;
-                                pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.YELLOW.BOLD + " Happy Birthday " + ChatColor.YELLOW.BOLD + nameplayer + ChatColor.YELLOW + " from all the Minecraft Middle Earth Community "
-                                        + ChatColor.YELLOW + year + ChatColor.YELLOW + " years is a great achievement");
+                                final int year = now - your;
+                                new BukkitRunnable() {
+
+                                    @Override
+                                    public void run() {
+
+                                        pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.YELLOW.BOLD + " Happy Birthday " + ChatColor.YELLOW.BOLD + nameplayer + ChatColor.YELLOW + " from all the Minecraft Middle Earth Community "
+                                                + ChatColor.YELLOW + year + ChatColor.YELLOW + " years is a great achievement");
+                                    }
+
+                                }.runTaskLater(MyBirthday.getPluginInstance(), 25L);
 
                                 if (MyBirthday.getPluginInstance().todaybirthday.size() > 1) {
                                     MyBirthday.getPluginInstance().OtherPeopleBirthday(uuid, e);
@@ -259,9 +269,18 @@ public class PluginData {
 
                                 }
                             } while (r.next());
-                            String text = builder.toString();
+                            final String text = builder.toString();
 
-                            e.getPlayer().sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.YELLOW + " Today is also the Birthday of " + ChatColor.YELLOW + text);
+                            new BukkitRunnable() {
+
+                                @Override
+                                public void run() {
+
+                                    e.getPlayer().sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.YELLOW + " Today is also the Birthday of " + ChatColor.YELLOW + text);
+                                }
+
+                            }.runTaskLater(MyBirthday.getPluginInstance(), 25L);
+
                         }
                     } catch (SQLException e) {
                         Logger.getLogger(PluginData.class.getName()).log(Level.SEVERE, null, e);
@@ -285,7 +304,6 @@ public class PluginData {
 
                     final ResultSet r = MyBirthday.getPluginInstance().con.createStatement().executeQuery(statement);
 
-                    // do database stuff here
                     try {
                         if (r.first()) {
                             StringBuilder builder = new StringBuilder();
@@ -324,10 +342,18 @@ public class PluginData {
 
                                 }
                             } while (r.next());
-                            String text = builder.toString();
-                            if (MyBirthday.getPluginInstance().todaybirthday.isEmpty() == false) {
+                            final String text = builder.toString();
+                            if (!MyBirthday.getPluginInstance().todaybirthday.isEmpty()) {
+                                new BukkitRunnable() {
 
-                                e.setJoinMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.YELLOW + " Today is the Birthday of " + ChatColor.YELLOW + text);
+                                    @Override
+                                    public void run() {
+
+                                        pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.YELLOW + " Today is the Birthday of " + ChatColor.YELLOW + text);
+                                    }
+
+                                }.runTaskLater(MyBirthday.getPluginInstance(), 25L);
+
                             }
                         }
                     } catch (SQLException e) {
@@ -369,10 +395,7 @@ public class PluginData {
                             } else {
                                 if (dc == dayn && mc == month && Bukkit.getOfflinePlayer(uuid).getLastPlayed() > (System.currentTimeMillis() - (15552000 * 1000))) {
 
-                                    if (MyBirthday.getPluginInstance().todaybirthday.contains(uuid) == true) {
-
-                                    } else {
-
+                                    if (!MyBirthday.getPluginInstance().todaybirthday.contains(uuid)) {
                                         MyBirthday.getPluginInstance().todaybirthday.add(uuid);
                                     }
 
@@ -427,6 +450,7 @@ public class PluginData {
         }
 
     }
+
     /*
      public static synchronized void deleteData(final UUID uuid) throws SQLException {
      if (birthday.getPluginInstance().isConnect()) {
@@ -443,7 +467,6 @@ public class PluginData {
      }
      }
      */
-
     public static synchronized void particlesSQL(final UUID uuid, final String[] args, final Player pl) {
         new BukkitRunnable() {
             @Override
@@ -547,6 +570,57 @@ public class PluginData {
                                 pl.sendMessage((ChatColor.GOLD.BOLD + "[MyBirthday] : " + ChatColor.YELLOW + MyBirthday.getPluginInstance().getMessage()));
                             }
                             pl.sendMessage((ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.YELLOW + " Birthday set correctly! Now you must wait " + ChatColor.YELLOW + MyBirthday.getPluginInstance().getCoold() + ChatColor.YELLOW + " hours to update it"));
+                        }
+
+                    } catch (SQLException e) {
+                        Logger.getLogger(PluginData.class.getName()).log(Level.SEVERE, null, e);
+                    }
+
+                } catch (SQLException ex) {
+                    Logger.getLogger(PluginData.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+        }.runTaskAsynchronously(MyBirthday.getPluginInstance());
+
+    }
+
+    public static synchronized void setSQLStaff(final UUID uuid, final String[] args, final Player pl) throws SQLException {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+
+                try {
+                    String statement = "SELECT * FROM " + MyBirthday.getPluginInstance().database + ".b_data WHERE uuid = '" + uuid.toString() + "' ;";
+
+                    final ResultSet r = MyBirthday.getPluginInstance().con.prepareStatement(statement).executeQuery();
+
+                    // do database stuff here
+                    try {
+                        if (r.first()) {
+
+                            String dd = args[2];
+                            String mm = args[3];
+                            String yyyy = args[4];
+
+                            int d = Integer.parseInt(dd);
+                            int m = (Integer.parseInt(mm) - 1);
+                            int y = Integer.parseInt(yyyy);
+                            Calendar cal = Calendar.getInstance();
+                            cal.set(y, m, d);
+
+                            if (MyBirthday.getPluginInstance().isMactive() == true) {
+                                pl.sendMessage((ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.YELLOW + MyBirthday.getPluginInstance().getMessage()));
+                            }
+                            pl.sendMessage((ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.YELLOW + " Birthday set correctly! Now you must wait " + ChatColor.YELLOW + MyBirthday.getPluginInstance().getCoold() + ChatColor.YELLOW + " hours to update it"));
+                            Long l = (System.currentTimeMillis() + (MyBirthday.getPluginInstance().getCooldown1() * 3600) * 1000);
+
+                            PluginData.updateData(uuid, cal, r.getBoolean("particles"), l);
+
+                        } else {
+
+                            pl.sendMessage((ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.YELLOW + "Hey, " + pl.getName() + " the player needs to set his birthday before"));
+
                         }
 
                     } catch (SQLException e) {

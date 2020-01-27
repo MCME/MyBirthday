@@ -60,8 +60,9 @@ public class MyBirthday extends JavaPlugin implements Listener {
     @Setter
     @Getter
     boolean discordFound;
+
     @Getter
-    private static MyBirthday pluginInstance;
+    public static MyBirthday pluginInstance;
 
     private void checkUpdate() {
         final UpdaterCheck updater = new UpdaterCheck(this);
@@ -80,8 +81,6 @@ public class MyBirthday extends JavaPlugin implements Listener {
         getCommand("birthday").setTabCompleter(new command());
         Bukkit.getPluginManager().registerEvents(this, this);
 
-        SetListRunnable();
-        ShowListRunnable();
         if (this.getConfig().getBoolean("findupdates")) {
 
             checkUpdate();

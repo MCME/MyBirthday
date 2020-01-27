@@ -30,6 +30,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.command.TabExecutor;
 
@@ -75,6 +76,20 @@ public class command implements CommandExecutor, TabExecutor {
             } else if (args[0].equalsIgnoreCase("help")) {
 
                 pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.YELLOW + " To set your birthday write /birthday set dd mm yyyy");
+
+            } else if (args[0].equalsIgnoreCase("change")) {
+                if (pl.hasPermission("mybirthday.*") || pl.hasPermission("mybirthday.staff")) {
+
+                    Player p = Bukkit.getPlayer(args[1]);
+
+                    try {
+                        PluginData.setSQLStaff(p.getUniqueId(), args, pl);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(command.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else {
+                    pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.RED + " You don't have enough permissions to use this command");
+                }
 
             } else if (args[0].equalsIgnoreCase("particles")) {
                 if (pl.hasPermission("mybirthday.*") || pl.hasPermission("mybirthday.particles")) {
@@ -150,7 +165,9 @@ public class command implements CommandExecutor, TabExecutor {
         arguments.add("help");
         arguments.add("particles");
         arguments.add("removedatab");
-
+        if (pl.hasPermission("mybirthday.*") || pl.hasPermission("mybirthday.staff")) {
+            arguments.add("change");
+        }
         List<String> Flist = new ArrayList<>();
         List<String> particles = new ArrayList<>();
         List<String> day = new ArrayList<>();
