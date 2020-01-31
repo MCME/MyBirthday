@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.command.TabExecutor;
 
@@ -78,9 +79,9 @@ public class command implements CommandExecutor, TabExecutor {
                 pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.YELLOW + " To set your birthday write /birthday set dd mm yyyy");
 
             } else if (args[0].equalsIgnoreCase("change")) {
-                if (pl.hasPermission("mybirthday.*") || pl.hasPermission("mybirthday.staff")) {
+                if (pl.hasPermission("mybirthday.change")) {
 
-                    Player p = Bukkit.getPlayer(args[1]);
+                    OfflinePlayer p = Bukkit.getOfflinePlayer(args[1]);
 
                     try {
                         PluginData.setSQLStaff(p.getUniqueId(), args, pl);
