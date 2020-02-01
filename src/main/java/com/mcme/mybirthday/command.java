@@ -80,13 +80,14 @@ public class command implements CommandExecutor, TabExecutor {
 
             } else if (args[0].equalsIgnoreCase("change")) {
                 if (pl.hasPermission("mybirthday.change")) {
+                    if (args.length > 2) {
+                        OfflinePlayer p = Bukkit.getOfflinePlayer(args[1]);
 
-                    OfflinePlayer p = Bukkit.getOfflinePlayer(args[1]);
-
-                    try {
-                        PluginData.setSQLStaff(p.getUniqueId(), args, pl);
-                    } catch (SQLException ex) {
-                        Logger.getLogger(command.class.getName()).log(Level.SEVERE, null, ex);
+                        try {
+                            PluginData.setSQLStaff(p.getUniqueId(), args, pl);
+                        } catch (SQLException ex) {
+                            Logger.getLogger(command.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
                 } else {
                     pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.RED + " You don't have enough permissions to use this command");

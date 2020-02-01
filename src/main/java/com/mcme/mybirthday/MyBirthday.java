@@ -280,7 +280,6 @@ public class MyBirthday extends JavaPlugin implements Listener {
 
     public void SetTodayBirthdays() throws SQLException {
 
-        todaybirthday.clear();
         PluginData.today();
 
     }

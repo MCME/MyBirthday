@@ -153,12 +153,12 @@ public class PluginData {
 
                                     @Override
                                     public void run() {
-
+                                        System.out.println("va11");
                                         pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.YELLOW.BOLD + " Happy Birthday " + ChatColor.YELLOW.BOLD + nameplayer + ChatColor.YELLOW + " from all the Minecraft Middle Earth Community "
                                                 + ChatColor.YELLOW + year + ChatColor.YELLOW + " years is a great achievement");
                                     }
 
-                                }.runTaskLater(MyBirthday.getPluginInstance(), 25L);
+                                }.runTaskLaterAsynchronously(MyBirthday.getPluginInstance(), 25L);
 
                                 if (MyBirthday.getPluginInstance().todaybirthday.size() > 1) {
                                     MyBirthday.getPluginInstance().OtherPeopleBirthday(uuid, e);
@@ -169,7 +169,7 @@ public class PluginData {
                                 MyBirthday.getPluginInstance().ShowList(pl, e);
                             }
                             if (MyBirthday.getPluginInstance().particles == true && MyBirthday.getPluginInstance().todaybirthday.contains(uuid)) {
-
+                                System.out.println("va10");
                                 new BukkitRunnable() {
                                     @Override
                                     public void run() {
@@ -239,7 +239,7 @@ public class PluginData {
                                 UUID uuid = UUID.fromString(r.getString("uuid"));
                                 OfflinePlayer pal = Bukkit.getOfflinePlayer(uuid);
                                 if (MyBirthday.getPluginInstance().todaybirthday.contains(uuid)) {
-
+                                    System.out.println("va9");
                                     if (MyBirthday.getPluginInstance().playeragebool == true && !uuid.equals(uu)) {
 
                                         int now = Calendar.getInstance().get(Calendar.YEAR);
@@ -275,11 +275,11 @@ public class PluginData {
 
                                 @Override
                                 public void run() {
-
+                                    System.out.println("va8");
                                     e.getPlayer().sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.YELLOW + " Today is also the Birthday of " + ChatColor.YELLOW + text);
                                 }
 
-                            }.runTaskLater(MyBirthday.getPluginInstance(), 25L);
+                            }.runTaskLaterAsynchronously(MyBirthday.getPluginInstance(), 25L);
 
                         }
                     } catch (SQLException e) {
@@ -313,7 +313,7 @@ public class PluginData {
                             do {
                                 if (MyBirthday.getPluginInstance().todaybirthday.contains(UUID.fromString(r.getString("uuid")))) {
                                     if (MyBirthday.getPluginInstance().playeragebool == true) {
-
+                                        System.out.println("va7");
                                         int now = Calendar.getInstance().get(Calendar.YEAR);
                                         int your = r.getInt("year");
                                         int year = now - your;
@@ -344,6 +344,7 @@ public class PluginData {
                             } while (r.next());
                             final String text = builder.toString();
                             if (!MyBirthday.getPluginInstance().todaybirthday.isEmpty()) {
+                                System.out.println("va6");
                                 new BukkitRunnable() {
 
                                     @Override
@@ -352,7 +353,7 @@ public class PluginData {
                                         pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.YELLOW + " Today is the Birthday of " + ChatColor.YELLOW + text);
                                     }
 
-                                }.runTaskLater(MyBirthday.getPluginInstance(), 25L);
+                                }.runTaskLaterAsynchronously(MyBirthday.getPluginInstance(), 25L);
 
                             }
                         }
@@ -369,10 +370,13 @@ public class PluginData {
     }
 
     public static synchronized void today() {
+
         new BukkitRunnable() {
             @Override
             public void run() {
                 try {
+                    MyBirthday.getPluginInstance().todaybirthday.clear();
+                    System.out.println("parte il check");
                     String statement = "SELECT * FROM " + MyBirthday.getPluginInstance().database + ".b_data ;";
 
                     final ResultSet r = MyBirthday.getPluginInstance().con.createStatement().executeQuery(statement);
@@ -380,22 +384,24 @@ public class PluginData {
                     // do database stuff here
                     if (r.first()) {
                         do {
-
+                            System.out.println("controllo 1");
                             UUID uuid = UUID.fromString(r.getString("uuid"));
                             Calendar cale = Calendar.getInstance();
                             cale.set(r.getInt("year"), r.getInt("month"), r.getInt("day"));
                             String name = Bukkit.getOfflinePlayer(uuid).getName();
                             int dc = cale.get(Calendar.DAY_OF_MONTH);
-
                             int mc = cale.get(Calendar.MONTH);
+
                             int dayn = MyBirthday.getPluginInstance().call.get(Calendar.DAY_OF_MONTH);
                             int month = MyBirthday.getPluginInstance().call.get(Calendar.MONTH);
                             if (r.getInt("day") == 0 && r.getInt("month") == 0 && r.getInt("year") == 1970) {
 
                             } else {
+                                System.out.println("va1");
                                 if (dc == dayn && mc == month && Bukkit.getOfflinePlayer(uuid).getLastPlayed() > (System.currentTimeMillis() - (15552000 * 1000))) {
-
+                                    System.out.println("va2");
                                     if (!MyBirthday.getPluginInstance().todaybirthday.contains(uuid)) {
+                                        System.out.println("va3");
                                         MyBirthday.getPluginInstance().todaybirthday.add(uuid);
                                     }
 
