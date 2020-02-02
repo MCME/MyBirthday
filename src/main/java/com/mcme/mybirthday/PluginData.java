@@ -398,7 +398,8 @@ public class PluginData {
 
                             } else {
                                 System.out.println("va1");
-                                if (dc == dayn && mc == month && Bukkit.getOfflinePlayer(uuid).getLastPlayed() > (System.currentTimeMillis() - (15552000 * 1000))) {
+                                    System.out.println(dc+" "+dayn+" "+mc+" "+month+" "+Bukkit.getOfflinePlayer(uuid).getLastPlayed()+" "+ (System.currentTimeMillis() - (15552000000.00)));
+                                if (dc == dayn && mc == month && Bukkit.getOfflinePlayer(uuid).getLastPlayed() > (System.currentTimeMillis() - (15552000000.00))) {
                                     System.out.println("va2");
                                     if (!MyBirthday.getPluginInstance().todaybirthday.contains(uuid)) {
                                         System.out.println("va3");

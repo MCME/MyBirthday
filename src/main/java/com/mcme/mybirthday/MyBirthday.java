@@ -293,7 +293,7 @@ public class MyBirthday extends JavaPlugin implements Listener {
     @EventHandler
     public void onJoin(final PlayerJoinEvent e) throws FileNotFoundException, SQLException {
         PluginData.onJoinSQL(e);
-        Player pl = e.getPlayer();
+       
 
     }
 }
