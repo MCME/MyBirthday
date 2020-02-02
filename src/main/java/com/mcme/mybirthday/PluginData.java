@@ -387,19 +387,17 @@ public class PluginData {
                             System.out.println("controllo 1");
                             UUID uuid = UUID.fromString(r.getString("uuid"));
                             Calendar cale = Calendar.getInstance();
-                            cale.set(r.getInt("year"), r.getInt("month"), r.getInt("day"));
+                            ≤
                             String name = Bukkit.getOfflinePlayer(uuid).getName();
-                            int dc = cale.get(Calendar.DAY_OF_MONTH);
-                            int mc = cale.get(Calendar.MONTH);
 
-                            int dayn = MyBirthday.getPluginInstance().call.get(Calendar.DAY_OF_MONTH);
-                            int month = MyBirthday.getPluginInstance().call.get(Calendar.MONTH);
+                            int dayn = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+                            int month = Calendar.getInstance().get(Calendar.MONTH);
                             if (r.getInt("day") == 0 && r.getInt("month") == 0 && r.getInt("year") == 1970) {
 
                             } else {
                                 System.out.println("va1");
-                                    System.out.println(dc+" "+dayn+" "+mc+" "+month+" "+Bukkit.getOfflinePlayer(uuid).getLastPlayed()+" "+ (System.currentTimeMillis() - (15552000000.00)));
-                                if (dc == dayn && mc == month && Bukkit.getOfflinePlayer(uuid).getLastPlayed() > (System.currentTimeMillis() - (15552000000.00))) {
+                                System.out.println(r.getInt("day") + " " + dayn + " " + r.getInt("month") + " " + month + " " + Bukkit.getOfflinePlayer(uuid).getLastPlayed() + " " + (System.currentTimeMillis() - (15552000000.00)));
+                                if (r.getInt("day") == dayn && r.getInt("month") == month && Bukkit.getOfflinePlayer(uuid).getLastPlayed() > (System.currentTimeMillis() - (15552000000.00))) {
                                     System.out.println("va2");
                                     if (!MyBirthday.getPluginInstance().todaybirthday.contains(uuid)) {
                                         System.out.println("va3");
