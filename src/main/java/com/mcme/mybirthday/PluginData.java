@@ -387,7 +387,7 @@ public class PluginData {
                             System.out.println("controllo 1");
                             UUID uuid = UUID.fromString(r.getString("uuid"));
                             Calendar cale = Calendar.getInstance();
-                            ≤
+
                             String name = Bukkit.getOfflinePlayer(uuid).getName();
 
                             int dayn = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
