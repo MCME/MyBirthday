@@ -136,7 +136,8 @@ public class PluginData {
                     // do database stuff here
                     try {
                         final Player pl = e.getPlayer();
-                        final UUID uuid = pl.getUniqueId();
+
+                        final UUID uuid = Bukkit.getOfflinePlayer(pl.getUniqueId()).getUniqueId();
                         final String nameplayer = Bukkit.getOfflinePlayer(uuid).getName();
                         boolean listonjoin = MyBirthday.getPluginInstance().getConfig().getBoolean("listonjoin");
                         int now = Calendar.getInstance().get(Calendar.YEAR);
@@ -385,8 +386,8 @@ public class PluginData {
                     if (r.first()) {
                         do {
 
-                            UUID uuid = UUID.fromString(r.getString("uuid"));
-                            String name = Bukkit.getOfflinePlayer(uuid).getName();
+                            UUID uuid = Bukkit.getOfflinePlayer(UUID.fromString(r.getString("uuid"))).getUniqueId();
+
                             int dayn = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
                             int month = Calendar.getInstance().get(Calendar.MONTH);
                             if (r.getInt("day") == 0 && r.getInt("month") == 0 && r.getInt("year") == 1970) {
