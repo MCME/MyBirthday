@@ -312,7 +312,7 @@ public class MyBirthday extends JavaPlugin implements Listener {
                             PluginData.onJoinSQL(e, false);
                         }
                     } else {
-                        String s = "INSERT INTO " + MyBirthday.getPluginInstance().database + ".player_data (uuid, bool) VALUES ('" + pl.getUniqueId().toString() + "','" + Boolean.TRUE.booleanValue() + "'); ";
+                        String s = "INSERT INTO " + MyBirthday.getPluginInstance().database + ".player_data (uuid, bool) VALUES ('" + pl.getUniqueId().toString() + "',1 ); ";
                         MyBirthday.getPluginInstance().con.createStatement().executeUpdate(s);
                         PluginData.onJoinSQL(e, false);
                     }
