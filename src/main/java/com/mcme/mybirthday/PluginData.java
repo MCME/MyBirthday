@@ -124,7 +124,7 @@ public class PluginData {
 
     }
 
-    public static synchronized void onJoinSQL(final PlayerJoinEvent e) {
+    public static synchronized void onJoinSQL(final PlayerJoinEvent e, final Boolean bool) {
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -144,7 +144,10 @@ public class PluginData {
 
                         if (!r.first()) {
 
-                            pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + " You haven't set your birthday yet! Use /birthday set");
+                            if (!bool) {
+                                pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + " You haven't set your birthday yet! Use /birthday set");
+
+                            }
 
                         } else {
                             if (MyBirthday.getPluginInstance().todaybirthday.contains(uuid)) {

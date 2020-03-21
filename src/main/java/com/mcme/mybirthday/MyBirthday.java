@@ -37,6 +37,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.TimeZone;
 import java.util.logging.Level;
@@ -124,7 +125,9 @@ public class MyBirthday extends JavaPlugin implements Listener {
                 public void run() {
                     try {
                         String statement = "CREATE TABLE IF NOT EXISTS b_data (uuid VARCHAR(50), particles BOOLEAN, cooldown LONG, year INT, month INT, day INT) ;";
+                        String statement2 = "CREATE TABLE IF NOT EXISTS player_data (uuid VARCHAR(50), bool BOOLEAN) ;";
                         con.createStatement().execute(statement);
+                        con.createStatement().execute(statement2);
                     } catch (SQLException ex) {
                         Logger.getLogger(MyBirthday.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -292,8 +295,33 @@ public class MyBirthday extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onJoin(final PlayerJoinEvent e) throws FileNotFoundException, SQLException {
-        PluginData.onJoinSQL(e);
-       
+
+        final Player pl = e.getPlayer();
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                try {
+                    String statement = "SELECT * FROM " + MyBirthday.getPluginInstance().database + ".player_data WHERE uuid = '" + pl.getUniqueId().toString() + "' ;";
+
+                    final ResultSet r = MyBirthday.getPluginInstance().con.createStatement().executeQuery(statement);
+                    if (r.first()) {
+                        if (r.getBoolean("bool")) {
+                            PluginData.onJoinSQL(e, true);
+                        } else {
+                            PluginData.onJoinSQL(e, false);
+                        }
+                    } else {
+                        String s = "INSERT INTO " + MyBirthday.getPluginInstance().database + ".player_data (uuid, bool) VALUES ('" + pl.getUniqueId().toString() + "','" + Boolean.TRUE.booleanValue() + "'); ";
+                        MyBirthday.getPluginInstance().con.createStatement().executeUpdate(s);
+                        PluginData.onJoinSQL(e, false);
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(command.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+        }.runTaskAsynchronously(MyBirthday.getPluginInstance());
 
     }
 }

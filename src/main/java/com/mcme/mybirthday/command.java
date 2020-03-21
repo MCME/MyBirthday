@@ -145,6 +145,37 @@ public class command implements CommandExecutor, TabExecutor {
                 } else {
                     pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.RED + " You don't have enough permissions to use this command");
                 }
+            } else if (args[0].equalsIgnoreCase("ignore")) {
+
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            String statement = "SELECT * FROM " + MyBirthday.getPluginInstance().database + ".player_data WHERE uuid = '" + uuid.toString() + "' ;";
+
+                            final ResultSet r = MyBirthday.getPluginInstance().con.createStatement().executeQuery(statement);
+                            if (r.first()) {
+                                if (r.getBoolean("bool")) {
+                                    String stat = "UPDATE " + MyBirthday.getPluginInstance().database + ".player_data SET bool = " + Boolean.FALSE.booleanValue() + " ;";
+                                    pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.GREEN + "Now you aren't ignoring my plugin, thanks");
+                                    MyBirthday.getPluginInstance().con.createStatement().executeUpdate(stat);
+                                } else {
+                                    String stat = "UPDATE " + MyBirthday.getPluginInstance().database + ".player_data SET bool = " + Boolean.TRUE.booleanValue() + " ;";
+                                    pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.GREEN + "You are ignoring MyBirthday plugin");
+                                    MyBirthday.getPluginInstance().con.createStatement().executeUpdate(stat);
+                                }
+                            } else {
+                                String s = "INSERT INTO " + MyBirthday.getPluginInstance().database + ".player_data (uuid, bool) VALUES ('" + uuid.toString() + "','" + Boolean.TRUE.booleanValue() + "'); ";
+                                pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.GREEN + "You are ignoring MyBirthday plugin");
+                                MyBirthday.getPluginInstance().con.createStatement().executeUpdate(s);
+                            }
+                        } catch (SQLException ex) {
+                            Logger.getLogger(command.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+
+                    }
+                }.runTaskAsynchronously(MyBirthday.getPluginInstance());
+
             } else {
 
                 pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.RED + " Invalid Usage ! Type /birthday help for information");
@@ -166,6 +197,7 @@ public class command implements CommandExecutor, TabExecutor {
         arguments.add("set");
         arguments.add("help");
         arguments.add("particles");
+        arguments.add("ignore");
         arguments.add("removedatab");
         if (pl.hasPermission("mybirthday.*") || pl.hasPermission("mybirthday.staff")) {
             arguments.add("change");
