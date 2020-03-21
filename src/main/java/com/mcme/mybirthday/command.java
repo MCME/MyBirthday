@@ -156,16 +156,16 @@ public class command implements CommandExecutor, TabExecutor {
                             final ResultSet r = MyBirthday.getPluginInstance().con.createStatement().executeQuery(statement);
                             if (r.first()) {
                                 if (r.getBoolean("bool")) {
-                                    String stat = "UPDATE " + MyBirthday.getPluginInstance().database + ".player_data SET bool = 1 ;";
+                                    String stat = "UPDATE " + MyBirthday.getPluginInstance().database + ".player_data SET bool = 0 ;";
                                     pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.GREEN + "Now you aren't ignoring my plugin, thanks");
                                     MyBirthday.getPluginInstance().con.createStatement().executeUpdate(stat);
                                 } else {
-                                    String stat = "UPDATE " + MyBirthday.getPluginInstance().database + ".player_data SET bool = 0 ;";
+                                    String stat = "UPDATE " + MyBirthday.getPluginInstance().database + ".player_data SET bool = 1 ;";
                                     pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.GREEN + "You are ignoring MyBirthday plugin");
                                     MyBirthday.getPluginInstance().con.createStatement().executeUpdate(stat);
                                 }
                             } else {
-                                String s = "INSERT INTO " + MyBirthday.getPluginInstance().database + ".player_data (uuid, bool) VALUES ('" + uuid.toString() + "',1); ";
+                                String s = "INSERT INTO " + MyBirthday.getPluginInstance().database + ".player_data (uuid, bool) VALUES ('" + uuid.toString() + "', 1); ";
                                 pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.GREEN + "You are ignoring MyBirthday plugin");
                                 MyBirthday.getPluginInstance().con.createStatement().executeUpdate(s);
                             }
