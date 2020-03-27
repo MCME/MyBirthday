@@ -1,11 +1,44 @@
+# Copyright (C) 2020 MCME (Fraspace5)
+# *
+# * This program is free software: you can redistribute it and/or modify
+# * it under the terms of the GNU General Public License as published by
+# * the Free Software Foundation, either version 3 of the License, or
+# * (at your option) any later version.
+# *
+# * This program is distributed in the hope that it will be useful,
+# * but WITHOUT ANY WARRANTY; without even the implied warranty of
+# * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# * GNU General Public License for more details.
+# *
+# * You should have received a copy of the GNU General Public License
+# * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 privacymessage: "All personal information collected by Minecraft Middle-earth will not be disclosed or distributed to any other entities unless the permission is obtained from the account holder.
- The date of your birthday and all your personal information are treated with the exclusive purpose of using the service." 
+The date of your birthday and all your personal information are treated with the exclusive purpose of using the service. " 
 messageactive: true
 showplayerage: true
-# wait-time in hour
-wait-time: 24
+# wait-time in hours
+wait-time: 4320
 listonjoin: true
+#For Bungeecord, set true on each server
 broadcastlist: true
 # broadcastlistevery in minutes
 broadcastlistevery: 180
 particles: true
+#send updates to the console
+findupdates: true
+#Discord channel
+dchannel: "birthday"
+#For Bungeecord, set true only at one server 
+dmessage: true
+#Hours and minutes when the plugin sends a discord message, London Time
+time:
+    hours: 6
+    minutes: 30
+        
+#***DATABASE CONNECTION***
+host: localhost
+port: 3306
+database: birthday_data
+username: root
+password: default
