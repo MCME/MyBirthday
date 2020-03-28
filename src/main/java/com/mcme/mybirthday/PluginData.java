@@ -137,7 +137,7 @@ public class PluginData {
                     try {
                         final Player pl = e.getPlayer();
 
-                        final UUID uuid = Bukkit.getOfflinePlayer(pl.getUniqueId()).getUniqueId();
+                        final UUID uuid = pl.getUniqueId();
                         final String nameplayer = Bukkit.getOfflinePlayer(uuid).getName();
                         boolean listonjoin = MyBirthday.getPluginInstance().getConfig().getBoolean("listonjoin");
                         int now = Calendar.getInstance().get(Calendar.YEAR);
@@ -311,10 +311,10 @@ public class PluginData {
                     try {
                         if (r.first()) {
                             StringBuilder builder = new StringBuilder();
-
-                            UUID uuid = UUID.fromString(r.getString("uuid"));
-                            OfflinePlayer pal = Bukkit.getOfflinePlayer(uuid);
                             do {
+
+                                UUID uuid = UUID.fromString(r.getString("uuid"));
+                                OfflinePlayer pal = Bukkit.getOfflinePlayer(uuid);
                                 if (MyBirthday.getPluginInstance().todaybirthday.contains(UUID.fromString(r.getString("uuid")))) {
                                     if (MyBirthday.getPluginInstance().playeragebool == true) {
 
@@ -380,8 +380,9 @@ public class PluginData {
             public void run() {
                 try {
                     MyBirthday.getPluginInstance().todaybirthday.clear();
-
-                    String statement = "SELECT * FROM " + MyBirthday.getPluginInstance().database + ".b_data ;";
+                    int dayn = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+                    int month = Calendar.getInstance().get(Calendar.MONTH);
+                    String statement = "SELECT * FROM " + MyBirthday.getPluginInstance().database + ".b_data;";
 
                     final ResultSet r = MyBirthday.getPluginInstance().con.createStatement().executeQuery(statement);
 
@@ -389,10 +390,8 @@ public class PluginData {
                     if (r.first()) {
                         do {
 
-                            UUID uuid = Bukkit.getOfflinePlayer(UUID.fromString(r.getString("uuid"))).getUniqueId();
+                            UUID uuid = UUID.fromString(r.getString("uuid"));
 
-                            int dayn = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-                            int month = Calendar.getInstance().get(Calendar.MONTH);
                             if (r.getInt("day") == 0 && r.getInt("month") == 0 && r.getInt("year") == 1970) {
 
                             } else {
