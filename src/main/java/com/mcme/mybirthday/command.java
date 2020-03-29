@@ -16,6 +16,7 @@
  */
 package com.mcme.mybirthday;
 
+import static java.lang.Integer.parseInt;
 import java.sql.ResultSet;
 import java.util.Calendar;
 import java.util.UUID;
@@ -58,10 +59,17 @@ public class command implements CommandExecutor, TabExecutor {
                 if (pl.hasPermission("mybirthday.*") || pl.hasPermission("mybirthday.set")) {
                     if (args.length == 4) {
 
-                        try {
-                            PluginData.setSQL(uuid, args, pl);
-                        } catch (SQLException ex) {
-                            Logger.getLogger(command.class.getName()).log(Level.SEVERE, null, ex);
+                        Calendar cal = Calendar.getInstance();
+                        int year = cal.get(Calendar.YEAR) - 99;
+                        int yourY = parseInt(args[3]);
+                        if (yourY > year) {
+                            try {
+                                PluginData.setSQL(uuid, args, pl);
+                            } catch (SQLException ex) {
+                                Logger.getLogger(command.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        } else {
+                            pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.RED + " Year should be major of " + year);
                         }
 
                     } else {
@@ -82,12 +90,19 @@ public class command implements CommandExecutor, TabExecutor {
                 if (pl.hasPermission("mybirthday.change")) {
                     if (args.length > 2) {
                         OfflinePlayer p = Bukkit.getOfflinePlayer(args[1]);
-
-                        try {
-                            PluginData.setSQLStaff(p.getUniqueId(), args, pl);
-                        } catch (SQLException ex) {
-                            Logger.getLogger(command.class.getName()).log(Level.SEVERE, null, ex);
+                        Calendar cal = Calendar.getInstance();
+                        int year = cal.get(Calendar.YEAR) - 99;
+                        int yourY = parseInt(args[3]);
+                        if (yourY > year) {
+                            try {
+                                PluginData.setSQLStaff(p.getUniqueId(), args, pl);
+                            } catch (SQLException ex) {
+                                Logger.getLogger(command.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        } else {
+                            pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.RED + " Year should be major of " + year);
                         }
+
                     }
                 } else {
                     pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.RED + " You don't have enough permissions to use this command");
