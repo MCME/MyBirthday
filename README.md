@@ -1,5 +1,5 @@
 # MyBirthday
-Birthday
+Birthday test
 
 Plugin for Minecraft Middle Earth Server (MCME) 
 
