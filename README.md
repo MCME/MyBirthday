@@ -1,5 +1,5 @@
 # MyBirthday
-Birthday
+Birthday tst
 
 Plugin for Minecraft Middle Earth Server (MCME) 
 
