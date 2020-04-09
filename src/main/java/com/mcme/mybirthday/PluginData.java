@@ -518,7 +518,7 @@ public class PluginData {
 
     }
 
-    public static synchronized void setSQL(final UUID uuid, final String[] args, final Player pl) throws SQLException {
+    public static synchronized void setSQL(final UUID uuid, final String[] date, final Player pl) throws SQLException {
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -537,9 +537,9 @@ public class PluginData {
                                 int remaining = (int) (timerem / 1000);
                                 pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.YELLOW + " Sorry you can't set your birthday. You must wait " + ChatColor.YELLOW + remaining + ChatColor.YELLOW + " seconds");
                             } else {
-                                String dd = args[1];
-                                String mm = args[2];
-                                String yyyy = args[3];
+                                String dd = date[0];
+                                String mm = date[1];
+                                String yyyy = date[2];
 
                                 int d = Integer.parseInt(dd);
                                 int m = (Integer.parseInt(mm) - 1);
@@ -558,9 +558,9 @@ public class PluginData {
                             }
 
                         } else {
-                            String dd = args[1];
-                            String mm = args[2];
-                            String yyyy = args[3];
+                            String dd = date[0];
+                            String mm = date[1];
+                            String yyyy = date[2];
 
                             int d = Integer.parseInt(dd);
                             int m = (Integer.parseInt(mm) - 1);
@@ -589,7 +589,7 @@ public class PluginData {
 
     }
 
-    public static synchronized void setSQLStaff(final UUID uuid, final String[] args, final Player pl) throws SQLException {
+    public static synchronized void setSQLStaff(final UUID uuid, final String[] date, final Player pl) throws SQLException {
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -603,9 +603,9 @@ public class PluginData {
                     try {
                         if (r.first()) {
 
-                            String dd = args[2];
-                            String mm = args[3];
-                            String yyyy = args[4];
+                            String dd = date[0];
+                            String mm = date[1];
+                            String yyyy = date[2];
 
                             int d = Integer.parseInt(dd);
                             int m = (Integer.parseInt(mm) - 1);
@@ -701,6 +701,50 @@ public class PluginData {
 
             sendDiscord(s);
         }
+    }
+
+    public static String sendCheck(String[] date) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Do you want to set your birthday as \n");
+        if (date[0].equalsIgnoreCase("1") || date[0].equalsIgnoreCase("21") || date[0].equalsIgnoreCase("31")) {
+            builder.append(" " + date[0] + "st");
+        } else if (date[0].equalsIgnoreCase("2") || date[0].equalsIgnoreCase("22")) {
+            builder.append(" " + date[0] + "nd");
+        } else if (date[0].equalsIgnoreCase("3") || date[0].equalsIgnoreCase("23")) {
+            builder.append(" " + date[0] + "rd");
+        } else {
+            builder.append(" " + date[0] + "th");
+        }
+
+        if (date[1].equals("0")) {
+            builder.append(" " + " Genuary");
+        } else if (date[1].equals("1")) {
+            builder.append(" " + " February");
+        } else if (date[1].equals("2")) {
+            builder.append(" " + " March");
+        } else if (date[1].equals("3")) {
+            builder.append(" " + " April");
+        } else if (date[1].equals("4")) {
+            builder.append(" " + " May");
+        } else if (date[1].equals("5")) {
+            builder.append(" " + " June");
+        } else if (date[1].equals("6")) {
+            builder.append(" " + " July");
+        } else if (date[1].equals("7")) {
+            builder.append(" " + " August");
+        } else if (date[1].equals("8")) {
+            builder.append(" " + " September");
+        } else if (date[1].equals("9")) {
+            builder.append(" " + " October");
+        } else if (date[1].equals("10")) {
+            builder.append(" " + " November");
+        } else if (date[1].equals("11")) {
+            builder.append(" " + " December");
+        }
+
+        builder.append(" " + date[2]);
+        builder.append("\n Retype the same command to confirm");
+        return builder.toString();
     }
 
     private static void sendDiscord(String message) {
