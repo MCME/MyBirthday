@@ -82,11 +82,12 @@ public class MyBirthday extends JavaPlugin implements Listener {
         getCommand("birthday").setTabCompleter(new command());
         Bukkit.getPluginManager().registerEvents(this, this);
 
+        /*
         if (this.getConfig().getBoolean("findupdates")) {
 
             checkUpdate();
         }
-
+         */
         try {
             openConnection();
 
@@ -152,8 +153,6 @@ public class MyBirthday extends JavaPlugin implements Listener {
 
     }
 
-    
-
     @Override
     public void onDisable() {
 
@@ -200,7 +199,6 @@ public class MyBirthday extends JavaPlugin implements Listener {
     @Getter
     boolean playeragebool = this.getConfig().getBoolean("showplayerage");
 
- 
     public void OtherPeopleBirthday(UUID nameplayer, PlayerJoinEvent e) throws SQLException {
 
         PluginData.otherpeopleSQL(nameplayer, e);
