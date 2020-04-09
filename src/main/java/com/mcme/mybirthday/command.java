@@ -58,18 +58,39 @@ public class command implements CommandExecutor, TabExecutor {
             } else if (args[0].equalsIgnoreCase("set")) {
                 if (pl.hasPermission("mybirthday.*") || pl.hasPermission("mybirthday.set")) {
                     if (args.length == 4) {
+                        if (validateDate(args[1])) {
+                            String[] fir = unserialize(args[1]);
 
-                        Calendar cal = Calendar.getInstance();
-                        int year = cal.get(Calendar.YEAR) - 99;
-                        int yourY = parseInt(args[3]);
-                        if (yourY > year) {
-                            try {
-                                PluginData.setSQL(uuid, args, pl);
-                            } catch (SQLException ex) {
-                                Logger.getLogger(command.class.getName()).log(Level.SEVERE, null, ex);
+                            Calendar cal = Calendar.getInstance();
+                            int year = cal.get(Calendar.YEAR) - 99;
+                            int yourY = parseInt(fir[2]);
+                            if (yourY > year) {
+                                try {
+                                    if (MyBirthday.getPluginInstance().coolsure2.containsKey(pl.getUniqueId())) {
+                                        if (MyBirthday.getPluginInstance().coolsure2.get(pl.getUniqueId()).equals(args[1])) {
+                                            PluginData.setSQL(uuid, fir, pl);
+                                            MyBirthday.getPluginInstance().coolsure2.remove(pl.getUniqueId());
+                                        } else {
+                                            String s = PluginData.sendCheck(fir);
+                                            pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.BOLD + s);
+                                            MyBirthday.getPluginInstance().coolsure2.remove(pl.getUniqueId());
+                                            MyBirthday.getPluginInstance().coolsure2.put(pl.getUniqueId(), args[1]);
+                                        }
+                                    } else {
+                                        String s = PluginData.sendCheck(fir);
+                                        pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.BOLD + s);
+                                        MyBirthday.getPluginInstance().coolsure2.put(pl.getUniqueId(), args[1]);
+                                    }
+
+                                } catch (SQLException ex) {
+                                    Logger.getLogger(command.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            } else {
+                                pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.RED + " Year should be major of " + year);
                             }
+
                         } else {
-                            pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.RED + " Year should be major of " + year);
+                            pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.RED + "Wrong date format... It should be dd/mm/yyyy");
                         }
 
                     } else {
@@ -84,23 +105,43 @@ public class command implements CommandExecutor, TabExecutor {
 
             } else if (args[0].equalsIgnoreCase("help")) {
 
-                pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.YELLOW + " To set your birthday write /birthday set dd mm yyyy");
+                pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.YELLOW + " To set your birthday write /birthday set dd/mm/yyyy");
 
             } else if (args[0].equalsIgnoreCase("change")) {
                 if (pl.hasPermission("mybirthday.change")) {
                     if (args.length > 2) {
-                        OfflinePlayer p = Bukkit.getOfflinePlayer(args[1]);
-                        Calendar cal = Calendar.getInstance();
-                        int year = cal.get(Calendar.YEAR) - 99;
-                        int yourY = parseInt(args[3]);
-                        if (yourY > year) {
-                            try {
-                                PluginData.setSQLStaff(p.getUniqueId(), args, pl);
-                            } catch (SQLException ex) {
-                                Logger.getLogger(command.class.getName()).log(Level.SEVERE, null, ex);
+                        if (validateDate(args[2])) {
+                            String[] fir = unserialize(args[2]);
+                            OfflinePlayer p = Bukkit.getOfflinePlayer(args[1]);
+                            Calendar cal = Calendar.getInstance();
+                            int year = cal.get(Calendar.YEAR) - 99;
+                            int yourY = parseInt(args[3]);
+                            if (yourY > year) {
+                                try {
+                                    if (MyBirthday.getPluginInstance().coolsure2.containsKey(pl.getUniqueId())) {
+                                        if (MyBirthday.getPluginInstance().coolsure2.get(pl.getUniqueId()).equals(args[2])) {
+                                            PluginData.setSQLStaff(p.getUniqueId(), fir, pl);
+                                            MyBirthday.getPluginInstance().coolsure2.remove(pl.getUniqueId());
+                                        } else {
+                                            String s = PluginData.sendCheck(fir);
+                                            pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.BOLD + s);
+                                            MyBirthday.getPluginInstance().coolsure2.remove(pl.getUniqueId());
+                                            MyBirthday.getPluginInstance().coolsure2.put(pl.getUniqueId(), args[2]);
+                                        }
+                                    } else {
+                                        String s = PluginData.sendCheck(fir);
+                                        pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.BOLD + s);
+                                        MyBirthday.getPluginInstance().coolsure2.put(pl.getUniqueId(), args[2]);
+                                    }
+
+                                } catch (SQLException ex) {
+                                    Logger.getLogger(command.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            } else {
+                                pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.RED + " Year should be major of " + year);
                             }
                         } else {
-                            pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.RED + " Year should be major of " + year);
+                            pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.RED + "Wrong date format... It should be dd/mm/yyyy");
                         }
 
                     }
@@ -203,6 +244,25 @@ public class command implements CommandExecutor, TabExecutor {
         }
 
         return false;
+    }
+
+    public boolean validateDate(String date) {
+        String regex = "^([0-2][0-9]||3[0-1])/(0[0-9]||1[0-2])/([0-9][0-9])?[0-9][0-9]$";
+
+        if (date.matches(regex)) {
+
+            return true;
+
+        } else {
+            return false;
+        }
+    }
+
+    public static String[] unserialize(String line) {
+        String[] dataArray = line.split("/");
+
+        return dataArray;
+
     }
 
     @Override

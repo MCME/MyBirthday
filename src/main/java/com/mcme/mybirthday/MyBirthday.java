@@ -169,6 +169,8 @@ public class MyBirthday extends JavaPlugin implements Listener {
     @Getter
     HashMap<UUID, Long> coolsure = new HashMap<>();
     @Getter
+    HashMap<UUID, String> coolsure2 = new HashMap<>();
+    @Getter
     Calendar call = Calendar.getInstance();
     @Getter
     boolean liston = this.getConfig().getBoolean("broadcastlist");
