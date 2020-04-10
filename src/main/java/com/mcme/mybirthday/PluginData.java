@@ -717,7 +717,7 @@ public class PluginData {
         }
 
         if (date[1].equals("0")) {
-            builder.append(" " + " Genuary");
+            builder.append(" " + " January");
         } else if (date[1].equals("1")) {
             builder.append(" " + " February");
         } else if (date[1].equals("2")) {

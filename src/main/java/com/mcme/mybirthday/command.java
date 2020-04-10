@@ -57,7 +57,7 @@ public class command implements CommandExecutor, TabExecutor {
 
             } else if (args[0].equalsIgnoreCase("set")) {
                 if (pl.hasPermission("mybirthday.*") || pl.hasPermission("mybirthday.set")) {
-                    if (args.length == 4) {
+                    if (args.length == 2) {
                         if (validateDate(args[1])) {
                             String[] fir = unserialize(args[1]);
 
@@ -234,7 +234,7 @@ public class command implements CommandExecutor, TabExecutor {
 
             } else {
 
-                pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.RED + " Invalid Usage ! Type /birthday help for information");
+                pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.RED + " Version " + MyBirthday.getPluginInstance().getDescription().getVersion() + " for " + MyBirthday.getPluginInstance().getDescription().getAPIVersion());
 
             }
 
@@ -302,7 +302,7 @@ public class command implements CommandExecutor, TabExecutor {
 
             } else if (args[0].equalsIgnoreCase("set")) {
 
-                List<String> a = Arrays.asList("day");
+                List<String> a = Arrays.asList("dd/mm/yyyy");
                 for (String s : a) {
                     if (s.toLowerCase().startsWith(args[1].toLowerCase())) {
                         day.add(s);
@@ -314,30 +314,6 @@ public class command implements CommandExecutor, TabExecutor {
                 return null;
             }
 
-        } else if (args.length == 3) {
-            if (args[0].equalsIgnoreCase("set")) {
-                List<String> a = Arrays.asList("month");
-                for (String s : a) {
-                    if (s.toLowerCase().startsWith(args[2].toLowerCase())) {
-                        month.add(s);
-                    }
-                }
-                return month;
-            } else {
-                return null;
-            }
-        } else if (args.length == 4) {
-            if (args[0].equalsIgnoreCase("set")) {
-                List<String> a = Arrays.asList("year");
-                for (String s : a) {
-                    if (s.toLowerCase().startsWith(args[3].toLowerCase())) {
-                        year.add(s);
-                    }
-                }
-                return year;
-            } else {
-                return null;
-            }
         } else {
 
             return null;

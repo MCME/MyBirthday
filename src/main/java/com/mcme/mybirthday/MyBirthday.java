@@ -76,6 +76,7 @@ public class MyBirthday extends JavaPlugin implements Listener {
         this.getConfig().options().copyDefaults();
         clogger.sendMessage(ChatColor.GREEN + "---------------------------------------");
         clogger.sendMessage(ChatColor.YELLOW + "MyBirthday Plugin v" + this.getDescription().getVersion() + " Enabled");
+        clogger.sendMessage(ChatColor.YELLOW + "This plugin should be used in " + ChatColor.BLUE + this.getDescription().getAPIVersion());
         clogger.sendMessage(ChatColor.GREEN + "---------------------------------------");
 
         getCommand("birthday").setExecutor(new command());
