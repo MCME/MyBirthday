@@ -599,7 +599,6 @@ public class PluginData {
 
                     final ResultSet r = MyBirthday.getPluginInstance().con.prepareStatement(statement).executeQuery();
 
-                    // do database stuff here
                     try {
                         if (r.first()) {
 
@@ -616,7 +615,7 @@ public class PluginData {
                             if (MyBirthday.getPluginInstance().isMactive() == true) {
                                 pl.sendMessage((ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.YELLOW + MyBirthday.getPluginInstance().getMessage()));
                             }
-                            pl.sendMessage((ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.YELLOW + " Birthday set correctly! Now you must wait " + ChatColor.YELLOW + MyBirthday.getPluginInstance().getCoold() + ChatColor.YELLOW + " hours to update it"));
+                            pl.sendMessage((ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.YELLOW + " Birthday set correctly!"));
                             Long l = (System.currentTimeMillis() + (MyBirthday.getPluginInstance().getCooldown1() * 3600) * 1000);
 
                             PluginData.updateData(uuid, cal, r.getBoolean("particles"), l);
@@ -716,29 +715,29 @@ public class PluginData {
             builder.append(" " + date[0] + "th");
         }
 
-        if (date[1].equals("0")) {
+        if (date[1].equals("01")) {
             builder.append(" " + " January");
-        } else if (date[1].equals("1")) {
+        } else if (date[1].equals("02")) {
             builder.append(" " + " February");
-        } else if (date[1].equals("2")) {
+        } else if (date[1].equals("03")) {
             builder.append(" " + " March");
-        } else if (date[1].equals("3")) {
+        } else if (date[1].equals("04")) {
             builder.append(" " + " April");
-        } else if (date[1].equals("4")) {
+        } else if (date[1].equals("05")) {
             builder.append(" " + " May");
-        } else if (date[1].equals("5")) {
+        } else if (date[1].equals("06")) {
             builder.append(" " + " June");
-        } else if (date[1].equals("6")) {
+        } else if (date[1].equals("07")) {
             builder.append(" " + " July");
-        } else if (date[1].equals("7")) {
+        } else if (date[1].equals("08")) {
             builder.append(" " + " August");
-        } else if (date[1].equals("8")) {
+        } else if (date[1].equals("09")) {
             builder.append(" " + " September");
-        } else if (date[1].equals("9")) {
-            builder.append(" " + " October");
         } else if (date[1].equals("10")) {
-            builder.append(" " + " November");
+            builder.append(" " + " October");
         } else if (date[1].equals("11")) {
+            builder.append(" " + " November");
+        } else if (date[1].equals("12")) {
             builder.append(" " + " December");
         }
 

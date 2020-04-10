@@ -72,13 +72,13 @@ public class command implements CommandExecutor, TabExecutor {
                                             MyBirthday.getPluginInstance().coolsure2.remove(pl.getUniqueId());
                                         } else {
                                             String s = PluginData.sendCheck(fir);
-                                            pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.BOLD + s);
+                                            pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.DARK_GREEN + s);
                                             MyBirthday.getPluginInstance().coolsure2.remove(pl.getUniqueId());
                                             MyBirthday.getPluginInstance().coolsure2.put(pl.getUniqueId(), args[1]);
                                         }
                                     } else {
                                         String s = PluginData.sendCheck(fir);
-                                        pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.BOLD + s);
+                                        pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.DARK_GREEN + s);
                                         MyBirthday.getPluginInstance().coolsure2.put(pl.getUniqueId(), args[1]);
                                     }
 
@@ -115,7 +115,7 @@ public class command implements CommandExecutor, TabExecutor {
                             OfflinePlayer p = Bukkit.getOfflinePlayer(args[1]);
                             Calendar cal = Calendar.getInstance();
                             int year = cal.get(Calendar.YEAR) - 99;
-                            int yourY = parseInt(args[3]);
+                            int yourY = parseInt(fir[2]);
                             if (yourY > year) {
                                 try {
                                     if (MyBirthday.getPluginInstance().coolsure2.containsKey(pl.getUniqueId())) {
@@ -124,13 +124,13 @@ public class command implements CommandExecutor, TabExecutor {
                                             MyBirthday.getPluginInstance().coolsure2.remove(pl.getUniqueId());
                                         } else {
                                             String s = PluginData.sendCheck(fir);
-                                            pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.BOLD + s);
+                                            pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.DARK_GREEN + s);
                                             MyBirthday.getPluginInstance().coolsure2.remove(pl.getUniqueId());
                                             MyBirthday.getPluginInstance().coolsure2.put(pl.getUniqueId(), args[2]);
                                         }
                                     } else {
                                         String s = PluginData.sendCheck(fir);
-                                        pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.BOLD + s);
+                                        pl.sendMessage(ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.DARK_GREEN + s);
                                         MyBirthday.getPluginInstance().coolsure2.put(pl.getUniqueId(), args[2]);
                                     }
 
