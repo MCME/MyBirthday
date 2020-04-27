@@ -1,7 +1,9 @@
-version: 3.2
+version: ${project.version}
 name: ${project.artifactId}
+api-version: 1.15
 main: ${project.groupId}.mybirthday.MyBirthday
 website: ${project.url}
+softdepend: [DiscordSRV]
 author: Fraspace5
 description: Birthday for MCME!
 commands:

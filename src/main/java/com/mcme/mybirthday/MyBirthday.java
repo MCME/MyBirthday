@@ -76,17 +76,19 @@ public class MyBirthday extends JavaPlugin implements Listener {
         this.getConfig().options().copyDefaults();
         clogger.sendMessage(ChatColor.GREEN + "---------------------------------------");
         clogger.sendMessage(ChatColor.YELLOW + "MyBirthday Plugin v" + this.getDescription().getVersion() + " Enabled");
+        clogger.sendMessage(ChatColor.YELLOW + "This plugin should be used in " + ChatColor.BLUE + this.getDescription().getAPIVersion());
         clogger.sendMessage(ChatColor.GREEN + "---------------------------------------");
 
         getCommand("birthday").setExecutor(new command());
         getCommand("birthday").setTabCompleter(new command());
         Bukkit.getPluginManager().registerEvents(this, this);
 
+        /*
         if (this.getConfig().getBoolean("findupdates")) {
 
             checkUpdate();
         }
-
+         */
         try {
             openConnection();
 
@@ -96,9 +98,9 @@ public class MyBirthday extends JavaPlugin implements Listener {
             Logger.getLogger(MyBirthday.class.getName()).log(Level.SEVERE, null, ex);
             Bukkit.getPluginManager().disablePlugin(this);
         }
-        ConnectionRunnable();
-        SetListRunnable();
-        ShowListRunnable();
+        runnable.ConnectionRunnable();
+        runnable.SetListRunnable();
+        runnable.ShowListRunnable();
         CheckDiscord();
 
     }
@@ -146,54 +148,9 @@ public class MyBirthday extends JavaPlugin implements Listener {
 
         } else if (discorden = true) {
             this.setDiscordFound(Boolean.TRUE);
-            DiscordRunnable();
+            runnable.DiscordRunnable();
             clogger.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.YELLOW + "MyBirthday" + ChatColor.DARK_GRAY + "] - " + ChatColor.GREEN + "DiscordSRV found!");
         }
-
-    }
-
-    public void ConnectionRunnable() {
-
-        new BukkitRunnable() {
-
-            @Override
-            public void run() {
-                try {
-                    if (!con.isValid(2)) {
-
-                        openConnection();
-
-                    }
-                } catch (SQLException ex) {
-                    Logger.getLogger(MyBirthday.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-            }
-
-        }.runTaskTimer(MyBirthday.getPluginInstance(), 60L, 100L);
-
-    }
-
-    public void DiscordRunnable() {
-
-        new BukkitRunnable() {
-
-            @Override
-            public void run() {
-
-                TimeZone tim = TimeZone.getTimeZone("Europe/London");
-                Calendar cal = Calendar.getInstance(tim);
-
-                if (cal.get(Calendar.HOUR_OF_DAY) == MyBirthday.getPluginInstance().getConfig().getInt("time.hours")
-                        && cal.get(Calendar.MINUTE) == MyBirthday.getPluginInstance().getConfig().getInt("time.minutes")) {
-
-                    PluginData.createMessageandSend();
-
-                }
-
-            }
-
-        }.runTaskTimer(MyBirthday.getPluginInstance(), 0L, 1200L);
 
     }
 
@@ -212,6 +169,8 @@ public class MyBirthday extends JavaPlugin implements Listener {
     List<UUID> todaybirthday = new ArrayList<>();
     @Getter
     HashMap<UUID, Long> coolsure = new HashMap<>();
+    @Getter
+    HashMap<UUID, String> coolsure2 = new HashMap<>();
     @Getter
     Calendar call = Calendar.getInstance();
     @Getter
@@ -242,38 +201,6 @@ public class MyBirthday extends JavaPlugin implements Listener {
     long cooldown1 = this.getConfig().getLong("wait-time");
     @Getter
     boolean playeragebool = this.getConfig().getBoolean("showplayerage");
-
-    public void SetListRunnable() {
-
-        new BukkitRunnable() {
-
-            @Override
-            public void run() {
-
-                try {
-                    SetTodayBirthdays();
-                } catch (SQLException ex) {
-                    Logger.getLogger(MyBirthday.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-
-        }.runTaskTimer(this, 0L, 600L);
-
-    }
-
-    public void ShowListRunnable() {
-
-        new BukkitRunnable() {
-
-            @Override
-            public void run() {
-                PluginData.showlist();
-
-            }
-
-        }.runTaskTimer(this, broadcastlistevery * 60 * 20 * 1000000, broadcastlistevery * 60 * 20);
-
-    }
 
     public void OtherPeopleBirthday(UUID nameplayer, PlayerJoinEvent e) throws SQLException {
 
