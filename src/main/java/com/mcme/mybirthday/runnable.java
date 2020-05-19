@@ -78,7 +78,7 @@ public class runnable {
 
             }
 
-        }.runTaskTimer(MyBirthday.getPluginInstance(), 60L, 100L);
+        }.runTaskTimerAsynchronously(MyBirthday.getPluginInstance(), 60L, 100L);
 
     }
 

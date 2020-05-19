@@ -110,19 +110,18 @@ public class MyBirthday extends JavaPlugin implements Listener {
             clogger.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.YELLOW + "MyBirthday" + ChatColor.DARK_GRAY + "] - " + ChatColor.YELLOW + "Plugin INITIALIZED, change database information!");
             Bukkit.getPluginManager().disablePlugin(this);
         } else {
-
-            con = DriverManager.getConnection("jdbc:mysql://" + MyBirthday.getPluginInstance().host + ":"
-                    + MyBirthday.getPluginInstance().port + "/"
-                    + MyBirthday.getPluginInstance().database + "?useSSL=false&allowPublicKeyRetrieval=true",
-                    MyBirthday.getPluginInstance().username,
-                    MyBirthday.getPluginInstance().password);
-            clogger.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.YELLOW + "MyBirthday" + ChatColor.DARK_GRAY + "] - " + ChatColor.GREEN + "Database Found! ");
-
             new BukkitRunnable() {
 
                 @Override
                 public void run() {
                     try {
+                        con = DriverManager.getConnection("jdbc:mysql://" + MyBirthday.getPluginInstance().host + ":"
+                                + MyBirthday.getPluginInstance().port + "/"
+                                + MyBirthday.getPluginInstance().database + "?useSSL=false&allowPublicKeyRetrieval=true",
+                                MyBirthday.getPluginInstance().username,
+                                MyBirthday.getPluginInstance().password);
+                        clogger.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.YELLOW + "MyBirthday" + ChatColor.DARK_GRAY + "] - " + ChatColor.GREEN + "Database Found! ");
+
                         String statement = "CREATE TABLE IF NOT EXISTS b_data (uuid VARCHAR(50), particles BOOLEAN, cooldown LONG, year INT, month INT, day INT) ;";
                         String statement2 = "CREATE TABLE IF NOT EXISTS player_data (uuid VARCHAR(50), bool BOOLEAN) ;";
                         con.createStatement().execute(statement);
