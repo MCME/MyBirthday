@@ -32,14 +32,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.TimeZone;
 import java.util.logging.Level;
 import lombok.Getter;
 import lombok.Setter;
@@ -160,7 +157,11 @@ public class MyBirthday extends JavaPlugin implements Listener {
         clogger.sendMessage(ChatColor.RED + "---------------------------------------");
         clogger.sendMessage(ChatColor.YELLOW + "MyBirthday Plugin v" + this.getDescription().getVersion() + " Disabled");
         clogger.sendMessage(ChatColor.RED + "---------------------------------------");
-
+        try {
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(MyBirthday.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     @Getter
     @Setter
