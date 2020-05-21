@@ -68,7 +68,7 @@ public class runnable {
             public void run() {
                 try {
                     if (!MyBirthday.getPluginInstance().con.isValid(2)) {
-
+                        MyBirthday.getPluginInstance().con.close();
                         MyBirthday.getPluginInstance().openConnection();
 
                     }
