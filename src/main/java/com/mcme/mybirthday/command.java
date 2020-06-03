@@ -26,6 +26,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -168,7 +169,10 @@ public class command implements CommandExecutor, TabExecutor {
                             try {
                                 String statement = "SELECT * FROM " + MyBirthday.getPluginInstance().database + ".b_data WHERE uuid = '" + uuid.toString() + "' ;";
 
-                                final ResultSet r = MyBirthday.getPluginInstance().con.createStatement().executeQuery(statement);
+                                Statement statm = MyBirthday.getPluginInstance().con.prepareStatement(statement);
+                                statm.setQueryTimeout(10);
+                                final ResultSet r = statm.executeQuery(statement);
+
                                 if (r.first() && r.getInt("year") != 1970) {
                                     if (MyBirthday.getPluginInstance().getCoolsure().containsKey(uuid) && MyBirthday.getPluginInstance().getCoolsure().get(uuid) > System.currentTimeMillis()) {
                                         pl.sendMessage((ChatColor.GOLD.BOLD + "[MyBirthday] :" + ChatColor.YELLOW + " All your data has been removed from our databases"));
@@ -209,7 +213,10 @@ public class command implements CommandExecutor, TabExecutor {
                         try {
                             String statement = "SELECT * FROM " + MyBirthday.getPluginInstance().database + ".player_data WHERE uuid = '" + uuid.toString() + "' ;";
 
-                            final ResultSet r = MyBirthday.getPluginInstance().con.createStatement().executeQuery(statement);
+                            Statement statm = MyBirthday.getPluginInstance().con.prepareStatement(statement);
+                            statm.setQueryTimeout(10);
+                            final ResultSet r = statm.executeQuery(statement);
+                            
                             if (r.first()) {
                                 if (r.getBoolean("bool")) {
                                     String stat = "UPDATE " + MyBirthday.getPluginInstance().database + ".player_data SET bool = 0 ;";

@@ -22,6 +22,7 @@ import github.scarsz.discordsrv.dependencies.jda.api.entities.TextChannel;
 import github.scarsz.discordsrv.util.DiscordUtil;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Calendar;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -51,7 +52,9 @@ public class PluginData {
                 try {
                     String statement = "SELECT * FROM " + MyBirthday.getPluginInstance().database + ".b_data ;";
 
-                    final ResultSet r = MyBirthday.getPluginInstance().con.prepareStatement(statement).executeQuery();
+                    Statement statm = MyBirthday.getPluginInstance().con.prepareStatement(statement);
+                    statm.setQueryTimeout(10);
+                    final ResultSet r = statm.executeQuery(statement);
 
                     // do database stuff here
                     try {
@@ -131,7 +134,9 @@ public class PluginData {
                 try {
                     String statement = "SELECT * FROM " + MyBirthday.getPluginInstance().database + ".b_data WHERE uuid = '" + e.getPlayer().getUniqueId().toString() + "' ;";
 
-                    final ResultSet r = MyBirthday.getPluginInstance().con.createStatement().executeQuery(statement);
+                    Statement statm = MyBirthday.getPluginInstance().con.prepareStatement(statement);
+                    statm.setQueryTimeout(10);
+                    final ResultSet r = statm.executeQuery(statement);
 
                     // do database stuff here
                     try {
@@ -184,7 +189,9 @@ public class PluginData {
                                                 try {
                                                     String stat = "SELECT * FROM " + MyBirthday.getPluginInstance().database + ".b_data WHERE uuid = '" + e.getPlayer().getUniqueId().toString() + "' ;";
 
-                                                    ResultSet s = MyBirthday.getPluginInstance().con.createStatement().executeQuery(stat);
+                                                    Statement statm = MyBirthday.getPluginInstance().con.prepareStatement(stat);
+                                                    statm.setQueryTimeout(10);
+                                                    final ResultSet s = statm.executeQuery(stat);
                                                     s.first();
                                                     if (s.first()) {
 
@@ -233,7 +240,9 @@ public class PluginData {
                 try {
                     String statement = "SELECT * FROM " + MyBirthday.getPluginInstance().database + ".b_data ;";
 
-                    final ResultSet r = MyBirthday.getPluginInstance().con.createStatement().executeQuery(statement);
+                    Statement statm = MyBirthday.getPluginInstance().con.prepareStatement(statement);
+                    statm.setQueryTimeout(10);
+                    final ResultSet r = statm.executeQuery(statement);
 
                     // do database stuff here
                     try {
@@ -306,7 +315,9 @@ public class PluginData {
                 try {
                     String statement = "SELECT * FROM " + MyBirthday.getPluginInstance().database + ".b_data ;";
 
-                    final ResultSet r = MyBirthday.getPluginInstance().con.createStatement().executeQuery(statement);
+                    Statement statm = MyBirthday.getPluginInstance().con.prepareStatement(statement);
+                    statm.setQueryTimeout(10);
+                    final ResultSet r = statm.executeQuery(statement);
 
                     try {
                         if (r.first()) {
@@ -384,7 +395,9 @@ public class PluginData {
                     int month = Calendar.getInstance().get(Calendar.MONTH);
                     String statement = "SELECT * FROM " + MyBirthday.getPluginInstance().database + ".b_data;";
 
-                    final ResultSet r = MyBirthday.getPluginInstance().con.createStatement().executeQuery(statement);
+                    Statement statm = MyBirthday.getPluginInstance().con.prepareStatement(statement);
+                    statm.setQueryTimeout(10);
+                    final ResultSet r = statm.executeQuery(statement);
 
                     // do database stuff here
                     if (r.first()) {
@@ -423,17 +436,26 @@ public class PluginData {
         try {
 
             String statement = "SELECT * FROM " + MyBirthday.getPluginInstance().database + ".b_data WHERE uuid = '" + uuid.toString() + "' ;";
-            ResultSet r = MyBirthday.getPluginInstance().con.prepareStatement(statement).executeQuery(statement);
+
+            Statement statm = MyBirthday.getPluginInstance().con.prepareStatement(statement);
+            statm.setQueryTimeout(10);
+            final ResultSet r = statm.executeQuery(statement);
 
             if (r.first()) {
 
                 String stat = "UPDATE " + MyBirthday.getPluginInstance().database + ".b_data SET day = '" + date.get(Calendar.DAY_OF_MONTH) + "', month = '" + date.get(Calendar.MONTH) + "', year = '" + date.get(Calendar.YEAR) + "', particles = " + String.valueOf(bol) + ", cooldown = '" + cooldown.toString() + "' WHERE uuid = '" + uuid.toString() + "' ;";
-                MyBirthday.getPluginInstance().con.prepareStatement(stat).executeUpdate(stat);
+
+                Statement statm1 = MyBirthday.getPluginInstance().con.prepareStatement(stat);
+                statm1.setQueryTimeout(10);
+                statm1.executeUpdate(stat);
 
             } else {
 
                 String stat = "INSERT INTO " + MyBirthday.getPluginInstance().database + ".b_data (uuid, day, particles, cooldown, month, year) VALUES ('" + uuid.toString() + "' , '" + date.get(Calendar.DAY_OF_MONTH) + "' , true , '" + cooldown.toString() + "','" + date.get(Calendar.MONTH) + "','" + date.get(Calendar.YEAR) + "') ;";
-                MyBirthday.getPluginInstance().con.prepareStatement(stat).executeUpdate(stat);
+
+                Statement statm1 = MyBirthday.getPluginInstance().con.prepareStatement(stat);
+                statm1.setQueryTimeout(10);
+                statm1.executeUpdate(stat);
 
             }
 
@@ -448,7 +470,11 @@ public class PluginData {
         String stat = "INSERT INTO " + MyBirthday.getPluginInstance().database + ".b_data (uuid, day, particles, cooldown, month, year) VALUES ('" + uuid.toString() + "' , '" + date.get(Calendar.DAY_OF_MONTH) + "' , true , '" + cooldown.toString() + "','" + date.get(Calendar.MONTH) + "','" + date.get(Calendar.YEAR) + "') ;";
 
         try {
-            MyBirthday.getPluginInstance().con.prepareStatement(stat).executeUpdate();
+
+            Statement statm = MyBirthday.getPluginInstance().con.prepareStatement(stat);
+            statm.setQueryTimeout(10);
+            statm.executeUpdate(stat);
+
         } catch (SQLException ex) {
             Logger.getLogger(PluginData.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -478,7 +504,9 @@ public class PluginData {
                 try {
                     String statement = "SELECT * FROM " + MyBirthday.getPluginInstance().database + ".b_data WHERE uuid = '" + uuid.toString() + "' ;";
 
-                    final ResultSet r = MyBirthday.getPluginInstance().con.prepareStatement(statement).executeQuery();
+                    Statement statm = MyBirthday.getPluginInstance().con.prepareStatement(statement);
+                    statm.setQueryTimeout(10);
+                    final ResultSet r = statm.executeQuery(statement);
 
                     // do database stuff here
                     try {
@@ -526,7 +554,9 @@ public class PluginData {
                 try {
                     String statement = "SELECT * FROM " + MyBirthday.getPluginInstance().database + ".b_data WHERE uuid = '" + uuid.toString() + "' ;";
 
-                    final ResultSet r = MyBirthday.getPluginInstance().con.prepareStatement(statement).executeQuery();
+                    Statement statm = MyBirthday.getPluginInstance().con.prepareStatement(statement);
+                    statm.setQueryTimeout(10);
+                    final ResultSet r = statm.executeQuery(statement);
 
                     // do database stuff here
                     try {
@@ -597,7 +627,9 @@ public class PluginData {
                 try {
                     String statement = "SELECT * FROM " + MyBirthday.getPluginInstance().database + ".b_data WHERE uuid = '" + uuid.toString() + "' ;";
 
-                    final ResultSet r = MyBirthday.getPluginInstance().con.prepareStatement(statement).executeQuery();
+                    Statement statm = MyBirthday.getPluginInstance().con.prepareStatement(statement);
+                    statm.setQueryTimeout(10);
+                    final ResultSet r = statm.executeQuery(statement);
 
                     try {
                         if (r.first()) {
@@ -651,7 +683,11 @@ public class PluginData {
             try {
 
                 String statement = "SELECT * FROM " + MyBirthday.getPluginInstance().database + ".b_data ;";
-                final ResultSet r = MyBirthday.getPluginInstance().con.createStatement().executeQuery(statement);
+
+                Statement statm = MyBirthday.getPluginInstance().con.prepareStatement(statement);
+                statm.setQueryTimeout(10);
+                final ResultSet r = statm.executeQuery(statement);
+                
                 if (r.first()) {
                     do {
                         UUID uuid = UUID.fromString(r.getString("uuid"));
@@ -762,3 +798,17 @@ public class PluginData {
     }
 
 }
+
+/*
+
+Statement statm = MyBirthday.getPluginInstance().con.prepareStatement(stat);
+  statm.setQueryTimeout(10); 
+  statm.executeUpdate(stat);
+ 
+  Statement statm = Mybirthday.getPluginInstance().con.prepareStatement(statement);
+  statm.setQueryTimeout(10); 
+  final ResultSet r = statm.executeQuery(statement);
+
+
+
+ */
