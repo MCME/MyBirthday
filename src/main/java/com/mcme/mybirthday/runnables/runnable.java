@@ -14,75 +14,76 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.mcme.mybirthday;
+package com.mcme.mybirthday.runnables;
 
+import com.mcme.mybirthday.MyBirthday;
+import com.mcme.mybirthday.data.PluginData;
+import com.mcme.mybirthday.discord.discord;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.TimeZone;
-import java.util.logging.Level;
 import org.bukkit.scheduler.BukkitRunnable;
 
 /**
  *
- * @author fraspace5
+ * @author Fraspace5
  */
 public class runnable {
 
-    public static void SetListRunnable() {
+    public static void setListRunnable() {
 
         new BukkitRunnable() {
 
             @Override
             public void run() {
 
-                try {
-                    MyBirthday.getPluginInstance().SetTodayBirthdays();
-                } catch (SQLException ex) {
-                    MyBirthday.getPluginInstance().Logger.getLogger(MyBirthday.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                PluginData.setTodayBirthdays();
+
             }
 
         }.runTaskTimer(MyBirthday.getPluginInstance(), 0L, 600L);
 
     }
 
-    public static void ShowListRunnable() {
+    public static void showListRunnable() {
 
         new BukkitRunnable() {
 
             @Override
             public void run() {
-                PluginData.showlist();
+
+                PluginData.showListAll();
 
             }
 
-        }.runTaskTimer(MyBirthday.getPluginInstance(), MyBirthday.getPluginInstance().broadcastlistevery * 60 * 20 * 1000000, MyBirthday.getPluginInstance().broadcastlistevery * 60 * 20);
+        }.runTaskTimer(MyBirthday.getPluginInstance(), MyBirthday.getPluginInstance().getBroadcastlistevery() * 60 * 20 * 1000000, MyBirthday.getPluginInstance().getBroadcastlistevery() * 60 * 20);
 
     }
 
-    public static void ConnectionRunnable() {
+    public static void connectionRunnable() {
 
         new BukkitRunnable() {
 
             @Override
             public void run() {
                 try {
-                    if (!MyBirthday.getPluginInstance().con.isValid(2)) {
-                        MyBirthday.getPluginInstance().con.close();
+                    if (!MyBirthday.getPluginInstance().getConnection().isValid(5)) {
+                        MyBirthday.getPluginInstance().getConnection().close();
                         MyBirthday.getPluginInstance().openConnection();
 
                     }
+
                 } catch (SQLException ex) {
-                    MyBirthday.getPluginInstance().Logger.getLogger(MyBirthday.class.getName()).log(Level.SEVERE, null, ex);
+
                 }
 
             }
 
-        }.runTaskTimer(MyBirthday.getPluginInstance(), 60L, 100L);
+        }.runTaskTimer(MyBirthday.getPluginInstance(), 60L, 1000L);
 
     }
 
-    public static void DiscordRunnable() {
+    public static void discordRunnable() {
 
         new BukkitRunnable() {
 
@@ -94,8 +95,8 @@ public class runnable {
 
                 if (cal.get(Calendar.HOUR_OF_DAY) == MyBirthday.getPluginInstance().getConfig().getInt("time.hours")
                         && cal.get(Calendar.MINUTE) == MyBirthday.getPluginInstance().getConfig().getInt("time.minutes")) {
-                    if (!MyBirthday.getPluginInstance().todaybirthday.isEmpty()) {
-                        PluginData.createMessageandSend();
+                    if (!MyBirthday.getPluginInstance().getTodaybirthday().isEmpty()) {
+                        discord.createMessageandSend();
                     }
 
                 }
