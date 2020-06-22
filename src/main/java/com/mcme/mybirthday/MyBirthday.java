@@ -203,11 +203,11 @@ public class MyBirthday extends JavaPlugin implements Listener {
 
         Plugin discordPlugin = Bukkit.getServer().getPluginManager().getPlugin("DiscordSRV");
         if (discordPlugin == null) {
-            this.setDiscordFound(Boolean.FALSE);
+            setDiscordFound(Boolean.FALSE);
             clogger.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.YELLOW + "MyBirthday" + ChatColor.DARK_GRAY + "] - " + ChatColor.RED + "DiscordSRV not found!");
 
         } else if (discorden) {
-            this.setDiscordFound(Boolean.TRUE);
+           setDiscordFound(Boolean.TRUE);
             runnable.discordRunnable();
             clogger.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.YELLOW + "MyBirthday" + ChatColor.DARK_GRAY + "] - " + ChatColor.GREEN + "DiscordSRV found!");
         }
