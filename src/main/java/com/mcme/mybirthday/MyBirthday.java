@@ -217,15 +217,15 @@ public class MyBirthday extends JavaPlugin implements Listener {
     private void prepareStatements() {
 
         try {
-            String stat_select_bool = "SELECT * FROM player_data WHERE uuid = '?' ;";
-            String stat_insert_bool = "INSERT INTO player_data (uuid, bool) VALUES ('?', ? ); ";
-            String stat_update_bool = "UPDATE player_data SET bool = ? WHERE uuid = '?' ;";
+            String stat_select_bool = "SELECT * FROM player_data WHERE uuid = ? ;";
+            String stat_insert_bool = "INSERT INTO player_data (uuid, bool) VALUES (?, ? ); ";
+            String stat_update_bool = "UPDATE player_data SET bool = ? WHERE uuid = ? ;";
 
             String stat_select_data = "SELECT * FROM b_data ;";
 
-            String stat_select_pdata = "SELECT * FROM b_data WHERE uuid = '?' ;";
-            String stat_update_pdata = "UPDATE b_data SET day = '?', month = '?', year = '?', particles = ?, cooldown = '?' WHERE uuid = '?' ;";
-            String stat_insert_pdata = "INSERT INTO b_data (uuid, day, particles, cooldown, month, year) VALUES ('?' , '?' , true , '?','?','?') ;";
+            String stat_select_pdata = "SELECT * FROM b_data WHERE uuid = ? ;";
+            String stat_update_pdata = "UPDATE b_data SET day = ?, month = ?, year = ?, particles = ?, cooldown = ? WHERE uuid = ? ;";
+            String stat_insert_pdata = "INSERT INTO b_data (uuid, day, particles, cooldown, month, year) VALUES (?,?, true ,?,?,?) ;";
 
             select_bool = connection.prepareStatement(stat_select_bool);
             insert_bool = connection.prepareStatement(stat_insert_bool);
