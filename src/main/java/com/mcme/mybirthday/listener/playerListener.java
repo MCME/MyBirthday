@@ -1,5 +1,5 @@
 /*
- *Copyright (C) 2020 MCME (Fraspace5)
+ *Copyright (C) 2021 MCME (Fraspace5)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,9 +27,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Color;
-import org.bukkit.Location;
-import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -121,36 +118,6 @@ public class playerListener implements Listener {
 
                         } else if (listonjoin && !MyBirthday.getPluginInstance().getTodaybirthday().contains(uuid)) {
                             PluginData.showListSQL(pl, e);
-                        }
-                        if (MyBirthday.getPluginInstance().isParticles() && MyBirthday.getPluginInstance().getTodaybirthday().contains(uuid)) {
-
-                            new BukkitRunnable() {
-                                @Override
-                                public void run() {
-
-                                    try {
-                                        MyBirthday.getSelect_pdata().setString(1, uuid.toString());
-                                        final ResultSet s = MyBirthday.getSelect_pdata().executeQuery();
-
-                                        if (s.first()) {
-
-                                            if (s.getBoolean("particles") && s.getInt("year") != 1970) {
-                                                Location location = pl.getLocation().add(0, 2, 0);
-                                                pl.getWorld().spawnParticle(Particle.REDSTONE, location, 10, 1.0, 1.0, 1.0, new Particle.DustOptions(Color.RED, 1));
-                                                pl.getWorld().spawnParticle(Particle.REDSTONE, location, 10, 1.0, 1.0, 1.0, new Particle.DustOptions(Color.YELLOW, 1));
-                                                pl.getWorld().spawnParticle(Particle.REDSTONE, location, 10, 1.0, 1.0, 1.0, new Particle.DustOptions(Color.GREEN, 1));
-                                                pl.getWorld().spawnParticle(Particle.REDSTONE, location, 10, 1.0, 1.0, 1.0, new Particle.DustOptions(Color.FUCHSIA, 1));
-                                            } else {
-                                                cancel();
-                                            }
-                                        }
-                                    } catch (SQLException ex) {
-                                        Logger.getLogger(playerListener.class.getName()).log(Level.SEVERE, null, ex);
-                                    }
-
-                                }
-
-                            }.runTaskTimer(MyBirthday.getPluginInstance(), 0, 15L);
                         }
                     }
 

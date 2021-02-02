@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 MCME (Fraspace5)
+ * Copyright (C) 2021 MCME (Fraspace5)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,6 +17,9 @@
 package com.mcme.mybirthday.data;
 
 import com.mcme.mybirthday.MyBirthday;
+import com.mcmiddleearth.pluginutil.message.FancyMessage;
+import com.mcmiddleearth.pluginutil.message.MessageType;
+import com.mcmiddleearth.pluginutil.message.MessageUtil;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
@@ -94,8 +97,17 @@ public class PluginData {
 
                                 if (!MyBirthday.getPluginInstance().getTodaybirthday().isEmpty()) {
 
-                                    pl.sendMessage(ChatColor.GOLD.toString() + ChatColor.BOLD.toString() + "[MyBirthday] :" + ChatColor.YELLOW + " Today is the Birthday of " + text);
+                                    String text2 = ChatColor.GOLD.toString() + ChatColor.BOLD.toString() + "[MyBirthday] :" + ChatColor.YELLOW + " Today is the Birthday of ";
+                                    if (MyBirthday.getPluginInstance().getTodaybirthday().size() < 5) {
+                                        text2 += builder.toString();
+                                        pl.sendMessage(text2);
+                                    } else {
 
+                                        FancyMessage message = new FancyMessage(MessageType.INFO_NO_PREFIX, new MessageUtil());
+
+                                        message.addTooltipped(text2 + builder.toString().substring(0, 5) + "...", builder.toString());
+                                        message.send(pl);
+                                    }
                                 }
 
                             }
@@ -163,7 +175,17 @@ public class PluginData {
                             @Override
                             public void run() {
 
-                                e.getPlayer().sendMessage(ChatColor.GOLD.toString() + ChatColor.BOLD.toString() + "[MyBirthday] :" + ChatColor.YELLOW + " Today is also the Birthday of " + builder.toString());
+                                String text = ChatColor.GOLD.toString() + ChatColor.BOLD.toString() + "[MyBirthday] :" + ChatColor.YELLOW + " Today is the Birthday of ";
+                                if (MyBirthday.getPluginInstance().getTodaybirthday().size() < 5) {
+                                    text += builder.toString();
+                                    e.getPlayer().sendMessage(text);
+                                } else {
+
+                                    FancyMessage message = new FancyMessage(MessageType.INFO_NO_PREFIX, new MessageUtil());
+
+                                    message.addTooltipped(text + builder.toString().substring(0, 5) + "...", builder.toString());
+                                    message.send(e.getPlayer());
+                                }
                             }
 
                         }.runTaskLater(MyBirthday.getPluginInstance(), 25L);
@@ -231,8 +253,18 @@ public class PluginData {
 
                                 @Override
                                 public void run() {
+                                    String text = ChatColor.GOLD.toString() + ChatColor.BOLD.toString() + "[MyBirthday] :" + ChatColor.YELLOW + " Today is the Birthday of ";
+                                    if (MyBirthday.getPluginInstance().getTodaybirthday().size() < 5) {
+                                        text += builder.toString();
+                                        pl.sendMessage(text);
+                                    } else {
 
-                                    pl.sendMessage(ChatColor.GOLD.toString() + ChatColor.BOLD.toString() + "[MyBirthday] :" + ChatColor.YELLOW + " Today is the Birthday of " + builder.toString());
+                                        FancyMessage message = new FancyMessage(MessageType.INFO_NO_PREFIX, new MessageUtil());
+
+                                        message.addTooltipped(text + builder.toString().substring(0, 5) + "...", builder.toString());
+                                        message.send(pl);
+                                    }
+
                                 }
 
                             }.runTaskLaterAsynchronously(MyBirthday.getPluginInstance(), 25L);
@@ -264,12 +296,15 @@ public class PluginData {
                         do {
 
                             UUID uuid = UUID.fromString(r.getString("uuid"));
-
+                            OfflinePlayer pl = Bukkit.getOfflinePlayer(uuid);
                             if (!(r.getInt("day") == 0 && r.getInt("month") == 0 && r.getInt("year") == 1970)) {
 
                                 if (r.getInt("day") == dayn && r.getInt("month") == month && Bukkit.getOfflinePlayer(uuid).getLastPlayed() > (System.currentTimeMillis() - (15552000000.00)) && !MyBirthday.getPluginInstance().getTodaybirthday().contains(uuid)) {
 
-                                    MyBirthday.getPluginInstance().getTodaybirthday().add(uuid);
+                                    //player must have been online in the last 5 months
+                                    if (pl.getLastPlayed() > (System.currentTimeMillis() - 13392000000L)) {
+                                        MyBirthday.getPluginInstance().getTodaybirthday().add(uuid);
+                                    }
 
                                 }
 
@@ -281,49 +316,6 @@ public class PluginData {
                 } catch (SQLException ex) {
                     Logger.getLogger(PluginData.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            }
-        }.runTaskAsynchronously(MyBirthday.getPluginInstance());
-
-    }
-
-    /**
-     * Method to set particles boolean
-     *
-     * @param uuid
-     * @param args
-     * @param pl
-     */
-    public static synchronized void particlesSQL(final UUID uuid, final String[] args, final Player pl) {
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                try {
-                    MyBirthday.getSelect_pdata().setString(1, uuid.toString());
-                    final ResultSet r = MyBirthday.getSelect_pdata().executeQuery();
-
-                    if (r.first()) {
-                        Calendar cal = Calendar.getInstance();
-                        if (args[1].equalsIgnoreCase("on")) {
-
-                            pl.sendMessage(ChatColor.GOLD.toString() + ChatColor.BOLD.toString() + "[MyBirthday] :" + ChatColor.YELLOW + " Particles on");
-
-                            cal.set(r.getInt("year"), r.getInt("month"), r.getInt("day"));
-                            PluginData.updateData(uuid, cal, Boolean.TRUE, r.getLong("cooldown"));
-
-                        } else if (args[1].equalsIgnoreCase("off")) {
-
-                            pl.sendMessage(ChatColor.GOLD.toString() + ChatColor.BOLD.toString() + "[MyBirthday] :" + ChatColor.YELLOW + " Particles off");
-
-                            cal.set(r.getInt("year"), r.getInt("month"), r.getInt("day"));
-                            PluginData.updateData(uuid, cal, Boolean.FALSE, r.getLong("cooldown"));
-
-                        }
-                    }
-
-                } catch (SQLException e) {
-
-                }
-
             }
         }.runTaskAsynchronously(MyBirthday.getPluginInstance());
 

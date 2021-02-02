@@ -1,5 +1,5 @@
 /*
- *Copyright (C) 2020 MCME (Fraspace5)
+ *Copyright (C) 2021 MCME (Fraspace5)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -70,8 +70,6 @@ public class MyBirthday extends JavaPlugin implements Listener {
     private final boolean liston = this.getConfig().getBoolean("broadcastlist");
     @Getter
     private final int broadcastlistevery = this.getConfig().getInt("broadcastlistevery");
-    @Getter
-    private final boolean particles = this.getConfig().getBoolean("particles");
     @Getter
     private final String message = this.getConfig().getString("privacymessage");
     @Getter

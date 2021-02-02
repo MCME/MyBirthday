@@ -1,6 +1,6 @@
 version: ${project.version}
 name: ${project.artifactId}
-api-version: 1.16
+api-version: 1.16.5
 main: ${project.groupId}.mybirthday.MyBirthday
 website: ${project.url}
 softdepend: [DiscordSRV]
@@ -17,5 +17,5 @@ permissions:
         children:
             mybirthday.set: true
             mybirthday.delete: true
-            mybirthday.particles: true
-# Copyright (C) 2020 MCME Fraspace5
+            mybirthday.staff: true
+# Copyright (C) 2021 MCME Fraspace5

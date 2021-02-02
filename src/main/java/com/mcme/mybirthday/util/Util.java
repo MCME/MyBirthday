@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 MCME (Fraspace5)
+ * Copyright (C) 2021 MCME (Fraspace5)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@ public class Util {
 
     public static String sendCheck(String[] date) {
         StringBuilder builder = new StringBuilder();
-        builder.append("Do you want to set your birthday as \n");
+        builder.append("\n Do you want to set your birthday as");
         if (date[0].equalsIgnoreCase("1") || date[0].equalsIgnoreCase("21") || date[0].equalsIgnoreCase("31")) {
             builder.append(" ").append(date[0]).append("st");
         } else if (date[0].equalsIgnoreCase("2") || date[0].equalsIgnoreCase("22")) {
@@ -76,7 +76,7 @@ public class Util {
                 break;
         }
 
-        builder.append(" ").append(date[2]);
+        builder.append(" ").append(date[2]).append(" ?");
         builder.append("\n Retype the same command to confirm");
         return builder.toString();
     }
