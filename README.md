@@ -11,8 +11,6 @@ Author: Fraspace5
 This Plugin store birthdays of the players and it show them in the game
 It show the birthdays of the day when the player join* and every three hours*
 
-If a player join the game during his birthday there will be some beautiful particles around him*
-
 
 Commands  :
 
@@ -34,9 +32,6 @@ yyyy = year
 To remove all your data from the database
 You must type it twice to confirm until 30 seconds
 
- ~~/birthday particles [on/off] 
-
-To switch on/off the particles on your birthday
 
  *Can be configured in the config
 

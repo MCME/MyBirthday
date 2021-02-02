@@ -1,5 +1,5 @@
 /*
- *Copyright (C) 2020 MCME (Fraspace5)
+ *Copyright (C) 2021 MCME (Fraspace5)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -63,7 +63,7 @@ public class command implements CommandExecutor, TabExecutor {
                             String[] fir = unserialize(args[1]);
 
                             Calendar cal = Calendar.getInstance();
-                            int year = cal.get(Calendar.YEAR) - 99;
+                            int year = cal.get(Calendar.YEAR) - 79;
                             int yourY = parseInt(fir[2]);
                             if (yourY > year) {
 
@@ -88,7 +88,7 @@ public class command implements CommandExecutor, TabExecutor {
                                 }
 
                             } else {
-                                pl.sendMessage(ChatColor.GOLD.toString() + ChatColor.BOLD.toString() + "[MyBirthday] :" + ChatColor.RED + " Year should be major of " + year);
+                                pl.sendMessage(ChatColor.GOLD.toString() + ChatColor.BOLD.toString() + "[MyBirthday] :" + ChatColor.RED + " Invalid year ");
                             }
 
                         } else {
@@ -110,7 +110,7 @@ public class command implements CommandExecutor, TabExecutor {
                 pl.sendMessage(ChatColor.GOLD.toString() + ChatColor.BOLD.toString() + "[MyBirthday] :" + ChatColor.YELLOW + " To set your birthday write /birthday set dd/mm/yyyy");
 
             } else if (args[0].equalsIgnoreCase("change")) {
-                if (pl.hasPermission("mybirthday.change")) {
+                if (pl.hasPermission("mybirthday.staff")) {
                     if (args.length > 2) {
                         if (validateDate(args[2])) {
                             String[] fir = unserialize(args[2]);
@@ -147,17 +147,6 @@ public class command implements CommandExecutor, TabExecutor {
                             pl.sendMessage(ChatColor.GOLD.toString() + ChatColor.BOLD.toString() + "[MyBirthday] :" + ChatColor.RED + "Wrong date format... It should be dd/mm/yyyy");
                         }
 
-                    }
-                } else {
-                    pl.sendMessage(ChatColor.GOLD.toString() + ChatColor.BOLD.toString() + "[MyBirthday] :" + ChatColor.RED + " You don't have enough permissions to use this command");
-                }
-
-            } else if (args[0].equalsIgnoreCase("particles")) {
-                if (pl.hasPermission("mybirthday.*") || pl.hasPermission("mybirthday.particles")) {
-                    if (args.length == 2) {
-                        PluginData.particlesSQL(uuid, args, pl);
-                    } else {
-                        pl.sendMessage(ChatColor.GOLD.toString() + ChatColor.BOLD.toString() + "[MyBirthday] :" + ChatColor.RED + " Not enough argouments! Type /birthday help");
                     }
                 } else {
                     pl.sendMessage(ChatColor.GOLD.toString() + ChatColor.BOLD.toString() + "[MyBirthday] :" + ChatColor.RED + " You don't have enough permissions to use this command");
@@ -277,7 +266,6 @@ public class command implements CommandExecutor, TabExecutor {
         List<String> arguments = new ArrayList<>();
         arguments.add("set");
         arguments.add("help");
-        arguments.add("particles");
         arguments.add("ignore");
         arguments.add("removedatab");
         if (pl.hasPermission("mybirthday.*") || pl.hasPermission("mybirthday.staff")) {
