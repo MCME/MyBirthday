@@ -63,7 +63,7 @@ public class command implements CommandExecutor, TabExecutor {
                             String[] fir = unserialize(args[1]);
 
                             Calendar cal = Calendar.getInstance();
-                            int year = cal.get(Calendar.YEAR) - 99;
+                            int year = cal.get(Calendar.YEAR) - 79;
                             int yourY = parseInt(fir[2]);
                             if (yourY > year) {
 
@@ -88,7 +88,7 @@ public class command implements CommandExecutor, TabExecutor {
                                 }
 
                             } else {
-                                pl.sendMessage(ChatColor.GOLD.toString() + ChatColor.BOLD.toString() + "[MyBirthday] :" + ChatColor.RED + " Year should be major of " + year);
+                                pl.sendMessage(ChatColor.GOLD.toString() + ChatColor.BOLD.toString() + "[MyBirthday] :" + ChatColor.RED + " Invalid year ");
                             }
 
                         } else {
