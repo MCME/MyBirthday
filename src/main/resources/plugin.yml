@@ -18,4 +18,5 @@ permissions:
             mybirthday.set: true
             mybirthday.delete: true
             mybirthday.particles: true
+            mybirthday.staff: true
 # Copyright (C) 2020 MCME Fraspace5
