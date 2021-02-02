@@ -3,7 +3,7 @@ name: ${project.artifactId}
 api-version: 1.16.5
 main: ${project.groupId}.mybirthday.MyBirthday
 website: ${project.url}
-softdepend: [DiscordSRV]
+softdepend: [DiscordSRV, PluginUtils]
 author: Fraspace5
 description: Birthday for MCME!
 commands:
