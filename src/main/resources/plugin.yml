@@ -1,6 +1,6 @@
 version: ${project.version}
 name: ${project.artifactId}
-api-version: 1.16.5
+api-version: 1.16
 main: ${project.groupId}.mybirthday.MyBirthday
 website: ${project.url}
 softdepend: [DiscordSRV, PluginUtils]
